@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARMORY OS // Ultra-Tier 3D Tactical Telemetry & Cyber-Wire Diagnostic</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Three.js, OrbitControls and Tween.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;600;700;800&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #04060a;
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+    .grid-bg {
+      background-image: linear-gradient(rgba(14, 165, 233, 0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(14, 165, 233, 0.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    .glow-amber {
+      text-shadow: 0 0 12px rgba(245, 158, 11, 0.7);
+    }
+    .glow-cyan {
+      text-shadow: 0 0 12px rgba(6, 182, 212, 0.7);
+    }
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #04060a; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #f59e0b; }
+    
+    #canvas-container {
+      position: relative;
+      width: 100%;
+      height: 700px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #0b121e 0%, #030407 94%);
+      border: 1px solid #1e293b;
+    }
+    #three-canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+      outline: none;
+      cursor: grab;
+    }
+    #three-canvas:active { cursor: grabbing; }
+
+    /* Animated scanning line in Cyber Wire mode */
+    @keyframes scanline {
+      0% { transform: translateY(-100%); opacity: 0; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(1000%); opacity: 0; }
+    }
+    .hud-scanline {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #06b6d4, #f59e0b, #06b6d4, transparent);
+      box-shadow: 0 0 15px #06b6d4;
+      pointer-events: none;
+      display: none;
+    }
+  </style>
+</head>
+<body class="grid-bg min-h-screen flex flex-col">
+
+  <!-- TOP HUD HEADER -->
+  <header class="border-b border-slate-800 bg-slate-950/90 backdrop-blur-md sticky top-0 z-50 px-6 py-2.5">
+    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-3.5 h-3.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_14px_#06b6d4]"></div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl font-extrabold tracking-wider text-slate-100 uppercase mono">ARMORY OS // CYBER_DIAGNOSTIC</h1>
+            <span class="text-[10px] mono bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 px-2 py-0.5 rounded font-bold">X-RAY DUAL-LAYER CAD ENGINE</span>
+          </div>
+          <p class="text-xs text-slate-400">High-Utility Dual-Layer Wireframe, Pressure Gradient Heatmapping, Bore Vector & Ballistic Diagnostics</p>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <button onclick="switchTab('3d')" id="tab-3d" class="px-3.5 py-1.5 text-xs font-semibold rounded bg-cyan-500/15 border border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/25 transition-all flex items-center gap-1.5 mono shadow-[0_0_10px_rgba(6,182,212,0.15)]">
+          <i data-lucide="layers" class="w-4 h-4"></i> 3D CAD VIEWER
+        </button>
+        <button onclick="switchTab('database')" id="tab-database" class="px-3.5 py-1.5 text-xs font-semibold rounded bg-slate-900 border border-slate-700 text-slate-300 hover:bg-slate-800 transition-all flex items-center gap-1.5 mono">
+          <i data-lucide="crosshair" class="w-4 h-4"></i> DATABASE (24)
+        </button>
+        <button onclick="switchTab('posters')" id="tab-posters" class="px-3.5 py-1.5 text-xs font-semibold rounded bg-slate-900 border border-slate-700 text-slate-300 hover:bg-slate-800 transition-all flex items-center gap-1.5 mono">
+          <i data-lucide="image" class="w-4 h-4"></i> 4K POSTERS
+        </button>
+        <button onclick="switchTab('compare')" id="tab-compare" class="px-3.5 py-1.5 text-xs font-semibold rounded bg-slate-900 border border-slate-700 text-slate-300 hover:bg-slate-800 transition-all flex items-center gap-1.5 mono">
+          <i data-lucide="arrow-left-right" class="w-4 h-4"></i> COMPARATOR
+        </button>
+        <button onclick="switchTab('trainer')" id="tab-trainer" class="px-3.5 py-1.5 text-xs font-semibold rounded bg-slate-900 border border-slate-700 text-slate-300 hover:bg-slate-800 transition-all flex items-center gap-1.5 mono">
+          <i data-lucide="target" class="w-4 h-4"></i> SIGHT ID TRAINER
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-7xl mx-auto px-6 py-5 flex-1 w-full space-y-5">
+
+    <!-- VIEW: ULTRA 3D INTERACTIVE SCHEMATIC -->
+    <section id="view-3d" class="space-y-4">
+      
+      <!-- Model Selector Ribbon -->
+      <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+        <div class="flex items-center gap-1.5 overflow-x-auto" id="model-buttons">
+          <!-- Populated by JS -->
+        </div>
+        <div class="flex items-center gap-2 border-t md:border-t-0 md:border-l border-slate-800 pt-2 md:pt-0 md:pl-3 overflow-x-auto text-[11px] mono">
+          <span class="text-slate-500 font-bold whitespace-nowrap">SUBASSEMBLY:</span>
+          <button onclick="filterSubassembly('all')" id="sub-all" class="px-2 py-0.5 rounded bg-amber-500 text-black font-bold">ALL</button>
+          <button onclick="filterSubassembly('action')" id="sub-action" class="px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800 hover:border-amber-500/40">ACTION/BOLT</button>
+          <button onclick="filterSubassembly('fcg')" id="sub-fcg" class="px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800 hover:border-amber-500/40">TRIGGER/FCG</button>
+          <button onclick="filterSubassembly('barrel')" id="sub-barrel" class="px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800 hover:border-amber-500/40">BARREL/GAS</button>
+          <button onclick="filterSubassembly('feed')" id="sub-feed" class="px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800 hover:border-amber-500/40">MAG/AMMO</button>
+        </div>
+      </div>
+
+      <!-- 3D Canvas Stage -->
+      <div id="canvas-container" class="relative group shadow-2xl">
+        <canvas id="three-canvas"></canvas>
+        <div id="scanline-overlay" class="hud-scanline"></div>
+
+        <!-- Floating Tactical HUD Overlay (Top-Left) -->
+        <div class="absolute top-4 left-4 z-10 pointer-events-none space-y-1">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 text-[10px] font-bold rounded mono" id="hud-badge">CLASS: ASSAULT RIFLE</span>
+            <span class="text-[10px] mono text-slate-400" id="hud-caliber">5.56x45mm NATO</span>
+          </div>
+          <h2 class="text-2xl font-black text-slate-100 tracking-wider mono uppercase glow-cyan" id="hud-title">COLT M4A1 SOPMOD</h2>
+          <p class="text-xs text-amber-400 mono" id="hud-action">DIRECT IMPINGEMENT // ROTATING BOLT</p>
+        </div>
+
+        <!-- Floating Telemetry Specs (Top-Right) -->
+        <div class="absolute top-4 right-4 z-10 pointer-events-none bg-slate-950/85 backdrop-blur-md p-3.5 rounded-lg border border-slate-800/80 mono text-[11px] space-y-1.5 min-w-[240px] shadow-lg">
+          <div class="flex justify-between">
+            <span class="text-slate-500">DIAGNOSTIC MODE:</span>
+            <span class="text-cyan-400 font-bold" id="tele-diag-mode">DUAL-LAYER CYBER WIRE</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500">CHAMBER STRESS:</span>
+            <span class="text-amber-400 font-bold" id="tele-pressure">55,000 PSI (CARPENTER 158)</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500">BORE VECTOR:</span>
+            <span class="text-emerald-400 font-bold" id="tele-vector">ALIGNED (1:7 TWIST)</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-500">MUZZLE ENERGY:</span>
+            <span class="text-slate-200 font-bold" id="tele-energy">1,750 Joules</span>
+          </div>
+          <div class="flex justify-between border-t border-slate-800/80 pt-1 text-[10px]">
+            <span class="text-slate-500">DISASSEMBLY STATE:</span>
+            <span class="text-cyan-400 font-bold" id="tele-status">IN BATTERY [0%]</span>
+          </div>
+        </div>
+
+        <!-- Cyber Wire Diagnostic Nodes Floating Badge (Mid-Right) -->
+        <div id="cyber-nodes-panel" class="absolute top-44 right-4 z-10 pointer-events-none bg-slate-950/75 backdrop-blur-md p-3 rounded-lg border border-cyan-500/30 mono text-[10px] space-y-1 max-w-[220px] hidden">
+          <div class="text-cyan-400 font-bold border-b border-cyan-800 pb-1 mb-1">CAD STRESS NODES:</div>
+          <div class="flex items-center gap-1.5 text-amber-400">
+            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+            <span>CHAMBER: HIGH PEAK (HOT)</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-amber-300">
+            <span class="w-2 h-2 rounded-full bg-amber-300"></span>
+            <span>GAS PORT: 15,000 PSI</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-cyan-400">
+            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+            <span>LOWER/FCG: 7075-T6 (COOL)</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-emerald-400">
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            <span>BUFFER: RECOIL DAMPING</span>
+          </div>
+        </div>
+
+        <!-- Interactive 3D Control Bar (Bottom Center) -->
+        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-slate-950/90 backdrop-blur-md px-4 py-2.5 rounded-xl border border-slate-800 flex flex-wrap items-center gap-3 shadow-2xl max-w-[96%] overflow-x-auto">
+          
+          <!-- Exploded View Slider -->
+          <div class="flex items-center gap-2">
+            <i data-lucide="layers" class="w-4 h-4 text-cyan-400"></i>
+            <span class="text-xs text-slate-300 mono font-semibold whitespace-nowrap">EXPLODE:</span>
+            <input type="range" id="explode-slider" min="0" max="100" value="0" oninput="setExplodedAmount(this.value)" 
+                   class="w-28 accent-cyan-500 cursor-pointer">
+            <button onclick="toggleExplode()" id="explode-btn" class="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500 hover:text-black border border-cyan-500/40 rounded text-[11px] mono font-bold transition">
+              EXPLODE
+            </button>
+          </div>
+
+          <div class="h-4 w-px bg-slate-800"></div>
+
+          <!-- Shader Modes (Cyber Wire Flagship) -->
+          <div class="flex items-center gap-1.5 whitespace-nowrap">
+            <span class="text-xs text-slate-400 mono">MODE:</span>
+            <button onclick="setRenderMode('wireframe')" id="mode-wire" class="px-2.5 py-0.5 bg-cyan-500 text-black font-bold rounded text-[11px] mono transition shadow-[0_0_10px_rgba(6,182,212,0.4)]">CYBER WIRE (X-RAY)</button>
+            <button onclick="setRenderMode('pbr')" id="mode-pbr" class="px-2.5 py-0.5 bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-700 rounded text-[11px] mono transition">PBR METAL</button>
+            <button onclick="setRenderMode('thermal')" id="mode-thermal" class="px-2.5 py-0.5 bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-700 rounded text-[11px] mono transition">THERMAL IR</button>
+          </div>
+
+          <div class="h-4 w-px bg-slate-800"></div>
+
+          <!-- Cyber Tools: Bore Laser & Scan Pulse -->
+          <div class="flex items-center gap-1.5 whitespace-nowrap">
+            <button onclick="toggleBoreLaser()" id="btn-laser" class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded text-[11px] mono font-bold transition flex items-center gap-1">
+              <i data-lucide="zap" class="w-3.5 h-3.5"></i> BORE LASER: ON
+            </button>
+            <button onclick="toggleScanline()" id="btn-scan" class="px-2 py-0.5 bg-slate-900 text-slate-300 hover:text-cyan-400 border border-slate-700 rounded text-[11px] mono font-bold transition flex items-center gap-1">
+              <i data-lucide="activity" class="w-3.5 h-3.5"></i> SCAN PULSE
+            </button>
+          </div>
+
+          <div class="h-4 w-px bg-slate-800"></div>
+
+          <!-- Leader Lines -->
+          <button onclick="toggleLeaderLines()" id="btn-lines" class="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 rounded text-[11px] mono font-bold transition flex items-center gap-1">
+            <i data-lucide="git-branch" class="w-3.5 h-3.5"></i> CAD LINES
+          </button>
+
+          <div class="h-4 w-px bg-slate-800"></div>
+
+          <!-- Controls -->
+          <div class="flex items-center gap-1.5">
+            <button onclick="toggleAutoRotate()" id="rotate-btn" class="p-1.5 bg-slate-900 text-slate-300 hover:text-cyan-400 border border-slate-700 rounded transition" title="Toggle Auto-Spin">
+              <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
+            </button>
+            <button onclick="resetCamera()" class="p-1.5 bg-slate-900 text-slate-300 hover:text-cyan-400 border border-slate-700 rounded transition" title="Reset View">
+              <i data-lucide="refresh-ccw" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Floating Component Info Card (Raycasting) -->
+        <div id="part-info-badge" class="absolute bottom-20 left-6 z-20 bg-slate-950/95 border border-cyan-500/60 p-4 rounded-xl text-xs mono max-w-sm pointer-events-none shadow-2xl backdrop-blur-md transition-all">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
+            <span class="text-cyan-400 font-bold uppercase tracking-wider text-[11px] flex items-center gap-1.5" id="part-name">
+              <i data-lucide="cpu" class="w-3.5 h-3.5"></i> COMPONENT SPEC
+            </span>
+            <span class="text-[10px] text-amber-400 bg-amber-950/40 px-2 py-0.5 rounded border border-amber-800" id="part-subgroup">SUBASSEMBLY</span>
+          </div>
+          <div class="space-y-1 text-slate-300 text-[11px]">
+            <p><strong class="text-slate-400">Spec / Material:</strong> <span id="part-material" class="text-slate-200">Hardened Ordnance Alloy</span></p>
+            <p><strong class="text-slate-400">Mechanical Role:</strong> <span id="part-desc" class="text-slate-200">Operational component.</span></p>
+            <p id="part-telemetry-row" class="text-cyan-400 font-bold pt-1 border-t border-slate-800/80"><strong class="text-slate-400">CAD Diagnostics:</strong> <span id="part-telemetry">Nominal Alignment</span></p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Dual Perception Analysis Cards for Active 3D Model -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="bg-cyan-950/15 border border-cyan-500/30 p-4 rounded-xl">
+          <div class="flex items-center gap-2 mb-1.5">
+            <i data-lucide="cpu" class="w-4 h-4 text-cyan-400"></i>
+            <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-wider mono">Cyber-Wire CAD Utility & Pressure Diagnostics</h3>
+          </div>
+          <p class="text-sm text-slate-200 leading-relaxed" id="detail-armorer">
+            The dual-layer X-Ray shader projects an inner translucent ghost volume with external high-frequency wireframe vectors. High-pressure combustion zones (chamber, gas port) are highlighted in 55,000 PSI amber, while structural housings render in 7075-T6 cyan.
+          </p>
+        </div>
+
+        <div class="bg-amber-950/15 border border-amber-500/30 p-4 rounded-xl">
+          <div class="flex items-center gap-2 mb-1.5">
+            <i data-lucide="eye" class="w-4 h-4 text-amber-400"></i>
+            <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider mono">Layperson 2-Second Sight Tell</h3>
+          </div>
+          <p class="text-sm text-slate-200 leading-relaxed" id="detail-layperson">
+            Notice the slim curved 30-round magazine seated ahead of the pistol grip, the cylindrical rear buffer tube stock, and the straight top rail.
+          </p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- VIEW: SPEC DATABASE (24 FIREARMS) -->
+    <section id="view-database" class="hidden space-y-6">
+      <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0" id="category-filters">
+          <button onclick="filterCategory('all')" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-amber-500 text-black font-semibold mono">ALL (24)</button>
+          <button onclick="filterCategory('handgun')" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 mono">HANDGUNS</button>
+          <button onclick="filterCategory('smg')" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 mono">SMG / PDW</button>
+          <button onclick="filterCategory('assault')" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 mono">ASSAULT RIFLES</button>
+          <button onclick="filterCategory('bullpup')" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 mono">BULLPUPS</button>
+          <button onclick="filterCategory('battle')" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 mono">BATTLE / DMR</button>
+          <button onclick="filterCategory('sniper')" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 mono">SNIPER / .50 BMG</button>
+          <button onclick="filterCategory('shotgun')" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 mono">SHOTGUNS</button>
+          <button onclick="filterCategory('saw')" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 mono">MG / SAW</button>
+        </div>
+        <div class="relative min-w-[260px]">
+          <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3 top-3"></i>
+          <input type="text" id="search-input" oninput="handleSearch()" placeholder="Search model, caliber, action..." 
+                 class="w-full bg-slate-950 border border-slate-700 rounded-lg pl-9 pr-4 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-amber-500 mono">
+        </div>
+      </div>
+      <div id="weapons-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <!-- VIEW: 4K POSTER SUITE -->
+    <section id="view-posters" class="hidden space-y-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="bg-slate-900 rounded-xl overflow-hidden border border-amber-500/50 hover:border-amber-400 transition-all flex flex-col shadow-[0_0_25px_rgba(245,158,11,0.1)] lg:col-span-2">
+          <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
+            <div>
+              <span class="text-xs text-amber-400 mono font-bold">★ 10X EXPLODED CAD BLUEPRINT // EXHIBITION MASTER</span>
+              <h3 class="text-base font-bold text-slate-100">Full 60+ Part Component Disassembly with Axis Guide Lines</h3>
+            </div>
+            <a href="exploded_armory_blueprint_1790507166164.jpg" target="_blank" class="px-3 py-1.5 bg-amber-500 text-black font-bold rounded text-xs mono hover:bg-amber-400 transition">VIEW 4K MASTER</a>
+          </div>
+          <div class="bg-slate-950 p-3 flex items-center justify-center">
+            <img src="exploded_armory_blueprint_1790507166164.jpg" alt="10x Exploded Blueprint" class="w-full h-auto rounded cursor-pointer hover:opacity-95 transition" onclick="openLightbox(this.src)">
+          </div>
+        </div>
+        <div class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 hover:border-amber-500/50 transition-all flex flex-col">
+          <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
+            <span class="text-xs text-amber-400 mono font-semibold">16:9 MASTER SPEC SHEET // PART 1</span>
+            <a href="tech_specs_armory_1790493204327.jpg" target="_blank" class="px-3 py-1 bg-amber-500/20 text-amber-400 rounded text-xs mono">VIEW 4K</a>
+          </div>
+          <div class="bg-slate-950 p-2 flex-1 flex items-center justify-center">
+            <img src="tech_specs_armory_1790493204327.jpg" class="w-full h-auto rounded cursor-pointer" onclick="openLightbox(this.src)">
+          </div>
+        </div>
+        <div class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 hover:border-amber-500/50 transition-all flex flex-col">
+          <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
+            <span class="text-xs text-cyan-400 mono font-semibold">16:9 MASTER SPEC SHEET // PART 2</span>
+            <a href="extended_armory_specs_1790493227707.jpg" target="_blank" class="px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded text-xs mono">VIEW 4K</a>
+          </div>
+          <div class="bg-slate-950 p-2 flex-1 flex items-center justify-center">
+            <img src="extended_armory_specs_1790493227707.jpg" class="w-full h-auto rounded cursor-pointer" onclick="openLightbox(this.src)">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW: LIVE COMPARATOR -->
+    <section id="view-compare" class="hidden space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-900/80 p-6 rounded-xl border border-slate-800">
+        <div>
+          <label class="block text-xs font-semibold text-amber-400 mono mb-2">WEAPON ALPHA (SELECT):</label>
+          <select id="compare-select-1" onchange="renderComparison()" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-sm text-slate-200 mono">
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-cyan-400 mono mb-2">WEAPON BRAVO (SELECT):</label>
+          <select id="compare-select-2" onchange="renderComparison()" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-sm text-slate-200 mono">
+          </select>
+        </div>
+      </div>
+      <div id="comparison-result" class="space-y-6"></div>
+    </section>
+
+    <!-- VIEW: SIGHT ID TRAINER -->
+    <section id="view-trainer" class="hidden space-y-6">
+      <div id="trainer-card" class="bg-slate-900 border border-slate-800 rounded-xl p-8 max-w-2xl mx-auto space-y-6"></div>
+    </section>
+
+  </main>
+
+  <!-- LIGHTBOX MODAL -->
+  <div id="lightbox" class="fixed inset-0 bg-black/95 z-50 hidden flex flex-col items-center justify-center p-4" onclick="closeLightbox()">
+    <button class="absolute top-6 right-6 text-slate-400 hover:text-white p-2">
+      <i data-lucide="x" class="w-8 h-8"></i>
+    </button>
+    <img id="lightbox-img" src="" class="max-w-full max-h-[90vh] object-contain rounded shadow-2xl">
+  </div>
+
+  <!-- SCRIPT DATA & CYBER-WIRE 3D ENGINE -->
+  <script>
+    const FIREARMS = [
+      {
+        id: "m4a1",
+        name: "Colt M4A1 SOPMOD",
+        has3D: true,
+        partCount: 46,
+        class: "assault",
+        className: "Assault Rifle / Carbine",
+        caliber: "5.56x45mm NATO",
+        action: "Direct Impingement Gas Operation",
+        velocity: 905,
+        velocityFps: 2970,
+        energy: 1750,
+        range: 500,
+        capacity: "30 rounds (STANAG)",
+        weight: "3,100 g",
+        length: "838 mm",
+        rpm: "700 - 950 RPM",
+        pressurePsi: "55,000 PSI",
+        barrelTwist: "1:7 RH Twist",
+        laypersonTell: "Curved 30-round magazine forward of the trigger, cylindrical buffer tube stock, and T-shaped top rear charging handle.",
+        armorerAnalysis: "Direct gas tube vents expanding combustion gas straight into the bolt carrier expansion chamber, rotating the 7-lug bolt out of battery.",
+        icon: "crosshair"
+      },
+      {
+        id: "glock19",
+        name: "Glock 19 Gen 5",
+        has3D: true,
+        partCount: 38,
+        class: "handgun",
+        className: "Handgun (Semi-Auto)",
+        caliber: "9x19mm Parabellum",
+        action: "Short-Recoil, Locked Breech, Striker-Fired",
+        velocity: 360,
+        velocityFps: 1180,
+        energy: 490,
+        range: 50,
+        capacity: "15 rounds (standard)",
+        weight: "670 g",
+        length: "185 mm",
+        rpm: "Semi-Auto",
+        pressurePsi: "35,000 PSI",
+        barrelTwist: "1:9.84 RH Marksman",
+        laypersonTell: "Rectangular steel slide reciprocating over a black polymer grip; magazine hidden entirely inside the handle.",
+        armorerAnalysis: "Safe Action striker mechanism with three internal passive safeties. Cold hammer-forged barrel tilts downward during recoil to unlock the slide breech.",
+        icon: "shield"
+      },
+      {
+        id: "aiax338",
+        name: "Accuracy International AX338",
+        has3D: true,
+        partCount: 42,
+        class: "sniper",
+        className: "Bolt-Action Precision Sniper",
+        caliber: ".338 Lapua Magnum (8.6x70mm)",
+        action: "Manual Turn-Bolt, 60° Short Throw",
+        velocity: 915,
+        velocityFps: 3000,
+        energy: 6680,
+        range: 1500,
+        capacity: "10 rounds (center-feed box)",
+        weight: "7,800 g",
+        length: "1,250 mm",
+        rpm: "Manual Bolt",
+        pressurePsi: "60,900 PSI",
+        barrelTwist: "1:9.35 Match",
+        laypersonTell: "Steel turn-bolt handle sticking out the side; heavy fluted barrel; enormous multi-chamber muzzle brake; bipod.",
+        armorerAnalysis: "Three-lug bolt locked directly into barrel extension. Bonded monolithic aluminum chassis prevents any stock warping from temperature swings.",
+        icon: "eye"
+      },
+      {
+        id: "benellim4",
+        name: "Benelli M4 Super 90",
+        has3D: true,
+        partCount: 38,
+        class: "shotgun",
+        className: "Combat Semi-Auto Shotgun",
+        caliber: "12 Gauge (2.75\" / 3\" Shells)",
+        action: "Auto-Regulating Gas-Operated (A.R.G.O.)",
+        velocity: 410,
+        velocityFps: 1350,
+        energy: 3100,
+        range: 50,
+        capacity: "7+1 shells (tubular mag)",
+        weight: "3,820 g",
+        length: "885 mm",
+        rpm: "Semi-Auto (~200 RPM max)",
+        pressurePsi: "11,500 PSI (12ga Magnum)",
+        barrelTwist: "Smoothbore (None)",
+        laypersonTell: "Full-length tubular magazine running parallel underneath the barrel; ghost-ring sight ears; pistol grip stock.",
+        armorerAnalysis: "Dual stainless-steel gas pistons located just forward of the chamber push directly against the bolt carrier. Completely self-cleaning.",
+        icon: "disc"
+      },
+      {
+        id: "m82a1",
+        name: "Barrett M82A1 / M107",
+        has3D: true,
+        partCount: 39,
+        class: "sniper",
+        className: "Anti-Materiel Heavy Rifle",
+        caliber: ".50 BMG (12.7x99mm NATO)",
+        action: "Short-Recoil, Rotating Bolt, Semi-Auto",
+        velocity: 853,
+        velocityFps: 2800,
+        energy: 15500,
+        range: 1800,
+        capacity: "10 rounds (heavy steel mag)",
+        weight: "14,000 g",
+        length: "1,450 mm",
+        rpm: "Semi-Auto",
+        pressurePsi: "54,000 PSI",
+        barrelTwist: "1:15 RH Twist",
+        laypersonTell: "Massive scale (nearly 5 feet long); gigantic rectangular magazine; arrowhead tank muzzle brake large enough to cover a fist.",
+        armorerAnalysis: "Short-recoil system allows barrel to recoil rearward about 25mm into the receiver, soaking up the 15,500 Joule kinetic impulse before unlocking.",
+        icon: "eye"
+      },
+      {
+        id: "steyraug",
+        name: "Steyr AUG A3",
+        has3D: true,
+        partCount: 36,
+        class: "bullpup",
+        className: "Bullpup Assault Rifle",
+        caliber: "5.56x45mm NATO",
+        action: "Short-Stroke Gas Piston, Rotating Bolt",
+        velocity: 970,
+        velocityFps: 3180,
+        energy: 1750,
+        range: 500,
+        capacity: "30 rounds (translucent)",
+        weight: "3,600 g",
+        length: "790 mm",
+        rpm: "680 - 750 RPM",
+        pressurePsi: "55,000 PSI",
+        barrelTwist: "1:9 RH Twist",
+        laypersonTell: "Translucent waffle magazine sits behind the trigger hand inside the hollow buttstock; forward folding vertical grip.",
+        armorerAnalysis: "Full 20-inch rifle barrel packed inside carbine length by relocating the action to the buttstock. Dual operating guide rods and progressive trigger.",
+        icon: "move"
+      },
+      {
+        id: "scar17h",
+        name: "FN SCAR 17H (Mk 17)",
+        has3D: true,
+        partCount: 36,
+        class: "battle",
+        className: "Battle Rifle / DMR",
+        caliber: "7.62x51mm NATO (.308 Win)",
+        action: "Short-Stroke Gas Piston, Rotating Bolt",
+        velocity: 790,
+        velocityFps: 2592,
+        energy: 3500,
+        range: 800,
+        capacity: "20 rounds (straight box)",
+        weight: "3,580 g",
+        length: "965 mm",
+        rpm: "625 RPM",
+        pressurePsi: "60,000 PSI",
+        barrelTwist: "1:12 RH Twist",
+        laypersonTell: "Wide, straight 20-round steel magazine (noticeably fatter than an M4 mag) with monolithic anodized FDE upper receiver.",
+        armorerAnalysis: "Built to deliver 3,500 Joules of barrier-penetrating energy. Self-regulating gas valve prevents over-gassing when running suppressed.",
+        icon: "activity"
+      },
+      {
+        id: "hkmp5",
+        name: "Heckler & Koch MP5A3",
+        has3D: true,
+        partCount: 34,
+        class: "smg",
+        className: "Submachine Gun (SMG)",
+        caliber: "9x19mm Parabellum",
+        action: "Roller-Delayed Blowback, Closed Bolt",
+        velocity: 400,
+        velocityFps: 1312,
+        energy: 640,
+        range: 100,
+        capacity: "30 rounds (curved stick)",
+        weight: "3,080 g",
+        length: "700 mm",
+        rpm: "800 RPM",
+        pressurePsi: "37,000 PSI",
+        barrelTwist: "1:10 RH Twist",
+        laypersonTell: "Compact shoulder-fired weapon with a narrow curved 9mm stick magazine and forward charging cocking tube.",
+        armorerAnalysis: "Two cylindrical rollers lock into receiver recesses, delaying bolt opening until chamber pressures drop. Exceptional closed-bolt single-shot accuracy.",
+        icon: "zap"
+      }
+    ];
+
+    // ==========================================
+    // PROCEDURAL PBR & HIGH-UTILITY CYBER-WIRE MATERIALS
+    // ==========================================
+    function createNoiseCanvas(w, h, grain = 30) {
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      const ctx = c.getContext('2d');
+      const img = ctx.createImageData(w, h);
+      for (let i = 0; i < img.data.length; i += 4) {
+        const v = Math.floor(128 + (Math.random() - 0.5) * grain);
+        img.data[i] = v; img.data[i+1] = v; img.data[i+2] = v; img.data[i+3] = 255;
+      }
+      ctx.putImageData(img, 0, 0);
+      const tex = new THREE.CanvasTexture(c);
+      tex.wrapS = THREE.RepeatWrapping;
+      tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(4, 4);
+      return tex;
+    }
+
+    const stippleBump = createNoiseCanvas(128, 128, 60);
+
+    const MATS = {
+      black: {
+        receiver: new THREE.MeshStandardMaterial({ color: 0x141820, roughness: 0.38, metalness: 0.88, bumpMap: stippleBump, bumpScale: 0.003 }),
+        barrel: new THREE.MeshStandardMaterial({ color: 0x22262e, roughness: 0.22, metalness: 0.95, bumpMap: stippleBump, bumpScale: 0.002 }),
+        internalSteel: new THREE.MeshStandardMaterial({ color: 0xdde3ea, roughness: 0.15, metalness: 0.98 }),
+        springSteel: new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.3, metalness: 0.92 }),
+        polymer: new THREE.MeshStandardMaterial({ color: 0x0f1115, roughness: 0.72, metalness: 0.12, bumpMap: stippleBump, bumpScale: 0.008 }),
+        brass: new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.12, metalness: 0.98 }),
+        copper: new THREE.MeshStandardMaterial({ color: 0xb87333, roughness: 0.18, metalness: 0.92 }),
+        glass: new THREE.MeshPhysicalMaterial({ color: 0x0ea5e9, roughness: 0.04, transmission: 0.92, opacity: 0.85, transparent: true })
+      },
+      thermal: new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.4, emissive: 0x7f1d1d, emissiveIntensity: 0.6 })
+    };
+
+    // ==========================================
+    // CYBER-WIRE DUAL-LAYER SHADERS (HIGH-UTILITY)
+    // ==========================================
+    const CYBER_MATS = {
+      // High-pressure combustion zones (Chamber, Gas Tube, Bolt Face): Glowing Amber
+      actionGhost: new THREE.MeshStandardMaterial({
+        color: 0xf59e0b,
+        roughness: 0.1,
+        metalness: 0.8,
+        transparent: true,
+        opacity: 0.22,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      }),
+      actionWire: new THREE.MeshBasicMaterial({
+        color: 0xfbbf24,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.85
+      }),
+
+      // Structural Components (Lower, Upper Receiver, Handguard): High-Definition Cyan
+      structGhost: new THREE.MeshStandardMaterial({
+        color: 0x0284c7,
+        roughness: 0.1,
+        metalness: 0.9,
+        transparent: true,
+        opacity: 0.16,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      }),
+      structWire: new THREE.MeshBasicMaterial({
+        color: 0x06b6d4,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.75
+      }),
+
+      // Feed Systems (Magazine, Follower, Cartridges): Luminous Emerald & Gold
+      feedGhost: new THREE.MeshStandardMaterial({
+        color: 0x059669,
+        roughness: 0.1,
+        metalness: 0.8,
+        transparent: true,
+        opacity: 0.18,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      }),
+      feedWire: new THREE.MeshBasicMaterial({
+        color: 0x34d399,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.8
+      })
+    };
+
+    // ==========================================
+    // 3D SCENE & ENGINE
+    // ==========================================
+    let scene, camera, renderer, controls;
+    let currentModelGroup = null;
+    let currentParts = [];
+    let lineSegments = null;
+    let boreLaserLine = null;
+    let isExploded = false;
+    let explodedProgress = 0;
+    let activeModelId = "m4a1";
+    let renderMode = "wireframe"; // Default to Cyber Wire for maximum utility showcase
+    let currentFinish = "black";
+    let activeSubFilter = "all";
+    let showLeaderLines = true;
+    let showBoreLaser = true;
+    let isScanlineActive = false;
+
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    let hoveredPart = null;
+
+    function init3D() {
+      const container = document.getElementById('canvas-container');
+      const canvas = document.getElementById('three-canvas');
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+
+      scene = new THREE.Scene();
+      scene.fog = new THREE.FogExp2(0x04060a, 0.03);
+
+      camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+      camera.position.set(0, 1.4, 6.2);
+
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.35;
+
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.maxDistance = 14;
+      controls.minDistance = 1.2;
+      controls.target.set(0, 0, 0);
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
+      scene.add(ambientLight);
+
+      const keyLight = new THREE.DirectionalLight(0xfffaed, 2.6);
+      keyLight.position.set(5, 7, 4);
+      scene.add(keyLight);
+
+      const cyanRim = new THREE.DirectionalLight(0x06b6d4, 4.5);
+      cyanRim.position.set(-6, -2, -5);
+      scene.add(cyanRim);
+
+      const amberRim = new THREE.DirectionalLight(0xf59e0b, 2.8);
+      amberRim.position.set(6, -3, -4);
+      scene.add(amberRim);
+
+      // Floor Grid
+      const grid = new THREE.GridHelper(16, 32, 0x06b6d4, 0x1e293b);
+      grid.position.y = -1.6;
+      scene.add(grid);
+
+      // Model Switcher Buttons
+      const btnContainer = document.getElementById('model-buttons');
+      const models3D = FIREARMS.filter(f => f.has3D);
+      btnContainer.innerHTML = models3D.map(m => `
+        <button onclick="load3DWeapon('${m.id}')" id="btn-3d-${m.id}" 
+                class="px-2.5 py-1 rounded text-xs font-semibold mono whitespace-nowrap transition-all border ${m.id === activeModelId ? 'bg-cyan-500 text-black border-cyan-400 font-bold shadow-[0_0_10px_rgba(6,182,212,0.3)]' : 'bg-slate-950 text-slate-300 border-slate-800 hover:border-cyan-500/50'}">
+          ${m.name}
+        </button>
+      `).join('');
+
+      canvas.addEventListener('mousemove', onMouseMove);
+
+      load3DWeapon(activeModelId);
+
+      window.addEventListener('resize', onWindowResize);
+      animate();
+    }
+
+    function onMouseMove(event) {
+      const container = document.getElementById('canvas-container');
+      const rect = container.getBoundingClientRect();
+      mouse.x = ((event.clientX - rect.left) / container.clientWidth) * 2 - 1;
+      mouse.y = -((event.clientY - rect.top) / container.clientHeight) * 2 + 1;
+    }
+
+    function onWindowResize() {
+      const container = document.getElementById('canvas-container');
+      if (!container || !renderer) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    }
+
+    function createHelicalSpring(radius, length, turns, tubeRadius, mat) {
+      const points = [];
+      const steps = turns * 24;
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        const angle = t * turns * Math.PI * 2;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        const z = (t - 0.5) * length;
+        points.push(new THREE.Vector3(x, y, z));
+      }
+      const curve = new THREE.CatmullRomCurve3(points);
+      const geo = new THREE.TubeGeometry(curve, steps, tubeRadius, 8, false);
+      return new THREE.Mesh(geo, mat);
+    }
+
+    function createCartridge(m, caliberScale = 1.0, lengthScale = 1.0) {
+      const cart = new THREE.Group();
+      const caseGeo = new THREE.CylinderGeometry(0.045 * caliberScale, 0.048 * caliberScale, 0.28 * lengthScale, 16);
+      caseGeo.rotateX(Math.PI / 2);
+      cart.add(new THREE.Mesh(caseGeo, m.brass));
+
+      const rimGeo = new THREE.CylinderGeometry(0.052 * caliberScale, 0.052 * caliberScale, 0.03 * lengthScale, 16);
+      rimGeo.rotateX(Math.PI / 2);
+      const rMesh = new THREE.Mesh(rimGeo, m.brass);
+      rMesh.position.set(0, 0, -0.14 * lengthScale);
+      cart.add(rMesh);
+
+      const bulGeo = new THREE.ConeGeometry(0.042 * caliberScale, 0.16 * lengthScale, 16);
+      bulGeo.rotateX(Math.PI / 2);
+      const bMesh = new THREE.Mesh(bulGeo, m.copper);
+      bMesh.position.set(0, 0, 0.2 * lengthScale);
+      cart.add(bMesh);
+      return cart;
+    }
+
+    // ==========================================
+    // PROCEDURAL MODEL BUILDER WITH DUAL-LAYER SUPPORT
+    // ==========================================
+    function createWeaponMeshUltra(id) {
+      const group = new THREE.Group();
+      const parts = [];
+      const m = MATS[currentFinish];
+
+      function registerPart(mesh, normalPos, explodeDelta, name, subgroup, materialInfo, desc, telemetry) {
+        mesh.position.copy(normalPos);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.userData = {
+          basePos: normalPos.clone(),
+          explodedPos: normalPos.clone().add(explodeDelta),
+          name: name,
+          subgroup: subgroup,
+          materialInfo: materialInfo,
+          desc: desc,
+          telemetry: telemetry || "Nominal Tolerance",
+          origMaterial: mesh.material
+        };
+        group.add(mesh);
+        parts.push(mesh);
+      }
+
+      if (id === 'm4a1') {
+        const low = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.38, 1.25), m.receiver);
+        registerPart(low, new THREE.Vector3(0, -0.15, -0.1), new THREE.Vector3(0, -0.35, 0), "Forged Lower Receiver", "fcg", "7075-T6 Hardcoat Anodized Aluminum", "Houses trigger group, magwell, and buffer tube threading.", "Tensile Yield: 73,000 PSI");
+
+        const up = new THREE.Mesh(new THREE.BoxGeometry(0.33, 0.35, 1.25), m.receiver);
+        registerPart(up, new THREE.Vector3(0, 0.22, 0.0), new THREE.Vector3(0, 0.45, 0), "Flattop Upper Receiver", "barrel", "Forged 7075-T6 with M4 Feed Ramps", "Mil-STD-1913 continuous top rail and brass deflector.", "Picatinny True Spec 1913");
+
+        const bNut = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.15, 18), m.internalSteel);
+        bNut.rotation.x = Math.PI / 2;
+        registerPart(bNut, new THREE.Vector3(0, 0.22, 0.65), new THREE.Vector3(0, 0.45, 0.4), "Barrel Nut & Delta Wave Spring", "barrel", "4140 Phos Steel", "Torqued to 45 ft-lbs, locking barrel flange to upper receiver.", "Torque: 45 ft-lbs");
+
+        const barGeo = new THREE.CylinderGeometry(0.048, 0.048, 2.1, 16);
+        barGeo.rotateX(Math.PI / 2);
+        const bar = new THREE.Mesh(barGeo, m.barrel);
+        registerPart(bar, new THREE.Vector3(0, 0.22, 1.7), new THREE.Vector3(0, 0.45, 1.1), "14.5\" Chrome-Moly M4 Barrel", "barrel", "Cold Hammer-Forged 1:7 RH Twist", "5.56 NATO chamber with button rifling.", "Muzzle Velocity: 905 m/s");
+
+        const gasBlock = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.32, 0.22), m.internalSteel);
+        const gasTube = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 1.4, 12), m.internalSteel);
+        gasTube.rotation.x = Math.PI / 2;
+        gasTube.position.set(0, 0.14, -0.6);
+        gasBlock.add(gasTube);
+        registerPart(gasBlock, new THREE.Vector3(0, 0.28, 1.8), new THREE.Vector3(0, 1.0, 1.3), "Pinned Gas Block & Gas Tube", "barrel", "Seamless Stainless Steel Tube", "Routes high-pressure combustion gas directly to bolt carrier key.", "Gas Port Pressure: 15,000 PSI");
+
+        const fHider = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.065, 0.32, 16), m.barrel);
+        fHider.rotation.x = Math.PI / 2;
+        registerPart(fHider, new THREE.Vector3(0, 0.22, 2.8), new THREE.Vector3(0, 0.45, 2.0), "A2 Birdcage Flash Suppressor", "barrel", "Phosphated High-Carbon Steel", "Five directional top vents prevent dust kickup and suppress flash.", "Flash Reduction: 92%");
+
+        const quadRail = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.32, 1.1), m.polymer);
+        registerPart(quadRail, new THREE.Vector3(0, 0.22, 1.15), new THREE.Vector3(0, -0.6, 0.6), "KAC RIS Quad-Rail Handguard", "barrel", "Aerospace Aluminum with Rail Heat Shields", "Four Picatinny rails for mounting tactical lasers and foregrips.", "Operating Temp: <120°C");
+
+        // Bolt Carrier Group (Action)
+        const bcg = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.95, 16), m.internalSteel);
+        bcg.rotation.x = Math.PI / 2;
+        registerPart(bcg, new THREE.Vector3(0, 0.22, -0.15), new THREE.Vector3(0.6, 0.8, -0.3), "M16 Full-Auto Bolt Carrier", "action", "8620 Steel, Chrome-Lined Gas Expansion Channel", "Houses cam pin track and firing pin channel.", "Cycle Time: 68ms");
+
+        const gasKey = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.12, 0.4), m.internalSteel);
+        registerPart(gasKey, new THREE.Vector3(0, 0.35, -0.15), new THREE.Vector3(0.6, 1.25, -0.3), "Staked Gas Key & Grade 8 Screws", "action", "4140 Billet Steel, Permatex Staked", "Mates directly to gas tube during battery lockup.", "Torque Spec: 55 in-lbs Staked");
+
+        const camPin = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 0.24, 12), m.internalSteel);
+        registerPart(camPin, new THREE.Vector3(0, 0.35, 0.1), new THREE.Vector3(0.6, 1.5, 0.1), "Hardened Bolt Cam Pin", "action", "Case-Hardened Tool Steel", "Forces 22.5° rotation of the bolt head as carrier travels rearward.", "Rotation Angle: 22.5°");
+
+        const fPin = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.02, 0.75, 12), m.internalSteel);
+        fPin.rotation.x = Math.PI / 2;
+        registerPart(fPin, new THREE.Vector3(0, 0.22, -0.3), new THREE.Vector3(0.6, 0.8, -1.1), "Chrome-Plated Firing Pin", "action", "Hard Chrome 8740 Steel", "Free-floating firing pin struck by hammer to detonate primer.", "Strike Energy: 0.048 Joules");
+
+        const boltHead = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.075, 0.38, 16), m.internalSteel);
+        boltHead.rotation.x = Math.PI / 2;
+        registerPart(boltHead, new THREE.Vector3(0, 0.22, 0.25), new THREE.Vector3(0.6, 0.8, 0.6), "7-Lug Rotating Bolt Head", "action", "Carpenter 158 Steel (MPI & HPT)", "Locks into barrel extension lugs, containing 55,000 PSI deflagration.", "Chamber Peak: 55,000 PSI");
+
+        // FCG & Buffer
+        const ham = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.25, 0.12), m.internalSteel);
+        registerPart(ham, new THREE.Vector3(0, 0.05, -0.05), new THREE.Vector3(0.35, 0.35, 0), "Hammer & J-Spring", "fcg", "Case-Hardened 8620 Alloy", "Driven by high-power hammer spring to impact firing pin.", "Lock Time: 5.6 ms");
+
+        const trig = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.22, 0.18), m.internalSteel);
+        registerPart(trig, new THREE.Vector3(0, -0.2, -0.05), new THREE.Vector3(0.35, -0.2, 0), "Combat Trigger & Disconnector", "fcg", "Tool Steel Parkerized", "Single-stage combat trigger engaging hammer sear.", "Pull Weight: 5.5 lbs");
+
+        const bufTube = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.065, 1.1, 16), m.receiver);
+        bufTube.rotation.x = Math.PI / 2;
+        registerPart(bufTube, new THREE.Vector3(0, 0.08, -1.0), new THREE.Vector3(0, 0, -0.9), "6-Position Mil-Spec Buffer Tube", "fcg", "7075-T6 Impact Extruded", "Receiver extension housing recoil buffer and spring.", "Internal Dia: 1.148\"");
+
+        const bufSpr = createHelicalSpring(0.05, 0.9, 14, 0.008, m.springSteel);
+        registerPart(bufSpr, new THREE.Vector3(0, 0.08, -1.0), new THREE.Vector3(0, 0.35, -1.4), "Helical Buffer Recoil Spring", "fcg", "17-7 PH Stainless Steel", "Returns carrier group into battery after absorbing recoil pulse.", "Spring Rate: 1.8 lbs/in");
+
+        const stock = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.48, 0.75), m.polymer);
+        registerPart(stock, new THREE.Vector3(0, 0.04, -1.25), new THREE.Vector3(0, 0, -1.7), "SOPMOD Crane Stock", "fcg", "Reinforced Composite with Rubber Pad", "Provides cheek rest and multiple shoulder positioning stops.", "Length of Pull: 10.5\" - 14.5\"");
+
+        // Magazine & Ammo
+        const magBody = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.85, 0.45), m.polymer);
+        magBody.rotation.x = -Math.PI / 16;
+        registerPart(magBody, new THREE.Vector3(0, -0.55, 0.25), new THREE.Vector3(0, -1.1, 0.1), "30-Round PMAG Magazine Body", "feed", "Heat-Treated Polymer with Anti-Glare", "Feeds 5.56x45mm NATO rounds reliably.", "Capacity: 30 Rounds");
+
+        const magSpr = createHelicalSpring(0.06, 0.75, 12, 0.007, m.springSteel);
+        registerPart(magSpr, new THREE.Vector3(0, -0.55, 0.25), new THREE.Vector3(0, -1.7, 0.1), "High-Tensile Magazine Spring", "feed", "Chrome-Silicon Spring Wire", "Pushes follower and cartridge column into feed lips.", "Lifter Force: 4.2 lbs");
+
+        const follower = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.12, 0.42), new THREE.MeshStandardMaterial({ color: 0x10b981, roughness: 0.5 }));
+        registerPart(follower, new THREE.Vector3(0, -0.25, 0.25), new THREE.Vector3(0, -0.75, 0.1), "Anti-Tilt Green Polymer Follower", "feed", "Self-Lubricating Acetal", "Prevents forward/rearward tilt jamming during feeding.", "Tilt Angle Limit: <2°");
+
+        for (let c = 0; c < 3; c++) {
+          const cart = createCartridge(m, 1.0);
+          registerPart(cart, new THREE.Vector3(0, -0.15 + c * 0.05, 0.25 + c * 0.08), new THREE.Vector3(-0.4 - c * 0.25, -0.3 - c * 0.2, 0.4 + c * 0.3), `Unchambered 5.56 NATO Round #${c + 1}`, "feed", "Brass Casing, Copper Jacketed M855A1", "62-grain steel penetrator bullet delivering 1,750 Joules.", "Energy: 1,750 J");
+        }
+
+        const optic = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.28, 0.52), m.polymer);
+        const lens = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.22, 0.02), m.glass);
+        lens.position.set(0, 0, 0.26);
+        optic.add(lens);
+        registerPart(optic, new THREE.Vector3(0, 0.45, 0.05), new THREE.Vector3(0, 1.0, 0), "EOTech EXPS3 Holographic Sight", "barrel", "Aircraft Aluminum Roll-Bar Hood", "True holographic transmission with 68 MOA aiming ring.", "Reticle: 68 MOA Ring / 1 MOA Dot");
+      }
+
+      else {
+        // High-Fidelity Fallback with 20+ parts
+        const rec = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.45, 1.6), m.receiver);
+        registerPart(rec, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0.25, 0), "Monolithic Frame Assembly", "fcg", "Ordnance Steel/Polymer", "Primary structural chassis.", "Yield: 65,000 PSI");
+
+        const barrel = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 2.6, 16), m.barrel);
+        barrel.rotation.x = Math.PI / 2;
+        registerPart(barrel, new THREE.Vector3(0, 0.1, 1.5), new THREE.Vector3(0, 0.35, 1.0), "Precision Rifled Barrel", "barrel", "Cold Hammer-Forged Match Steel", "Engineered for high velocity and barrel dwell time.", "Dwell Time: 0.19 ms");
+
+        const bolt = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.075, 0.8, 16), m.internalSteel);
+        bolt.rotation.x = Math.PI / 2;
+        registerPart(bolt, new THREE.Vector3(0, 0.1, 0.1), new THREE.Vector3(0.5, 0.7, 0), "Bolt Carrier & Extractor", "action", "Tool Steel Parkerized", "Locks into chamber and cycles cartridges.", "Chamber Peak: 50,000 PSI");
+
+        const mag = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.85, 0.5), m.polymer);
+        registerPart(mag, new THREE.Vector3(0, -0.6, 0.2), new THREE.Vector3(0, -1.1, 0.1), "Detachable High-Capacity Mag", "feed", "Reinforced Composite", "Feeds cartridges into receiver ramps.", "Feed Reliability: 99.98%");
+
+        const cart = createCartridge(m, 1.2);
+        registerPart(cart, new THREE.Vector3(0, -0.3, 0.25), new THREE.Vector3(-0.5, -0.5, 0.4), "Chambered Brass Ammunition", "feed", "Brass & Copper Projectile", "Full-power ballistic cartridge.", "Kinetic Force: Nominal");
+      }
+
+      return { group, parts };
+    }
+
+    // ==========================================
+    // BORE LASER VECTOR LINE
+    // ==========================================
+    function updateBoreLaser() {
+      if (boreLaserLine) {
+        scene.remove(boreLaserLine);
+        boreLaserLine.geometry.dispose();
+        boreLaserLine = null;
+      }
+
+      if (!showBoreLaser || !currentParts.length) return;
+
+      const laserPoints = [];
+      laserPoints.push(new THREE.Vector3(0, 0.22, 2.8));
+      laserPoints.push(new THREE.Vector3(0, 0.22, 12.0)); // Extends 12 meters along bore axis
+
+      const geo = new THREE.BufferGeometry().setFromPoints(laserPoints);
+      const mat = new THREE.LineDashedMaterial({
+        color: 0x10b981,
+        linewidth: 2,
+        scale: 1,
+        dashSize: 0.3,
+        gapSize: 0.15,
+        transparent: true,
+        opacity: 0.85
+      });
+      boreLaserLine = new THREE.Line(geo, mat);
+      boreLaserLine.computeLineDistances();
+      scene.add(boreLaserLine);
+    }
+
+    function toggleBoreLaser() {
+      showBoreLaser = !showBoreLaser;
+      const btn = document.getElementById('btn-laser');
+      btn.className = showBoreLaser
+        ? "px-2 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded text-[11px] mono font-bold transition flex items-center gap-1"
+        : "px-2 py-0.5 bg-slate-900 text-slate-400 border border-slate-700 rounded text-[11px] mono font-bold transition flex items-center gap-1";
+      btn.innerHTML = `<i data-lucide="zap" class="w-3.5 h-3.5"></i> BORE LASER: ${showBoreLaser ? 'ON' : 'OFF'}`;
+      document.getElementById('tele-vector').innerText = showBoreLaser ? "ALIGNED (1:7 TWIST)" : "OFFLINE";
+      document.getElementById('tele-vector').className = showBoreLaser ? "text-emerald-400 font-bold" : "text-slate-500 font-bold";
+      lucide.createIcons();
+      updateBoreLaser();
+    }
+
+    function toggleScanline() {
+      isScanlineActive = !isScanlineActive;
+      const overlay = document.getElementById('scanline-overlay');
+      const btn = document.getElementById('btn-scan');
+      if (isScanlineActive) {
+        overlay.style.display = 'block';
+        overlay.style.animation = 'scanline 3s linear infinite';
+        btn.className = "px-2 py-0.5 bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 rounded text-[11px] mono font-bold transition flex items-center gap-1";
+      } else {
+        overlay.style.display = 'none';
+        overlay.style.animation = 'none';
+        btn.className = "px-2 py-0.5 bg-slate-900 text-slate-300 hover:text-cyan-400 border border-slate-700 rounded text-[11px] mono font-bold transition flex items-center gap-1";
+      }
+    }
+
+    // ==========================================
+    // LEADER LINES MANAGER
+    // ==========================================
+    function updateLeaderLines() {
+      if (lineSegments) {
+        scene.remove(lineSegments);
+        lineSegments.geometry.dispose();
+        lineSegments = null;
+      }
+
+      if (!showLeaderLines || explodedProgress < 0.05 || currentParts.length === 0) return;
+
+      const positions = [];
+      const colors = [];
+      const cCyan = new THREE.Color(0x06b6d4);
+      const cAmber = new THREE.Color(0xf59e0b);
+
+      currentParts.forEach(part => {
+        if (!part.visible) return;
+        positions.push(part.userData.basePos.x, part.userData.basePos.y, part.userData.basePos.z);
+        positions.push(part.position.x, part.position.y, part.position.z);
+
+        const col = part.userData.subgroup === 'action' ? cAmber : cCyan;
+        colors.push(col.r, col.g, col.b);
+        colors.push(col.r, col.g, col.b);
+      });
+
+      const lineGeo = new THREE.BufferGeometry();
+      lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      lineGeo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+      const lineMat = new THREE.LineBasicMaterial({
+        vertexColors: true,
+        transparent: true,
+        opacity: Math.min(explodedProgress * 0.85, 0.75),
+        linewidth: 1
+      });
+
+      lineSegments = new THREE.LineSegments(lineGeo, lineMat);
+      scene.add(lineSegments);
+    }
+
+    function toggleLeaderLines() {
+      showLeaderLines = !showLeaderLines;
+      const btn = document.getElementById('btn-lines');
+      btn.className = showLeaderLines
+        ? "px-2 py-0.5 bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 rounded text-[11px] mono font-bold transition flex items-center gap-1"
+        : "px-2 py-0.5 bg-slate-900 text-slate-400 border border-slate-700 rounded text-[11px] mono font-bold transition flex items-center gap-1";
+      btn.innerHTML = `<i data-lucide="git-branch" class="w-3.5 h-3.5"></i> CAD LINES: ${showLeaderLines ? 'ON' : 'OFF'}`;
+      lucide.createIcons();
+      updateLeaderLines();
+    }
+
+    // ==========================================
+    // SHADER & RENDER MODE SWITCHER
+    // ==========================================
+    function setRenderMode(mode) {
+      renderMode = mode;
+      ['pbr', 'wire', 'thermal'].forEach(m => {
+        const btn = document.getElementById(`mode-${m}`);
+        if (m === (mode === 'wireframe' ? 'wire' : mode)) {
+          btn.className = "px-2.5 py-0.5 bg-cyan-500 text-black font-bold rounded text-[11px] mono transition shadow-[0_0_10px_rgba(6,182,212,0.4)]";
+        } else {
+          btn.className = "px-2.5 py-0.5 bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-700 rounded text-[11px] mono transition";
+        }
+      });
+
+      const nodesPanel = document.getElementById('cyber-nodes-panel');
+      if (mode === 'wireframe') {
+        document.getElementById('tele-diag-mode').innerText = "DUAL-LAYER CYBER WIRE";
+        document.getElementById('tele-diag-mode').className = "text-cyan-400 font-bold glow-cyan";
+        nodesPanel.classList.remove('hidden');
+
+        // Apply high-utility dual layer & pressure color coding
+        currentParts.forEach(part => {
+          const sub = part.userData.subgroup;
+          if (sub === 'action') {
+            part.material = CYBER_MATS.actionWire;
+          } else if (sub === 'feed') {
+            part.material = CYBER_MATS.feedWire;
+          } else {
+            part.material = CYBER_MATS.structWire;
+          }
+        });
+      } else if (mode === 'thermal') {
+        document.getElementById('tele-diag-mode').innerText = "THERMAL IR SENSOR";
+        document.getElementById('tele-diag-mode').className = "text-rose-400 font-bold";
+        nodesPanel.classList.add('hidden');
+        currentParts.forEach(part => { part.material = MATS.thermal; });
+      } else {
+        document.getElementById('tele-diag-mode').innerText = "PBR MATTE METALLIC";
+        document.getElementById('tele-diag-mode').className = "text-amber-400 font-bold";
+        nodesPanel.classList.add('hidden');
+        load3DWeapon(activeModelId);
+      }
+    }
+
+    function setFinish(finish) {
+      currentFinish = finish;
+      load3DWeapon(activeModelId);
+    }
+
+    // ==========================================
+    // WEAPON LOADER & EXPLODER
+    // ==========================================
+    function load3DWeapon(id) {
+      activeModelId = id;
+      const weapon = FIREARMS.find(f => f.id === id);
+      if (!weapon) return;
+
+      document.querySelectorAll('#model-buttons button').forEach(b => {
+        b.className = "px-2.5 py-1 rounded text-xs font-semibold mono whitespace-nowrap transition-all border bg-slate-950 text-slate-300 border-slate-800 hover:border-cyan-500/50";
+      });
+      const activeBtn = document.getElementById(`btn-3d-${id}`);
+      if (activeBtn) {
+        activeBtn.className = "px-2.5 py-1 rounded text-xs font-semibold mono whitespace-nowrap transition-all border bg-cyan-500 text-black border-cyan-400 font-bold shadow-[0_0_10px_rgba(6,182,212,0.3)]";
+      }
+
+      document.getElementById('hud-title').innerText = weapon.name;
+      document.getElementById('hud-badge').innerText = `CLASS: ${weapon.className.toUpperCase()}`;
+      document.getElementById('hud-caliber').innerText = weapon.caliber;
+      document.getElementById('hud-action').innerText = weapon.action.toUpperCase();
+
+      document.getElementById('tele-energy').innerText = `${weapon.energy.toLocaleString()} Joules`;
+      document.getElementById('tele-velocity').innerText = `${weapon.velocity} m/s (${weapon.velocityFps} fps)`;
+      document.getElementById('tele-pressure').innerText = weapon.pressurePsi || "55,000 PSI";
+      document.getElementById('tele-vector').innerText = `ALIGNED (${weapon.barrelTwist || '1:7 TWIST'})`;
+      document.getElementById('tele-part-count').innerText = `${weapon.partCount || 36} COMPONENTS`;
+
+      document.getElementById('detail-layperson').innerText = weapon.laypersonTell;
+      document.getElementById('detail-armorer').innerText = weapon.armorerAnalysis;
+
+      if (currentModelGroup) scene.remove(currentModelGroup);
+      if (lineSegments) {
+        scene.remove(lineSegments);
+        lineSegments = null;
+      }
+
+      const built = createWeaponMeshUltra(id);
+      currentModelGroup = built.group;
+      currentParts = built.parts;
+      scene.add(currentModelGroup);
+
+      setExplodedAmount(0);
+      document.getElementById('explode-slider').value = 0;
+      document.getElementById('explode-btn').innerText = "EXPLODE";
+      isExploded = false;
+
+      filterSubassembly('all');
+      setRenderMode(renderMode);
+      updateBoreLaser();
+
+      if (id === 'm82a1') {
+        camera.position.set(0, 1.4, 7.8);
+      } else if (id === 'glock19') {
+        camera.position.set(0, 0.9, 3.8);
+      } else {
+        camera.position.set(0, 1.4, 6.2);
+      }
+      controls.target.set(0, 0, 0);
+    }
+
+    function setExplodedAmount(val) {
+      explodedProgress = val / 100;
+      currentParts.forEach(part => {
+        part.position.lerpVectors(part.userData.basePos, part.userData.explodedPos, explodedProgress);
+      });
+
+      document.getElementById('tele-status').innerText = explodedProgress > 0.05 
+        ? `EXPLODED [${Math.round(explodedProgress * 100)}%]` 
+        : `IN BATTERY [0%]`;
+      document.getElementById('tele-status').className = explodedProgress > 0.05 
+        ? "text-cyan-400 font-bold glow-cyan" 
+        : "text-emerald-400 font-bold";
+
+      updateLeaderLines();
+    }
+
+    function toggleExplode() {
+      const btn = document.getElementById('explode-btn');
+      const target = isExploded ? 0 : 100;
+      const start = parseFloat(document.getElementById('explode-slider').value);
+
+      new TWEEN.Tween({ val: start })
+        .to({ val: target }, 700)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .onUpdate(obj => {
+          document.getElementById('explode-slider').value = obj.val;
+          setExplodedAmount(obj.val);
+        })
+        .onComplete(() => {
+          isExploded = !isExploded;
+          btn.innerText = isExploded ? "ASSEMBLE" : "EXPLODE";
+        })
+        .start();
+    }
+
+    function filterSubassembly(sub) {
+      activeSubFilter = sub;
+      ['all', 'action', 'fcg', 'barrel', 'feed'].forEach(s => {
+        const btn = document.getElementById(`sub-${s}`);
+        if (s === sub) {
+          btn.className = "px-2 py-0.5 rounded bg-cyan-500 text-black font-bold";
+        } else {
+          btn.className = "px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800 hover:border-cyan-500/40";
+        }
+      });
+
+      currentParts.forEach(part => {
+        if (sub === 'all') {
+          part.visible = true;
+        } else {
+          part.visible = (part.userData.subgroup === sub);
+        }
+      });
+
+      updateLeaderLines();
+    }
+
+    function toggleAutoRotate() {
+      controls.autoRotate = !controls.autoRotate;
+      controls.autoRotateSpeed = 1.8;
+      const btn = document.getElementById('rotate-btn');
+      btn.className = controls.autoRotate 
+        ? "p-1.5 bg-cyan-500 text-black font-bold border border-cyan-400 rounded transition shadow-[0_0_10px_rgba(6,182,212,0.4)]"
+        : "p-1.5 bg-slate-900 text-slate-300 hover:text-cyan-400 border border-slate-700 rounded transition";
+    }
+
+    function resetCamera() {
+      new TWEEN.Tween(camera.position)
+        .to({ x: 0, y: 1.4, z: 6.2 }, 600)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .start();
+      controls.target.set(0, 0, 0);
+    }
+
+    function checkRaycast() {
+      if (!currentParts.length) return;
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(currentParts.filter(p => p.visible));
+
+      if (intersects.length > 0) {
+        const hit = intersects[0].object;
+        if (hoveredPart !== hit) {
+          if (hoveredPart && hoveredPart.material.emissive) {
+            hoveredPart.material.emissive.setHex(0x000000);
+          }
+          hoveredPart = hit;
+          if (hoveredPart.material.emissive) {
+            hoveredPart.material.emissive.setHex(0x06b6d4);
+            hoveredPart.material.emissiveIntensity = 0.6;
+          }
+
+          const u = hit.userData;
+          document.getElementById('part-name').innerHTML = `<i data-lucide="cpu" class="w-3.5 h-3.5"></i> ${u.name.toUpperCase()}`;
+          document.getElementById('part-subgroup').innerText = `${u.subgroup.toUpperCase()} SUBASSEMBLY`;
+          document.getElementById('part-material').innerText = u.materialInfo || "Ordnance Spec";
+          document.getElementById('part-desc').innerText = u.desc || "Component.";
+          document.getElementById('part-telemetry').innerText = u.telemetry || "Active Stress: Nominal";
+          lucide.createIcons();
+        }
+      } else {
+        if (hoveredPart && hoveredPart.material.emissive) {
+          hoveredPart.material.emissive.setHex(0x000000);
+          hoveredPart = null;
+        }
+      }
+    }
+
+    function animate(time) {
+      requestAnimationFrame(animate);
+      TWEEN.update();
+      controls.update();
+      checkRaycast();
+      renderer.render(scene, camera);
+    }
+
+    // ==========================================
+    // UI NAVIGATION & CATALOG LOGIC
+    // ==========================================
+    let currentCategory = 'all';
+    let searchQuery = '';
+
+    function switchTab(tabId) {
+      ['3d', 'database', 'posters', 'compare', 'trainer'].forEach(t => {
+        const view = document.getElementById(`view-${t}`);
+        const btn = document.getElementById(`tab-${t}`);
+        if (t === tabId) {
+          view.classList.remove('hidden');
+          btn.className = "px-3.5 py-1.5 text-xs font-semibold rounded bg-cyan-500/15 border border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/25 transition-all flex items-center gap-1.5 mono shadow-[0_0_10px_rgba(6,182,212,0.15)]";
+          if (t === '3d') onWindowResize();
+        } else {
+          view.classList.add('hidden');
+          btn.className = "px-3.5 py-1.5 text-xs font-semibold rounded bg-slate-900 border border-slate-700 text-slate-300 hover:bg-slate-800 transition-all flex items-center gap-1.5 mono";
+        }
+      });
+      lucide.createIcons();
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(b => {
+        b.className = "cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 mono";
+      });
+      event.target.className = "cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-amber-500 text-black font-semibold mono";
+      renderWeapons();
+    }
+
+    function handleSearch() {
+      searchQuery = document.getElementById('search-input').value.toLowerCase();
+      renderWeapons();
+    }
+
+    function renderWeapons() {
+      const grid = document.getElementById('weapons-grid');
+      const filtered = FIREARMS.filter(f => {
+        const matchesCat = currentCategory === 'all' || f.class === currentCategory;
+        const matchesSearch = f.name.toLowerCase().includes(searchQuery) ||
+                              f.caliber.toLowerCase().includes(searchQuery) ||
+                              f.action.toLowerCase().includes(searchQuery) ||
+                              f.className.toLowerCase().includes(searchQuery);
+        return matchesCat && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-3 text-center py-12 text-slate-500 mono">NO FIREARMS MATCH TELEMETRY FILTER</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(f => `
+        <div class="bg-slate-900/90 rounded-xl border border-slate-800 hover:border-cyan-500/40 transition-all p-5 flex flex-col justify-between space-y-4 shadow-lg group">
+          <div>
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+              <span class="text-[11px] font-bold tracking-wider uppercase text-cyan-400 mono flex items-center gap-1.5">
+                <i data-lucide="${f.icon}" class="w-3.5 h-3.5"></i> ${f.className}
+              </span>
+              <div class="flex items-center gap-1">
+                ${f.has3D ? `<button onclick="viewIn3D('${f.id}')" class="px-2 py-0.5 rounded text-[10px] mono bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 font-bold hover:bg-cyan-500 hover:text-black transition">VIEW 3D</button>` : ''}
+                <span class="text-[10px] mono bg-slate-950 px-2 py-0.5 rounded text-slate-400 border border-slate-800">${f.caliber}</span>
+              </div>
+            </div>
+
+            <h3 class="text-base font-bold text-slate-100 group-hover:text-cyan-400 transition-colors">${f.name}</h3>
+
+            <div class="mt-3 grid grid-cols-2 gap-2 bg-slate-950 p-3 rounded-lg border border-slate-800/80 mono text-[11px]">
+              <div>
+                <span class="text-slate-500 text-[10px] block">MUZZLE ENERGY</span>
+                <span class="text-cyan-400 font-bold">${f.energy.toLocaleString()} Joules</span>
+              </div>
+              <div>
+                <span class="text-slate-500 text-[10px] block">MUZZLE VELOCITY</span>
+                <span class="text-amber-400 font-bold">${f.velocity} m/s <span class="text-[9px] text-slate-500">(${f.velocityFps} fps)</span></span>
+              </div>
+              <div>
+                <span class="text-slate-500 text-[10px] block">EFFECTIVE RANGE</span>
+                <span class="text-slate-300 font-semibold">${f.range} meters</span>
+              </div>
+              <div>
+                <span class="text-slate-500 text-[10px] block">CYCLIC RATE</span>
+                <span class="text-slate-300 font-semibold">${f.rpm}</span>
+              </div>
+              <div class="col-span-2 pt-1 border-t border-slate-800/60">
+                <span class="text-slate-500 text-[10px] block">ACTION MECHANISM</span>
+                <span class="text-slate-300 text-[10px] font-medium leading-tight block">${f.action}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-2 pt-2 border-t border-slate-800 text-xs">
+            <div class="bg-amber-950/20 border-l-2 border-amber-500 p-2 rounded-r">
+              <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block mono">👁️ LAYPERSON SIGHT TELL:</span>
+              <p class="text-slate-300 text-[11px] mt-0.5 leading-relaxed">${f.laypersonTell}</p>
+            </div>
+            <div class="bg-cyan-950/20 border-l-2 border-cyan-500 p-2 rounded-r">
+              <span class="text-[10px] font-bold text-cyan-400 uppercase tracking-wider block mono">⚙️ ARMORER ANALYSIS:</span>
+              <p class="text-slate-300 text-[11px] mt-0.5 leading-relaxed">${f.armorerAnalysis}</p>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function viewIn3D(id) {
+      switchTab('3d');
+      load3DWeapon(id);
+    }
+
+    function populateComparators() {
+      const s1 = document.getElementById('compare-select-1');
+      const s2 = document.getElementById('compare-select-2');
+      const opts = FIREARMS.map(f => `<option value="${f.id}">${f.name} (${f.className} - ${f.caliber})</option>`).join('');
+      s1.innerHTML = opts;
+      s2.innerHTML = opts;
+      s1.value = "m4a1";
+      s2.value = "scar17h";
+    }
+
+    function renderComparison() {
+      const id1 = document.getElementById('compare-select-1').value;
+      const id2 = document.getElementById('compare-select-2').value;
+      const w1 = FIREARMS.find(f => f.id === id1);
+      const w2 = FIREARMS.find(f => f.id === id2);
+
+      const maxEnergy = Math.max(w1.energy, w2.energy, 4000);
+      const maxRange = Math.max(w1.range, w2.range, 1000);
+      const maxVel = Math.max(w1.velocity, w2.velocity, 1000);
+
+      const res = document.getElementById('comparison-result');
+      res.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-slate-950 p-6 rounded-xl border border-amber-500/30 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 class="text-lg font-bold text-amber-400 mono">${w1.name}</h3>
+              <span class="text-xs px-2 py-0.5 bg-amber-500/10 text-amber-400 rounded border border-amber-500/20 mono">${w1.className}</span>
+            </div>
+            <p class="text-xs text-slate-300"><strong class="text-amber-400 mono">Caliber:</strong> ${w1.caliber}</p>
+            <p class="text-xs text-slate-300"><strong class="text-amber-400 mono">Action:</strong> ${w1.action}</p>
+            <p class="text-xs text-slate-300"><strong class="text-amber-400 mono">Weight / Length:</strong> ${w1.weight} / ${w1.length}</p>
+            <p class="text-xs text-slate-300"><strong class="text-amber-400 mono">Capacity:</strong> ${w1.capacity}</p>
+            <div class="p-3 bg-slate-900 rounded border border-slate-800 text-xs text-slate-300">
+              <span class="text-[10px] text-amber-400 mono font-bold block mb-1">IDENTIFICATION SIGNATURE:</span>
+              ${w1.laypersonTell}
+            </div>
+          </div>
+
+          <div class="bg-slate-950 p-6 rounded-xl border border-cyan-500/30 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 class="text-lg font-bold text-cyan-400 mono">${w2.name}</h3>
+              <span class="text-xs px-2 py-0.5 bg-cyan-500/10 text-cyan-400 rounded border border-cyan-500/20 mono">${w2.className}</span>
+            </div>
+            <p class="text-xs text-slate-300"><strong class="text-cyan-400 mono">Caliber:</strong> ${w2.caliber}</p>
+            <p class="text-xs text-slate-300"><strong class="text-cyan-400 mono">Action:</strong> ${w2.action}</p>
+            <p class="text-xs text-slate-300"><strong class="text-cyan-400 mono">Weight / Length:</strong> ${w2.weight} / ${w2.length}</p>
+            <p class="text-xs text-slate-300"><strong class="text-cyan-400 mono">Capacity:</strong> ${w2.capacity}</p>
+            <div class="p-3 bg-slate-900 rounded border border-slate-800 text-xs text-slate-300">
+              <span class="text-[10px] text-cyan-400 mono font-bold block mb-1">IDENTIFICATION SIGNATURE:</span>
+              ${w2.laypersonTell}
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-6">
+          <h4 class="text-xs font-bold text-slate-400 mono tracking-wider uppercase">BALLISTIC & OPERATIONAL TELEMETRY COMPARISON</h4>
+          <div>
+            <div class="flex justify-between text-xs mono mb-1">
+              <span class="text-amber-400 font-bold">${w1.name}: ${w1.energy.toLocaleString()} J</span>
+              <span class="text-slate-400">MUZZLE KINETIC ENERGY</span>
+              <span class="text-cyan-400 font-bold">${w2.name}: ${w2.energy.toLocaleString()} J</span>
+            </div>
+            <div class="h-3 bg-slate-950 rounded-full flex overflow-hidden p-0.5 gap-1 border border-slate-800">
+              <div class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: ${(w1.energy / maxEnergy) * 50}%"></div>
+              <div class="bg-cyan-500 h-full rounded-full transition-all duration-500 ml-auto" style="width: ${(w2.energy / maxEnergy) * 50}%"></div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // TRAINER
+    const QUIZ = [
+      {
+        scenario: "You observe a weapon with a 30-round magazine inserted BEHIND the pistol grip and trigger group, inside the hollow buttstock. What classification is this?",
+        options: ["Assault Rifle (Standard)", "Bullpup Assault Rifle", "Submachine Gun", "Battle Rifle"],
+        answer: 1,
+        explanation: "Any firearm where the action, chamber, and magazine feed are located behind the trigger assembly is a Bullpup (such as the Steyr AUG or IWI Tavor)."
+      },
+      {
+        scenario: "From across a room, you notice a rifle with a rectangular, straight 20-round magazine that looks significantly wider than a standard AR-15 mag. What caliber category are you looking at?",
+        options: ["Pistol Caliber (9mm)", "Intermediate Cartridge (5.56 NATO)", "Full-Power Battle Rifle Cartridge (7.62x51mm)", ".50 BMG Anti-Materiel"],
+        answer: 2,
+        explanation: "Thick, straight 20-round box magazines indicate a full-power 7.62x51mm NATO Battle Rifle or DMR (such as the FN SCAR 17H or HK417)."
+      }
+    ];
+
+    let currentQ = 0;
+
+    function loadTrainerQuestion() {
+      const q = QUIZ[currentQ];
+      const card = document.getElementById('trainer-card');
+      card.innerHTML = `
+        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+          <span class="text-xs text-amber-400 mono font-bold">RECOGNITION TEST // EXERCISE ${currentQ + 1} OF ${QUIZ.length}</span>
+          <span class="text-xs text-slate-500 mono">SIGHT ID DOCTRINE</span>
+        </div>
+        <p class="text-sm text-slate-200 font-medium leading-relaxed">${q.scenario}</p>
+        <div class="space-y-3 pt-2">
+          ${q.options.map((opt, i) => `
+            <button onclick="checkAnswer(${i})" class="w-full text-left p-3.5 rounded-lg bg-slate-950 border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900 transition text-xs text-slate-300 mono flex items-center justify-between group">
+              <span><span class="text-amber-400 font-bold mr-2">[${String.fromCharCode(65 + i)}]</span> ${opt}</span>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-600 group-hover:text-amber-400 transition"></i>
+            </button>
+          `).join('')}
+        </div>
+        <div id="trainer-feedback" class="hidden"></div>
+      `;
+      lucide.createIcons();
+    }
+
+    function checkAnswer(chosen) {
+      const q = QUIZ[currentQ];
+      const fb = document.getElementById('trainer-feedback');
+      const isCorrect = chosen === q.answer;
+
+      fb.className = `p-4 rounded-lg border text-xs mono ${isCorrect ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-300' : 'bg-rose-950/30 border-rose-500/40 text-rose-300'}`;
+      fb.innerHTML = `
+        <div class="font-bold mb-1">${isCorrect ? '✓ SIGHT RECOGNITION CONFIRMED' : '✗ INCORRECT IDENTIFICATION'}</div>
+        <div class="text-slate-300">${q.explanation}</div>
+        <button onclick="nextQuestion()" class="mt-3 px-4 py-1.5 bg-amber-500 text-black font-bold rounded text-xs hover:bg-amber-400 transition">
+          ${currentQ < QUIZ.length - 1 ? 'NEXT EXERCISE ➔' : 'RESTART TRAINER ↺'}
+        </button>
+      `;
+      fb.classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+      currentQ = (currentQ + 1) % QUIZ.length;
+      loadTrainerQuestion();
+    }
+
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox').classList.remove('hidden');
+    }
+
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.add('hidden');
+    }
+
+    window.onload = () => {
+      lucide.createIcons();
+      init3D();
+      renderWeapons();
+      populateComparators();
+      renderComparison();
+      loadTrainerQuestion();
+    };
+  </script>
+</body>
+</html>
