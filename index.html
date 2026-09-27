@@ -38,7 +38,8 @@
     #canvas-container {
       position: relative;
       width: 100%;
-      height: 700px;
+      height: 750px;
+      min-height: 700px;
       border-radius: 16px;
       overflow: hidden;
       background: radial-gradient(circle at center, #0b121e 0%, #030407 94%);
@@ -141,7 +142,7 @@
 
       <!-- Enter Button -->
       <div class="flex flex-col items-center gap-3">
-        <button onclick="enterArmoryFromPortal()" class="group relative px-8 py-3.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/60 hover:border-cyan-300 text-cyan-300 hover:text-white mono font-bold text-sm tracking-widest uppercase transition-all shadow-[0_0_30px_rgba(6,182,212,0.3)] hover:shadow-[0_0_50px_rgba(6,182,212,0.7)] flex items-center gap-3 active:scale-95">
+        <button onclick="enterArmoryFromPortal()" id="portal-enter-btn" class="group relative px-8 py-3.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/60 hover:border-cyan-300 text-cyan-300 hover:text-white mono font-bold text-sm tracking-widest uppercase transition-all shadow-[0_0_30px_rgba(6,182,212,0.3)] hover:shadow-[0_0_50px_rgba(6,182,212,0.7)] flex items-center gap-3 active:scale-95">
           <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 group-hover:scale-125 transition-transform animate-ping"></span>
           <span>ENGAGE ARMORY // ENTER SYSTEM</span>
           <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1.5 transition-transform"></i>
@@ -251,152 +252,8 @@
           <p class="text-xs text-amber-400 mono" id="hud-action">DIRECT IMPINGEMENT // ROTATING BOLT</p>
         </div>
 
-        <!-- Floating Telemetry Specs (Top-Right) -->
-        <div class="absolute top-4 right-4 z-10 pointer-events-none bg-slate-950/85 backdrop-blur-md p-3.5 rounded-lg border border-slate-800/80 mono text-[11px] space-y-1.5 min-w-[240px] shadow-lg">
-          <div class="flex justify-between">
-            <span class="text-slate-500">DIAGNOSTIC MODE:</span>
-            <span class="text-cyan-400 font-bold" id="tele-diag-mode">DUAL-LAYER CYBER WIRE</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-500">CHAMBER STRESS:</span>
-            <span class="text-amber-400 font-bold" id="tele-pressure">55,000 PSI (CARPENTER 158)</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-500">BORE VECTOR:</span>
-            <span class="text-emerald-400 font-bold" id="tele-vector">ALIGNED (1:7 TWIST)</span>
-          </div>
-          <div class="flex justify-between">
-            <span class="text-slate-500">MUZZLE ENERGY:</span>
-            <span class="text-slate-200 font-bold" id="tele-energy">1,750 Joules</span>
-          </div>
-          <div class="flex justify-between border-t border-slate-800/80 pt-1 text-[10px]">
-            <span class="text-slate-500">DISASSEMBLY STATE:</span>
-            <span class="text-cyan-400 font-bold" id="tele-status">IN BATTERY [0%]</span>
-          </div>
-        </div>
-
-        <!-- Cyber Wire Diagnostic Nodes Floating Badge (Mid-Right) -->
-        <div id="cyber-nodes-panel" class="absolute top-44 right-4 z-10 pointer-events-none bg-slate-950/75 backdrop-blur-md p-3 rounded-lg border border-cyan-500/30 mono text-[10px] space-y-1 max-w-[220px] hidden">
-          <div class="text-cyan-400 font-bold border-b border-cyan-800 pb-1 mb-1">CAD STRESS NODES:</div>
-          <div class="flex items-center gap-1.5 text-amber-400">
-            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-            <span>CHAMBER: HIGH PEAK (HOT)</span>
-          </div>
-          <div class="flex items-center gap-1.5 text-amber-300">
-            <span class="w-2 h-2 rounded-full bg-amber-300"></span>
-            <span>GAS PORT: 15,000 PSI</span>
-          </div>
-          <div class="flex items-center gap-1.5 text-cyan-400">
-            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
-            <span>LOWER/FCG: 7075-T6 (COOL)</span>
-          </div>
-          <div class="flex items-center gap-1.5 text-emerald-400">
-            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-            <span>BUFFER: RECOIL DAMPING</span>
-          </div>
-        </div>
-
-        <!-- Tactile Action Lab Floating Deck (Above Bottom Control Bar) -->
-        <div id="tactile-action-deck" class="absolute bottom-20 left-1/2 -translate-x-1/2 z-30 bg-slate-950/95 backdrop-blur-md px-4 py-2 rounded-xl border border-cyan-500/40 flex flex-wrap items-center gap-2.5 shadow-2xl max-w-[96%] overflow-x-auto mono text-xs">
-          <div class="flex items-center gap-1.5 text-cyan-400 font-bold border-r border-slate-800 pr-2.5">
-            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-            <span class="text-[10px] tracking-wider uppercase">TACTILE ACTION LAB:</span>
-          </div>
-
-          <!-- Action Cycle Button (Slide Rack / Bolt Throw / Pump / Cock) -->
-          <button onclick="triggerActionCycle()" id="btn-action-cycle" class="px-2.5 py-1 bg-amber-500/20 hover:bg-amber-500 hover:text-black text-amber-300 border border-amber-500/50 rounded text-[11px] font-bold transition-all flex items-center gap-1.5 shadow-[0_0_10px_rgba(245,158,11,0.25)] active:scale-95 cursor-pointer" title="Cycle firearm action [C]">
-            <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
-            <span id="label-action-cycle">RACK SLIDE</span>
-            <kbd class="text-[9px] bg-black/50 px-1 py-0.5 rounded text-amber-200 border border-amber-500/30">C</kbd>
-          </button>
-
-          <!-- Dry Fire Button -->
-          <button onclick="triggerDryFire()" id="btn-dry-fire" class="px-2.5 py-1 bg-rose-500/20 hover:bg-rose-500 hover:text-black text-rose-300 border border-rose-500/50 rounded text-[11px] font-bold transition-all flex items-center gap-1.5 shadow-[0_0_10px_rgba(244,63,94,0.25)] active:scale-95 cursor-pointer" title="Pull trigger & dry fire striker [SPACE]">
-            <i data-lucide="target" class="w-3.5 h-3.5"></i>
-            <span>DRY FIRE</span>
-            <kbd class="text-[9px] bg-black/50 px-1 py-0.5 rounded text-rose-200 border border-rose-500/30">SPACE</kbd>
-          </button>
-
-          <!-- Reload / Drop Mag Button -->
-          <button onclick="triggerReload()" id="btn-reload" class="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-cyan-300 border border-slate-700 rounded text-[11px] font-bold transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer" title="Drop & re-seat magazine [R]">
-            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
-            <span>RELOAD MAG</span>
-            <kbd class="text-[9px] bg-black/50 px-1 py-0.5 rounded text-slate-400 border border-slate-700">R</kbd>
-          </button>
-
-          <!-- Eject Brass Button -->
-          <button onclick="triggerEjectBrass()" id="btn-eject-brass" class="px-2.5 py-1 bg-yellow-500/15 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-500/40 rounded text-[11px] font-bold transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer" title="Eject 3D Brass Casing with Audio Physics [E]">
-            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-            <span>EJECT BRASS</span>
-            <kbd class="text-[9px] bg-black/50 px-1 py-0.5 rounded text-yellow-200 border border-yellow-500/30">E</kbd>
-          </button>
-
-          <!-- Chamber Status Feedback Display -->
-          <div class="border-l border-slate-800 pl-2.5 flex items-center gap-1.5 text-[10px]">
-            <span class="text-slate-500">STATE:</span>
-            <span id="tactile-chamber-status" class="text-emerald-400 font-bold glow-emerald">BATTERY LOCKED // COCKED</span>
-          </div>
-        </div>
-
-        <!-- Interactive 3D Control Bar (Bottom Center) -->
-        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 bg-slate-950/90 backdrop-blur-md px-4 py-2.5 rounded-xl border border-slate-800 flex flex-wrap items-center gap-3 shadow-2xl max-w-[96%] overflow-x-auto">
-          
-          <!-- Exploded View Slider -->
-          <div class="flex items-center gap-2">
-            <i data-lucide="layers" class="w-4 h-4 text-cyan-400"></i>
-            <span class="text-xs text-slate-300 mono font-semibold whitespace-nowrap">EXPLODE:</span>
-            <input type="range" id="explode-slider" min="0" max="100" value="0" oninput="setExplodedAmount(this.value)" 
-                   class="w-28 accent-cyan-500 cursor-pointer">
-            <button onclick="toggleExplode()" id="explode-btn" class="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500 hover:text-black border border-cyan-500/40 rounded text-[11px] mono font-bold transition">
-              EXPLODE
-            </button>
-          </div>
-
-          <div class="h-4 w-px bg-slate-800"></div>
-
-          <!-- Shader Modes (Cyber Wire Flagship) -->
-          <div class="flex items-center gap-1.5 whitespace-nowrap">
-            <span class="text-xs text-slate-400 mono">MODE:</span>
-            <button onclick="setRenderMode('wireframe')" id="mode-wire" class="px-2.5 py-0.5 bg-cyan-500 text-black font-bold rounded text-[11px] mono transition shadow-[0_0_10px_rgba(6,182,212,0.4)]">CYBER WIRE (X-RAY)</button>
-            <button onclick="setRenderMode('pbr')" id="mode-pbr" class="px-2.5 py-0.5 bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-700 rounded text-[11px] mono transition">PBR METAL</button>
-            <button onclick="setRenderMode('thermal')" id="mode-thermal" class="px-2.5 py-0.5 bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-700 rounded text-[11px] mono transition">THERMAL IR</button>
-          </div>
-
-          <div class="h-4 w-px bg-slate-800"></div>
-
-          <!-- Cyber Tools: Bore Laser & Scan Pulse -->
-          <div class="flex items-center gap-1.5 whitespace-nowrap">
-            <button onclick="toggleBoreLaser()" id="btn-laser" class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded text-[11px] mono font-bold transition flex items-center gap-1">
-              <i data-lucide="zap" class="w-3.5 h-3.5"></i> BORE LASER: ON
-            </button>
-            <button onclick="toggleScanline()" id="btn-scan" class="px-2 py-0.5 bg-slate-900 text-slate-300 hover:text-cyan-400 border border-slate-700 rounded text-[11px] mono font-bold transition flex items-center gap-1">
-              <i data-lucide="activity" class="w-3.5 h-3.5"></i> SCAN PULSE
-            </button>
-          </div>
-
-          <div class="h-4 w-px bg-slate-800"></div>
-
-          <!-- Leader Lines -->
-          <button onclick="toggleLeaderLines()" id="btn-lines" class="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 rounded text-[11px] mono font-bold transition flex items-center gap-1">
-            <i data-lucide="git-branch" class="w-3.5 h-3.5"></i> CAD LINES
-          </button>
-
-          <div class="h-4 w-px bg-slate-800"></div>
-
-          <!-- Controls -->
-          <div class="flex items-center gap-1.5">
-            <button onclick="toggleAutoRotate()" id="rotate-btn" class="p-1.5 bg-slate-900 text-slate-300 hover:text-cyan-400 border border-slate-700 rounded transition" title="Toggle Auto-Spin">
-              <i data-lucide="rotate-cw" class="w-3.5 h-3.5"></i>
-            </button>
-            <button onclick="resetCamera()" class="p-1.5 bg-slate-900 text-slate-300 hover:text-cyan-400 border border-slate-700 rounded transition" title="Reset View">
-              <i data-lucide="refresh-ccw" class="w-3.5 h-3.5"></i>
-            </button>
-          </div>
-
-        </div>
-
-        <!-- Floating Component Info Card (Raycasting) -->
-        <div id="part-info-badge" class="absolute bottom-20 left-6 z-20 bg-slate-950/95 border border-cyan-500/60 p-4 rounded-xl text-xs mono max-w-sm pointer-events-none shadow-2xl backdrop-blur-md transition-all">
+        <!-- Floating Component Info Card (Top-Left / Mid) -->
+        <div id="part-info-badge" class="absolute top-24 left-4 z-20 bg-slate-950/95 border border-cyan-500/60 p-3.5 rounded-xl text-xs mono max-w-sm pointer-events-none shadow-2xl backdrop-blur-md transition-all">
           <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-2">
             <span class="text-cyan-400 font-bold uppercase tracking-wider text-[11px] flex items-center gap-1.5" id="part-name">
               <i data-lucide="cpu" class="w-3.5 h-3.5"></i> COMPONENT SPEC
@@ -410,6 +267,211 @@
               <i data-lucide="gauge" class="w-3 h-3"></i> <span id="part-telemetry">Active Stress: Nominal</span>
             </div>
           </div>
+        </div>
+
+        <!-- Top-Right Tactical Toolbar & Telemetry Specs -->
+        <div class="absolute top-4 right-4 z-20 flex flex-col items-end gap-2 max-w-[320px]">
+          
+          <!-- Viewport Shader Modes & Diagnostic Tools Ribbon -->
+          <div class="bg-slate-950/90 backdrop-blur-md p-1.5 rounded-xl border border-slate-800 flex items-center gap-1.5 shadow-2xl mono text-xs">
+            <div class="flex items-center gap-1">
+              <button onclick="setRenderMode('wireframe')" id="mode-wire" class="px-2 py-1 bg-cyan-500 text-black font-bold rounded text-[10px] mono transition shadow-[0_0_10px_rgba(6,182,212,0.4)]">CYBER WIRE</button>
+              <button onclick="setRenderMode('pbr')" id="mode-pbr" class="px-2 py-1 bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-700 rounded text-[10px] mono transition">PBR METAL</button>
+              <button onclick="setRenderMode('thermal')" id="mode-thermal" class="px-2 py-1 bg-slate-900 text-slate-300 hover:bg-slate-800 border border-slate-700 rounded text-[10px] mono transition">THERMAL IR</button>
+            </div>
+
+            <div class="h-3.5 w-px bg-slate-800"></div>
+
+            <div class="flex items-center gap-1">
+              <button onclick="toggleBoreLaser()" id="btn-laser" class="px-2 py-1 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded text-[10px] font-bold transition flex items-center gap-1" title="Toggle Bore Laser">
+                <i data-lucide="zap" class="w-3 h-3"></i> LASER
+              </button>
+              <button onclick="toggleScanline()" id="btn-scan" class="px-2 py-1 bg-slate-900 text-slate-300 hover:text-cyan-400 border border-slate-700 rounded text-[10px] font-bold transition flex items-center gap-1" title="Toggle Scan Pulse">
+                <i data-lucide="activity" class="w-3 h-3"></i> SCAN
+              </button>
+              <button onclick="toggleLeaderLines()" id="btn-lines" class="px-2 py-1 bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 rounded text-[10px] font-bold transition flex items-center gap-1" title="Toggle CAD Leader Lines">
+                <i data-lucide="git-branch" class="w-3 h-3"></i> CAD
+              </button>
+            </div>
+
+            <div class="h-3.5 w-px bg-slate-800"></div>
+
+            <div class="flex items-center gap-1">
+              <button onclick="toggleAutoRotate()" id="rotate-btn" class="p-1 bg-slate-900 text-slate-300 hover:text-cyan-400 border border-slate-700 rounded transition" title="Toggle Auto-Spin">
+                <i data-lucide="rotate-cw" class="w-3 h-3"></i>
+              </button>
+              <button onclick="resetCamera()" class="p-1 bg-slate-900 text-slate-300 hover:text-cyan-400 border border-slate-700 rounded transition" title="Reset Camera View">
+                <i data-lucide="refresh-ccw" class="w-3 h-3"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Floating Telemetry Specs -->
+          <div class="bg-slate-950/85 backdrop-blur-md p-3 rounded-xl border border-slate-800/80 mono text-[11px] space-y-1 w-full shadow-lg pointer-events-none">
+            <div class="flex justify-between">
+              <span class="text-slate-500">DIAGNOSTIC MODE:</span>
+              <span class="text-cyan-400 font-bold" id="tele-diag-mode">DUAL-LAYER CYBER WIRE</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">CHAMBER STRESS:</span>
+              <span class="text-amber-400 font-bold" id="tele-pressure">55,000 PSI (CARPENTER 158)</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">BORE VECTOR:</span>
+              <span class="text-emerald-400 font-bold" id="tele-vector">ALIGNED (1:7 TWIST)</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-500">MUZZLE ENERGY:</span>
+              <span class="text-slate-200 font-bold" id="tele-energy">1,750 Joules</span>
+            </div>
+            <div class="flex justify-between border-t border-slate-800/80 pt-1 text-[10px]">
+              <span class="text-slate-500">DISASSEMBLY STATE:</span>
+              <span class="text-cyan-400 font-bold" id="tele-status">IN BATTERY [0%]</span>
+            </div>
+          </div>
+
+          <!-- Cyber Wire Diagnostic Nodes Floating Badge -->
+          <div id="cyber-nodes-panel" class="bg-slate-950/75 backdrop-blur-md p-2.5 rounded-lg border border-cyan-500/30 mono text-[10px] space-y-1 w-full hidden pointer-events-none">
+            <div class="text-cyan-400 font-bold border-b border-cyan-800 pb-1 mb-1">CAD STRESS NODES:</div>
+            <div class="flex items-center gap-1.5 text-amber-400">
+              <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+              <span>CHAMBER: HIGH PEAK (HOT)</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-amber-300">
+              <span class="w-2 h-2 rounded-full bg-amber-300"></span>
+              <span>GAS PORT: 15,000 PSI</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-cyan-400">
+              <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+              <span>LOWER/FCG: 7075-T6 (COOL)</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-emerald-400">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span>BUFFER: RECOIL DAMPING</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- UNIFIED HERO FIELD STRIP & TACTILE CONSOLE (Bottom Center) -->
+        <div id="tactile-hero-console" class="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 w-[96%] max-w-5xl bg-slate-950/95 backdrop-blur-md border border-cyan-500/40 rounded-2xl p-3 shadow-[0_0_35px_rgba(0,0,0,0.85)] space-y-2.5">
+          
+          <!-- TIER 1: TACTILE ACTION LAB (MECHANICS & FIRING CYCLE) -->
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
+            
+            <!-- Left: Action Deck Label & Chamber Status -->
+            <div class="flex items-center gap-2 mono text-xs">
+              <span class="flex items-center gap-1.5 px-2 py-0.5 bg-cyan-950/80 border border-cyan-500/40 rounded text-[10px] font-bold text-cyan-400 uppercase tracking-wider">
+                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+                TACTILE ACTION LAB
+              </span>
+              <div class="flex items-center gap-1.5 text-[11px] bg-black/40 px-2 py-0.5 rounded border border-slate-800">
+                <span class="text-slate-500 font-bold">CHAMBER:</span>
+                <span id="tactile-chamber-status" class="text-emerald-400 font-bold glow-emerald">BATTERY LOCKED // COCKED</span>
+              </div>
+            </div>
+
+            <!-- Center: Interactive Action Buttons -->
+            <div class="flex items-center gap-1.5 mono">
+              <button onclick="triggerActionCycle()" id="btn-action-cycle" class="px-3 py-1 bg-amber-500/20 hover:bg-amber-500 hover:text-black text-amber-300 border border-amber-500/50 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow-[0_0_12px_rgba(245,158,11,0.25)] active:scale-95 cursor-pointer" title="Cycle firearm action [C]">
+                <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+                <span id="label-action-cycle">RACK SLIDE</span>
+                <kbd class="text-[9px] bg-black/60 px-1 py-0.5 rounded text-amber-200 border border-amber-500/40">C</kbd>
+              </button>
+              <button onclick="triggerDryFire()" id="btn-dry-fire" class="px-3 py-1 bg-rose-500/20 hover:bg-rose-500 hover:text-black text-rose-300 border border-rose-500/50 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 shadow-[0_0_12px_rgba(244,63,94,0.25)] active:scale-95 cursor-pointer" title="Pull trigger & dry fire striker [SPACE]">
+                <i data-lucide="target" class="w-3.5 h-3.5"></i>
+                <span>DRY FIRE</span>
+                <kbd class="text-[9px] bg-black/60 px-1 py-0.5 rounded text-rose-200 border border-rose-500/40">SPACE</kbd>
+              </button>
+              <button onclick="triggerReload()" id="btn-reload" class="px-3 py-1 bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-cyan-300 border border-slate-700 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer" title="Drop & re-seat magazine [R]">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                <span>RELOAD MAG</span>
+                <kbd class="text-[9px] bg-black/60 px-1 py-0.5 rounded text-slate-400 border border-slate-700">R</kbd>
+              </button>
+              <button onclick="triggerEjectBrass()" id="btn-eject-brass" class="px-3 py-1 bg-yellow-500/15 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-500/40 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer" title="Eject 3D Brass Casing with Audio Physics [E]">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                <span>EJECT BRASS</span>
+                <kbd class="text-[9px] bg-black/60 px-1 py-0.5 rounded text-yellow-200 border border-yellow-500/40">E</kbd>
+              </button>
+            </div>
+
+            <!-- Right: Subassembly Filter Badges -->
+            <div class="hidden sm:flex items-center gap-1 mono text-[10px]">
+              <span class="text-slate-500 font-bold">SUBASSEMBLY:</span>
+              <button onclick="filterSubassembly('all')" id="sub-all-dock" class="px-1.5 py-0.5 rounded bg-amber-500 text-black font-bold">ALL</button>
+              <button onclick="filterSubassembly('action')" id="sub-action-dock" class="px-1.5 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 hover:border-amber-500/40">BOLT</button>
+              <button onclick="filterSubassembly('fcg')" id="sub-fcg-dock" class="px-1.5 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 hover:border-amber-500/40">FCG</button>
+              <button onclick="filterSubassembly('barrel')" id="sub-barrel-dock" class="px-1.5 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 hover:border-amber-500/40">BARREL</button>
+              <button onclick="filterSubassembly('feed')" id="sub-feed-dock" class="px-1.5 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 hover:border-amber-500/40">MAG</button>
+            </div>
+
+          </div>
+
+          <!-- TIER 2: HERO TAKE APART / FIELD STRIP ENGINE -->
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            
+            <!-- Stage Navigation & Master Strip Buttons -->
+            <div class="flex items-center gap-1.5 mono">
+              <button onclick="toggleExplode()" id="explode-btn" class="px-3.5 py-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-black text-xs rounded-lg transition-all shadow-[0_0_15px_rgba(245,158,11,0.4)] flex items-center gap-1.5 cursor-pointer active:scale-95">
+                <i data-lucide="layers" class="w-4 h-4"></i>
+                <span id="explode-btn-text">FIELD STRIP WEAPON</span>
+                <kbd class="text-[9px] bg-black/30 px-1 py-0.5 rounded text-black font-bold">F</kbd>
+              </button>
+              
+              <div class="flex items-center bg-slate-900 border border-slate-800 rounded-lg p-0.5">
+                <button onclick="stepFieldStrip(-1)" id="btn-step-prev" class="px-2 py-1 text-slate-300 hover:text-amber-400 hover:bg-slate-800 rounded transition flex items-center gap-1 text-[11px] font-bold" title="Previous Disassembly Stage [ [ ]">
+                  <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+                  <span>PREV</span>
+                  <kbd class="text-[8px] bg-black/50 px-1 py-0.5 rounded text-slate-400">[</kbd>
+                </button>
+                <span class="w-px h-4 bg-slate-800"></span>
+                <button onclick="stepFieldStrip(1)" id="btn-step-next" class="px-2 py-1 text-slate-300 hover:text-amber-400 hover:bg-slate-800 rounded transition flex items-center gap-1 text-[11px] font-bold" title="Next Disassembly Stage [ ] ]">
+                  <span>NEXT</span>
+                  <kbd class="text-[8px] bg-black/50 px-1 py-0.5 rounded text-slate-400">]</kbd>
+                  <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+
+              <!-- Auto-Animate Field Strip Button -->
+              <button onclick="toggleAutoFieldStrip()" id="btn-auto-strip" class="px-2 py-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-cyan-400 hover:text-cyan-300 rounded-lg text-[11px] font-bold transition flex items-center gap-1" title="Autoplay full step-by-step disassembly sequence">
+                <i data-lucide="play-circle" class="w-3.5 h-3.5"></i>
+                <span id="label-auto-strip">AUTO STRIP</span>
+              </button>
+            </div>
+
+            <!-- Center: Master Tactile Progress Slider & Stage Title -->
+            <div class="flex-1 min-w-[260px] max-w-xl space-y-1">
+              <div class="flex items-center justify-between text-[11px] mono">
+                <div class="flex items-center gap-2">
+                  <span id="strip-stage-badge" class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold text-[10px] uppercase tracking-wider">
+                    STAGE 0/5: IN BATTERY
+                  </span>
+                  <span id="strip-stage-desc" class="text-slate-300 font-semibold truncate hidden md:inline">
+                    Fully assembled; bolt locked into battery.
+                  </span>
+                </div>
+                <span id="strip-part-count" class="text-amber-400 font-bold">
+                  0 / 46 PARTS DETACHED
+                </span>
+              </div>
+              
+              <!-- Wide Interactive Track with Stage Detents -->
+              <div class="relative flex items-center">
+                <input type="range" id="explode-slider" min="0" max="100" value="0" oninput="setExplodedAmount(this.value)" 
+                       class="w-full h-2.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500 hover:accent-amber-400 transition">
+              </div>
+              <div class="flex justify-between text-[9px] mono text-slate-500 px-1">
+                <span class="hover:text-amber-400 cursor-pointer" onclick="goToFieldStripStage(0)">0% BATTERY</span>
+                <span class="hover:text-amber-400 cursor-pointer" onclick="goToFieldStripStage(1)">20% MAG</span>
+                <span class="hover:text-amber-400 cursor-pointer" onclick="goToFieldStripStage(2)">40% PINS</span>
+                <span class="hover:text-amber-400 cursor-pointer" onclick="goToFieldStripStage(3)">60% BCG</span>
+                <span class="hover:text-amber-400 cursor-pointer" onclick="goToFieldStripStage(4)">80% BOLT</span>
+                <span class="hover:text-amber-400 cursor-pointer" onclick="goToFieldStripStage(5)">100% MATRIX</span>
+              </div>
+            </div>
+
+          </div>
+
         </div>
 
       </div>
@@ -1487,11 +1549,30 @@
         mesh.position.copy(normalPos);
         mesh.castShadow = true;
         mesh.receiveShadow = true;
+
+        // Sequence stage for real-world field stripping (1 to 5)
+        let stage = 5;
+        const lower = name.toLowerCase();
+        if (subgroup === 'feed' || lower.includes('mag') || lower.includes('cartridge') || lower.includes('round') || lower.includes('follower') || lower.includes('floorplate') || lower.includes('shell')) {
+          stage = 1; // Mag dropped & feed cleared
+        } else if (subgroup === 'fcg' || lower.includes('lower') || lower.includes('trigger') || lower.includes('hammer') || lower.includes('grip') || lower.includes('stock') || lower.includes('buffer')) {
+          stage = 2; // Takedown pins popped & receivers separated
+        } else if (subgroup === 'action') {
+          if (lower.includes('bolt head') || lower.includes('firing pin') || lower.includes('cam pin') || lower.includes('extractor') || lower.includes('retaining pin') || lower.includes('striker spring') || lower.includes('locking lug')) {
+            stage = 4; // Detail bolt & firing pin strip
+          } else {
+            stage = 3; // Bolt carrier group, charging handle & recoil assembly
+          }
+        } else {
+          stage = 5; // Barrel, gas block, handguard, muzzle brake, optics & accessories
+        }
+
         mesh.userData = {
           basePos: normalPos.clone(),
           explodedPos: normalPos.clone().add(explodeDelta),
           name: name,
           subgroup: subgroup,
+          stripStage: stage,
           materialInfo: materialInfo,
           desc: desc,
           telemetry: telemetry || "Nominal Tolerance",
@@ -1803,11 +1884,13 @@
       ctx: null,
       masterGain: null,
       compressor: null,
+      waveshaper: null,
       enabled: true,
-      volume: 0.8,
+      volume: 0.85,
       profile: 'mechanical', // 'mechanical', 'cyber', 'soft'
       hapticsEnabled: true,
-      noiseBuffer: null,
+      whiteNoiseBuffer: null,
+      pinkNoiseBuffer: null,
 
       init() {
         if (this.ctx) {
@@ -1819,30 +1902,63 @@
           if (!AudioCtx) return;
           this.ctx = new AudioCtx();
 
-          // Dynamics compressor to guarantee zero digital clipping
+          // Studio-grade dynamics compressor to prevent digital clipping while boosting low-level mechanical textures
           this.compressor = this.ctx.createDynamicsCompressor();
-          this.compressor.threshold.value = -10;
-          this.compressor.knee.value = 6;
-          this.compressor.ratio.value = 4;
-          this.compressor.attack.value = 0.002;
-          this.compressor.release.value = 0.12;
+          this.compressor.threshold.value = -12;
+          this.compressor.knee.value = 5;
+          this.compressor.ratio.value = 3.5;
+          this.compressor.attack.value = 0.001;
+          this.compressor.release.value = 0.08;
+
+          // Waveshaper for subtle analog ordnance steel saturation
+          this.waveshaper = this.ctx.createWaveShaper();
+          this.waveshaper.curve = this.createDistortionCurve(1.6);
+          this.waveshaper.oversample = '2x';
 
           this.masterGain = this.ctx.createGain();
           this.masterGain.gain.value = this.enabled ? this.volume : 0;
 
+          // Sound routing: Synthesizer Nodes -> Waveshaper -> Compressor -> MasterGain -> Speakers
+          this.waveshaper.connect(this.compressor);
           this.compressor.connect(this.masterGain);
           this.masterGain.connect(this.ctx.destination);
 
-          // Pre-generate white noise buffer for mechanical friction & scraping
-          const bufferSize = this.ctx.sampleRate;
-          this.noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-          const data = this.noiseBuffer.getChannelData(0);
-          for (let i = 0; i < bufferSize; i++) {
-            data[i] = Math.random() * 2 - 1;
+          // Generate 2 seconds of high-resolution white noise for physical impact excitation
+          const sr = this.ctx.sampleRate;
+          this.whiteNoiseBuffer = this.ctx.createBuffer(1, sr * 2, sr);
+          const wData = this.whiteNoiseBuffer.getChannelData(0);
+          for (let i = 0; i < sr * 2; i++) {
+            wData[i] = Math.random() * 2 - 1;
+          }
+
+          // Generate 2 seconds of pink noise (1/f) for realistic rail friction & mechanical body rumble
+          this.pinkNoiseBuffer = this.ctx.createBuffer(1, sr * 2, sr);
+          const pData = this.pinkNoiseBuffer.getChannelData(0);
+          let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+          for (let i = 0; i < sr * 2; i++) {
+            const white = Math.random() * 2 - 1;
+            b0 = 0.99886 * b0 + white * 0.0555179;
+            b1 = 0.99332 * b1 + white * 0.0750759;
+            b2 = 0.96900 * b2 + white * 0.1538520;
+            b3 = 0.86650 * b3 + white * 0.3104856;
+            b4 = 0.55000 * b4 + white * 0.5329522;
+            b5 = -0.7616 * b5 - white * 0.0168980;
+            pData[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.11;
+            b6 = white * 0.115926;
           }
         } catch (e) {
           console.warn("AudioContext init error:", e);
         }
+      },
+
+      createDistortionCurve(k = 1.6) {
+        const n_samples = 44100;
+        const curve = new Float32Array(n_samples);
+        for (let i = 0; i < n_samples; ++i) {
+          const x = (i * 2) / n_samples - 1;
+          curve[i] = Math.tanh(k * x) / Math.tanh(k);
+        }
+        return curve;
       },
 
       toggleMute() {
@@ -1897,14 +2013,15 @@
 
       vibrate(pattern = [10]) {
         if (!this.hapticsEnabled || !navigator.vibrate) return;
+        if (navigator.userActivation && !navigator.userActivation.hasBeenActive) return;
         try { navigator.vibrate(pattern); } catch (e) {}
       },
 
-      // Helper: play noise burst with custom envelope and filter
+      // Helper: noise burst with envelope and filter
       noiseBurst(startTime, duration, filterFreq, filterQ, peakGain, filterType = 'bandpass') {
-        if (!this.ctx || !this.enabled || !this.noiseBuffer) return;
+        if (!this.ctx || !this.enabled || !this.whiteNoiseBuffer) return;
         const src = this.ctx.createBufferSource();
-        src.buffer = this.noiseBuffer;
+        src.buffer = this.whiteNoiseBuffer;
 
         const filter = this.ctx.createBiquadFilter();
         filter.type = filterType;
@@ -1912,19 +2029,20 @@
         filter.Q.setValueAtTime(filterQ, startTime);
 
         const gain = this.ctx.createGain();
+        const adj = peakGain * (this.profile === 'soft' ? 0.5 : 1.0);
         gain.gain.setValueAtTime(0.0001, startTime);
-        gain.gain.linearRampToValueAtTime(peakGain * (this.profile === 'soft' ? 0.5 : 1.0), startTime + duration * 0.2);
+        gain.gain.linearRampToValueAtTime(adj, startTime + Math.min(0.002, duration * 0.2));
         gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
 
         src.connect(filter);
         filter.connect(gain);
-        gain.connect(this.compressor);
+        gain.connect(this.waveshaper || this.compressor);
 
         src.start(startTime);
-        src.stop(startTime + duration);
+        src.stop(startTime + duration + 0.01);
       },
 
-      // Helper: play tone burst with envelope
+      // Helper: tone burst
       toneBurst(startTime, duration, startFreq, endFreq, peakGain, type = 'sine') {
         if (!this.ctx || !this.enabled) return;
         const osc = this.ctx.createOscillator();
@@ -1941,10 +2059,133 @@
         gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
 
         osc.connect(gain);
-        gain.connect(this.compressor);
+        gain.connect(this.waveshaper || this.compressor);
 
         osc.start(startTime);
         osc.stop(startTime + duration);
+      },
+
+      // CORE MODAL RESONATOR (Simulates natural impulse response of steel geometry)
+      modalResonator(startTime, freq, Q, peakGain, decayTime) {
+        if (!this.ctx || !this.enabled || !this.whiteNoiseBuffer) return;
+        const src = this.ctx.createBufferSource();
+        src.buffer = this.whiteNoiseBuffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(freq, startTime);
+        filter.Q.setValueAtTime(Q, startTime);
+
+        const gain = this.ctx.createGain();
+        const adj = peakGain * (this.profile === 'soft' ? 0.5 : 1.0);
+        gain.gain.setValueAtTime(0.0001, startTime);
+        gain.gain.linearRampToValueAtTime(adj, startTime + 0.001);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + decayTime);
+
+        src.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.waveshaper || this.compressor);
+
+        src.start(startTime);
+        src.stop(startTime + decayTime + 0.015);
+      },
+
+      // MULTI-BAND MODAL STEEL IMPACT (True Ordnance Steel Acoustics)
+      playModalStrike(args = {}) {
+        this.modalStrike(args);
+      },
+
+      modalStrike({
+        time = null,
+        bodyFreq = 125,
+        trunnionFreq = 780,
+        carrierFreq = 1580,
+        ringFreq = 5200,
+        intensity = 1.0,
+        bodyDecay = 0.06,
+        carrierDecay = 0.05,
+        ringDecay = 0.04,
+        hasMicroBounce = true
+      }) {
+        if (!this.ctx || !this.enabled) return;
+        const t = time || this.ctx.currentTime;
+        const vol = intensity * (this.profile === 'soft' ? 0.5 : 1.0);
+
+        // 1. Initial micro-impact snap (<1ms contact shockwave)
+        this.noiseBurst(t, 0.004, ringFreq * 1.1, 4.0, 0.35 * vol, 'highpass');
+
+        // 2. Receiver Body Mass Thump
+        this.modalResonator(t, bodyFreq, 4.5, 0.45 * vol, bodyDecay);
+
+        // 3. Trunnion / Receiver Rail Structural Resonance
+        this.modalResonator(t, trunnionFreq, 14.0, 0.30 * vol, carrierDecay);
+
+        // 4. Bolt Carrier Steel Body Mode
+        this.modalResonator(t, carrierFreq, 18.0, 0.25 * vol, carrierDecay);
+
+        // 5. Hardened Tool Steel Chime / Lug Snap
+        this.modalResonator(t, ringFreq, 26.0, 0.22 * vol, ringDecay);
+
+        // 6. Mechanical Chatter / Micro-bounce 7ms later
+        if (hasMicroBounce) {
+          const tBounce = t + 0.007;
+          this.modalResonator(tBounce, carrierFreq * 1.15, 12.0, 0.14 * vol, carrierDecay * 0.6);
+          this.modalResonator(tBounce, ringFreq * 0.95, 20.0, 0.10 * vol, ringDecay * 0.6);
+        }
+      },
+
+      // Mechanical rail sliding friction
+      playRailFriction(startTime, duration, startFreq = 1100, endFreq = 1450, gain = 0.25) {
+        if (!this.ctx || !this.enabled || !this.pinkNoiseBuffer) return;
+        const src = this.ctx.createBufferSource();
+        src.buffer = this.pinkNoiseBuffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(startFreq, startTime);
+        filter.frequency.linearRampToValueAtTime(endFreq, startTime + duration);
+        filter.Q.setValueAtTime(5.0, startTime);
+
+        const gainNode = this.ctx.createGain();
+        const adj = gain * (this.profile === 'soft' ? 0.5 : 1.0);
+        gainNode.gain.setValueAtTime(0.0001, startTime);
+        gainNode.gain.linearRampToValueAtTime(adj, startTime + duration * 0.25);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+        src.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(this.waveshaper || this.compressor);
+
+        src.start(startTime);
+        src.stop(startTime + duration + 0.01);
+      },
+
+      // Buffer / recoil spring twang
+      playSpringTwang(startTime, duration = 0.08, baseFreq = 480, gain = 0.16) {
+        if (!this.ctx || !this.enabled) return;
+        this.modalResonator(startTime, baseFreq, 22.0, gain, duration);
+        this.modalResonator(startTime + 0.01, baseFreq * 1.5, 18.0, gain * 0.5, duration * 0.8);
+      },
+
+      // Authentic drawn 70/30 cartridge brass multi-bounce clatter
+      playBrassBounce(startTime) {
+        if (!this.ctx || !this.enabled) return;
+        const t = startTime || this.ctx.currentTime;
+        const bounces = [
+          { dt: 0, amp: 0.32, f1: 3820, f2: 4920, f3: 6380, decay: 0.08 },
+          { dt: 0.095, amp: 0.20, f1: 3890, f2: 4980, f3: 6450, decay: 0.06 },
+          { dt: 0.165, amp: 0.12, f1: 3950, f2: 5040, f3: 6520, decay: 0.045 },
+          { dt: 0.215, amp: 0.07, f1: 4020, f2: 5120, f3: 6600, decay: 0.035 },
+          { dt: 0.250, amp: 0.04, f1: 4100, f2: 5200, f3: 6700, decay: 0.025 }
+        ];
+
+        bounces.forEach(b => {
+          const bt = t + b.dt;
+          this.modalResonator(bt, b.f1, 32.0, b.amp * 0.5, b.decay);
+          this.modalResonator(bt, b.f2, 35.0, b.amp * 0.35, b.decay * 0.85);
+          this.modalResonator(bt, b.f3, 40.0, b.amp * 0.25, b.decay * 0.7);
+          this.noiseBurst(bt, 0.003, b.f2, 8.0, b.amp * 0.3, 'bandpass');
+        });
       },
 
       // 1. Tactile Slider Detent click
@@ -1952,23 +2193,9 @@
         this.init();
         if (!this.ctx || !this.enabled) return;
         const t = this.ctx.currentTime;
-        const baseFreq = this.profile === 'cyber' ? 1400 : 850;
-        const freq = baseFreq + normalizedVal * 420;
-        const dur = 0.007;
-
-        const osc = this.ctx.createOscillator();
-        osc.type = this.profile === 'cyber' ? 'square' : 'triangle';
-        osc.frequency.setValueAtTime(freq, t);
-
-        const gain = this.ctx.createGain();
-        const peak = (this.profile === 'soft' ? 0.08 : 0.16);
-        gain.gain.setValueAtTime(peak, t);
-        gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-
-        osc.connect(gain);
-        gain.connect(this.compressor);
-        osc.start(t);
-        osc.stop(t + dur);
+        const baseFreq = this.profile === 'cyber' ? 1800 : 1200;
+        const freq = baseFreq + normalizedVal * 500;
+        this.modalResonator(t, freq, 24.0, 0.18, 0.008);
       },
 
       // 2. Micro hover tick (subtle, high-tech)
@@ -1976,22 +2203,8 @@
         this.init();
         if (!this.ctx || !this.enabled) return;
         const t = this.ctx.currentTime;
-        const freq = this.profile === 'cyber' ? 3200 : 2100;
-        const dur = 0.005;
-
-        const osc = this.ctx.createOscillator();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, t);
-
-        const gain = this.ctx.createGain();
-        const peak = this.profile === 'soft' ? 0.03 : 0.07;
-        gain.gain.setValueAtTime(peak, t);
-        gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-
-        osc.connect(gain);
-        gain.connect(this.compressor);
-        osc.start(t);
-        osc.stop(t + dur);
+        const freq = this.profile === 'cyber' ? 3400 : 2400;
+        this.modalResonator(t, freq, 30.0, 0.08, 0.005);
       },
 
       // 3. UI Button Click
@@ -1999,8 +2212,8 @@
         this.init();
         if (!this.ctx || !this.enabled) return;
         const t = this.ctx.currentTime;
-        this.toneBurst(t, 0.012, 1800, 600, 0.2, 'triangle');
-        this.noiseBurst(t, 0.008, 2800, 2.5, 0.15);
+        this.modalResonator(t, 2200, 16.0, 0.22, 0.012);
+        this.modalResonator(t, 650, 6.0, 0.18, 0.018);
       },
 
       // 4. Tab Switch chime
@@ -2008,8 +2221,8 @@
         this.init();
         if (!this.ctx || !this.enabled) return;
         const t = this.ctx.currentTime;
-        this.toneBurst(t, 0.04, 750, 1100, 0.15, 'sine');
-        this.toneBurst(t + 0.03, 0.06, 1100, 1600, 0.18, 'sine');
+        this.modalResonator(t, 880, 14.0, 0.16, 0.04);
+        this.modalResonator(t + 0.035, 1320, 16.0, 0.18, 0.05);
       },
 
       // 5. Weapon Switch chime
@@ -2017,183 +2230,281 @@
         this.init();
         if (!this.ctx || !this.enabled) return;
         const t = this.ctx.currentTime;
-        this.toneBurst(t, 0.03, 500, 900, 0.18, 'triangle');
-        this.noiseBurst(t + 0.02, 0.05, 2200, 3, 0.2);
+        this.modalStrike({
+          time: t,
+          bodyFreq: 140,
+          trunnionFreq: 850,
+          carrierFreq: 1750,
+          ringFreq: 5100,
+          intensity: 0.4,
+          hasMicroBounce: false
+        });
       },
 
-      // 6. Slide Rack & Action Cycling (authentic procedural mechanics per class)
+      // 6. Realistic Slide Rack & Action Cycling per Weapon Class & Model
       playSlideRack(weaponClass = 'assault', weaponId = '') {
         this.init();
         if (!this.ctx || !this.enabled) return;
         const t = this.ctx.currentTime;
 
-        // Special: MP5 HK SLAP
+        // MP5 Roller-Delayed HK Slap
         if (weaponId === 'hkmp5') {
-          // Phase 1: Pull cocking handle into notch
-          this.noiseBurst(t, 0.07, 2400, 4, 0.25);
-          this.toneBurst(t, 0.015, 2100, 800, 0.3, 'triangle');
-          // Phase 2: Iconic "HK Slap" palm strike at t + 0.18s
-          const tSlap = t + 0.18;
-          this.toneBurst(tSlap, 0.015, 4200, 900, 0.45, 'sine');
-          this.noiseBurst(tSlap, 0.03, 3800, 3, 0.35);
-          // Roller lockup into trunnion at t + 0.21s
-          this.toneBurst(tSlap + 0.03, 0.08, 2800, 600, 0.38, 'sine');
-          this.toneBurst(tSlap + 0.03, 0.05, 210, 60, 0.4, 'triangle');
+          this.playRailFriction(t, 0.08, 900, 1600, 0.3);
+          this.modalStrike({ time: t + 0.07, bodyFreq: 150, trunnionFreq: 1100, carrierFreq: 2400, ringFreq: 5800, intensity: 0.35, hasMicroBounce: false });
+          
+          const tSlap = t + 0.22;
+          this.noiseBurst(tSlap, 0.015, 3200, 3.0, 0.45, 'bandpass');
+          this.modalStrike({ time: tSlap, bodyFreq: 110, trunnionFreq: 820, carrierFreq: 1750, ringFreq: 4600, intensity: 0.4, hasMicroBounce: false });
+
+          const tLock = t + 0.28;
+          this.playRailFriction(tSlap + 0.01, 0.05, 1400, 1800, 0.35);
+          this.modalStrike({ time: tLock, bodyFreq: 130, trunnionFreq: 890, carrierFreq: 1950, ringFreq: 6400, intensity: 0.55, bodyDecay: 0.08 });
           return;
         }
 
-        // Special: Shotgun Pump
+        // Shotgun 12-Gauge Pump
         if (weaponClass === 'shotgun' || weaponId === 'remington870') {
-          // Backward stroke (extract shell)
-          this.noiseBurst(t, 0.09, 1400, 2.5, 0.3);
-          this.toneBurst(t, 0.02, 280, 80, 0.35, 'triangle');
-          // Forward stroke (chamber new shell) at t + 0.16s
-          const tFwd = t + 0.16;
-          this.noiseBurst(tFwd, 0.08, 1800, 2.5, 0.35);
-          this.toneBurst(tFwd + 0.03, 0.04, 3200, 700, 0.4, 'sine');
-          this.toneBurst(tFwd + 0.03, 0.06, 120, 50, 0.45, 'triangle');
+          this.modalStrike({ time: t, bodyFreq: 110, trunnionFreq: 620, carrierFreq: 1250, ringFreq: 3400, intensity: 0.4, hasMicroBounce: false });
+          this.playRailFriction(t + 0.02, 0.11, 850, 600, 0.4);
+
+          const tFwd = t + 0.20;
+          this.playRailFriction(tFwd, 0.09, 700, 1100, 0.42);
+          const tLock = tFwd + 0.09;
+          this.modalStrike({ time: tLock, bodyFreq: 95, trunnionFreq: 540, carrierFreq: 1350, ringFreq: 4200, intensity: 0.65, bodyDecay: 0.10 });
           return;
         }
 
-        // Special: Revolver Hammer Cock & Cylinder Ratchet
-        if (weaponId === 'colt_python') {
-          // Ratchet clicks
-          this.toneBurst(t, 0.008, 3600, 1200, 0.25, 'triangle');
-          this.toneBurst(t + 0.025, 0.008, 3900, 1300, 0.28, 'triangle');
-          this.toneBurst(t + 0.05, 0.008, 4200, 1400, 0.3, 'triangle');
-          // Hammer cock lock detent
-          this.toneBurst(t + 0.12, 0.02, 850, 200, 0.4, 'triangle');
-          this.toneBurst(t + 0.12, 0.015, 2800, 900, 0.35, 'sine');
-          return;
-        }
-
-        // Special: Bolt Action Sniper (AWM, CheyTac)
+        // Bolt Action Sniper (AI AX338, CheyTac)
         if (weaponClass === 'sniper' || weaponId === 'aiax338' || weaponId === 'cheytac_m200') {
-          // 1. Bolt handle lift
-          this.toneBurst(t, 0.02, 1100, 400, 0.35, 'triangle');
-          this.noiseBurst(t, 0.05, 1200, 3, 0.25);
-          // 2. Rearward drag at t + 0.10s
-          this.noiseBurst(t + 0.10, 0.10, 950, 2, 0.3);
-          // 3. Forward feed at t + 0.22s
-          this.noiseBurst(t + 0.22, 0.08, 1500, 2.5, 0.3);
-          // 4. Downward handle lock into battery at t + 0.32s
-          const tLock = t + 0.32;
-          this.toneBurst(tLock, 0.05, 130, 45, 0.45, 'triangle');
-          this.toneBurst(tLock, 0.02, 3100, 800, 0.4, 'sine');
+          this.modalStrike({ time: t, bodyFreq: 140, trunnionFreq: 920, carrierFreq: 1850, ringFreq: 5100, intensity: 0.4, hasMicroBounce: false });
+          this.playRailFriction(t + 0.06, 0.13, 950, 800, 0.35);
+
+          const tFwd = t + 0.24;
+          this.playRailFriction(tFwd, 0.11, 900, 1350, 0.38);
+          const tLock = tFwd + 0.12;
+          this.modalStrike({ time: tLock, bodyFreq: 105, trunnionFreq: 720, carrierFreq: 1600, ringFreq: 4800, intensity: 0.6, bodyDecay: 0.09 });
           return;
         }
 
-        // Handguns (Glock, 1911, Desert Eagle)
+        // Revolver (Colt Python)
+        if (weaponId === 'colt_python') {
+          this.modalStrike({ time: t, bodyFreq: 220, trunnionFreq: 1400, carrierFreq: 3100, ringFreq: 6200, intensity: 0.25, hasMicroBounce: false });
+          this.modalStrike({ time: t + 0.04, bodyFreq: 230, trunnionFreq: 1450, carrierFreq: 3200, ringFreq: 6400, intensity: 0.28, hasMicroBounce: false });
+          this.modalStrike({ time: t + 0.08, bodyFreq: 240, trunnionFreq: 1500, carrierFreq: 3300, ringFreq: 6600, intensity: 0.30, hasMicroBounce: false });
+          const tCock = t + 0.16;
+          this.modalStrike({ time: tCock, bodyFreq: 160, trunnionFreq: 1100, carrierFreq: 2600, ringFreq: 5900, intensity: 0.5, bodyDecay: 0.07 });
+          return;
+        }
+
+        // Handguns (Glock 17, 1911, Desert Eagle)
         if (weaponClass === 'handgun') {
-          // Phase 1: Slide pull rearward
-          this.noiseBurst(t, 0.07, 2400, 3, 0.3);
-          this.toneBurst(t, 0.012, 2200, 600, 0.25, 'triangle');
-          // Phase 2: Slide release snaps forward into battery at t + 0.15s
-          const tSnap = t + 0.15;
-          this.toneBurst(tSnap, 0.018, 3800, 700, 0.42, 'sine');
-          this.toneBurst(tSnap, 0.035, 190, 60, 0.38, 'triangle');
-          this.noiseBurst(tSnap, 0.04, 2800, 2.5, 0.25);
+          this.playRailFriction(t, 0.08, 1200, 1800, 0.3);
+          this.playSpringTwang(t + 0.03, 0.06, 520, 0.12);
+
+          const tSnap = t + 0.16;
+          this.playRailFriction(tSnap, 0.04, 1800, 2400, 0.35);
+          this.modalStrike({
+            time: tSnap + 0.04,
+            bodyFreq: weaponId === 'desert_eagle' ? 100 : 160,
+            trunnionFreq: 880,
+            carrierFreq: 1850,
+            ringFreq: 5400,
+            intensity: weaponId === 'desert_eagle' ? 0.65 : 0.48,
+            bodyDecay: 0.07
+          });
           return;
         }
 
-        // Rifles / Carbines (M4A1, AK47, SCAR, G3, Bullpups)
-        // Phase 1: Charging handle pull & carrier slide
-        this.noiseBurst(t, 0.09, 1600, 3, 0.3);
-        this.toneBurst(t, 0.02, 1400, 500, 0.28, 'triangle');
-        this.toneBurst(t + 0.03, 0.07, 480, 480, 0.2, 'sine');
-        // Phase 2: Forward lockup into battery at t + 0.18s
+        // Assault Rifles & Carbines (M4A1, AK-47, SCAR, G3)
+        this.modalStrike({ time: t, bodyFreq: 160, trunnionFreq: 1200, carrierFreq: 2400, ringFreq: 5200, intensity: 0.3, hasMicroBounce: false });
+        this.playRailFriction(t + 0.02, 0.10, 1100, 1500, 0.35);
+        this.playSpringTwang(t + 0.04, 0.08, 460, 0.15);
+
         const tBat = t + 0.18;
-        this.toneBurst(tBat, 0.02, 3400, 600, 0.45, 'sine');
-        this.toneBurst(tBat, 0.045, 150, 50, 0.42, 'triangle');
-        this.toneBurst(tBat + 0.02, 0.08, 520, 520, 0.22, 'sine');
-        this.noiseBurst(tBat, 0.04, 2200, 2.5, 0.3);
+        this.playRailFriction(tBat, 0.06, 1400, 2200, 0.38);
+
+        if (weaponId === 'ak47') {
+          this.modalStrike({
+            time: tBat + 0.05,
+            bodyFreq: 110,
+            trunnionFreq: 690,
+            carrierFreq: 1420,
+            ringFreq: 4400,
+            intensity: 0.6,
+            bodyDecay: 0.08,
+            carrierDecay: 0.07
+          });
+          this.playSpringTwang(tBat + 0.07, 0.10, 410, 0.18);
+        } else {
+          this.modalStrike({
+            time: tBat + 0.05,
+            bodyFreq: 125,
+            trunnionFreq: 760,
+            carrierFreq: 1560,
+            ringFreq: 5800,
+            intensity: 0.55,
+            bodyDecay: 0.065
+          });
+          this.playSpringTwang(tBat + 0.07, 0.08, 490, 0.14);
+        }
       },
 
-      // 7. Trigger pull break & reset click
+      // 7. Tactical Trigger Break & Reset
       playTriggerClick(isReset = false) {
         this.init();
         if (!this.ctx || !this.enabled) return;
         const t = this.ctx.currentTime;
         if (isReset) {
-          this.toneBurst(t, 0.006, 6200, 1800, 0.25, 'triangle');
+          this.modalResonator(t, 4600, 20.0, 0.22, 0.02);
+          this.modalResonator(t, 1850, 15.0, 0.15, 0.025);
         } else {
-          this.toneBurst(t, 0.01, 4800, 800, 0.35, 'triangle');
-          this.noiseBurst(t, 0.007, 3600, 3, 0.2);
-          this.toneBurst(t, 0.015, 340, 100, 0.25, 'sine');
+          this.modalResonator(t, 3800, 18.0, 0.25, 0.02);
+          this.modalResonator(t, 950, 12.0, 0.18, 0.03);
         }
       },
 
-      // 8. Dry Fire (Striker / Hammer fall on empty breech)
+      // 8. Striker / Hammer Fall Dry Fire
       playDryFire() {
         this.init();
         if (!this.ctx || !this.enabled) return;
         const t = this.ctx.currentTime;
-        this.toneBurst(t, 0.012, 3800, 700, 0.45, 'triangle');
-        this.noiseBurst(t, 0.015, 3200, 3.5, 0.3);
-        this.toneBurst(t + 0.005, 0.06, 280, 70, 0.38, 'sine');
+        this.noiseBurst(t, 0.002, 5400, 5.0, 0.28, 'highpass');
+        this.modalStrike({
+          time: t + 0.003,
+          bodyFreq: 135,
+          trunnionFreq: 940,
+          carrierFreq: 1980,
+          ringFreq: 6200,
+          intensity: 0.55,
+          bodyDecay: 0.045,
+          carrierDecay: 0.035,
+          ringDecay: 0.03,
+          hasMicroBounce: false
+        });
       },
 
-      // 9. Magazine Eject
+      // 9. Magazine Ejection
       playMagEject() {
         this.init();
         if (!this.ctx || !this.enabled) return;
         const t = this.ctx.currentTime;
-        this.toneBurst(t, 0.012, 2900, 900, 0.3, 'triangle');
-        this.noiseBurst(t + 0.01, 0.10, 850, 2.5, 0.25);
+        this.modalResonator(t, 3200, 18.0, 0.28, 0.025);
+        this.modalResonator(t, 1400, 10.0, 0.18, 0.03);
+        this.playRailFriction(t + 0.015, 0.09, 850, 600, 0.25);
       },
 
-      // 10. Magazine Insert & Lock
+      // 10. Magazine Insertion & Palm Slap
       playMagInsert() {
         this.init();
         if (!this.ctx || !this.enabled) return;
         const t = this.ctx.currentTime;
-        this.noiseBurst(t, 0.07, 1500, 2.5, 0.22);
-        const tSlap = t + 0.08;
-        this.toneBurst(tSlap, 0.04, 160, 50, 0.42, 'triangle');
-        this.noiseBurst(tSlap, 0.03, 1900, 2, 0.3);
-        this.toneBurst(tSlap + 0.02, 0.015, 3400, 800, 0.38, 'sine');
+        this.playRailFriction(t, 0.08, 750, 1200, 0.28);
+        const tSlap = t + 0.09;
+        this.noiseBurst(tSlap, 0.012, 120, 1.5, 0.45, 'lowpass');
+        this.modalStrike({
+          time: tSlap,
+          bodyFreq: 115,
+          trunnionFreq: 820,
+          carrierFreq: 1720,
+          ringFreq: 4800,
+          intensity: 0.52,
+          bodyDecay: 0.07,
+          hasMicroBounce: false
+        });
       },
 
-      // 11. Brass Casing Floor Clink & Bounces
+      // 11. Drawn 70/30 Cartridge Brass Clink & Bounce Physics
       playShellClink() {
         this.init();
         if (!this.ctx || !this.enabled) return;
         const t = this.ctx.currentTime;
-        this.toneBurst(t, 0.10, 4400, 4100, 0.28, 'sine');
-        this.noiseBurst(t, 0.01, 4200, 4, 0.18);
-        this.toneBurst(t + 0.07, 0.06, 4750, 4500, 0.18, 'sine');
-        this.toneBurst(t + 0.13, 0.03, 5100, 4900, 0.1, 'sine');
+        this.modalResonator(t, 2900, 16.0, 0.25, 0.02);
+        this.playBrassBounce(t + 0.12);
       },
 
-      // 12. Exploded View Disassembly Soundscape
+      // 12. Exploded Disassembly Harmonic Soundscape
       playExplodeDisassembly() {
         this.init();
         if (!this.ctx || !this.enabled) return;
         const t = this.ctx.currentTime;
-        this.toneBurst(t, 0.08, 300, 750, 0.2, 'sine');
-        this.noiseBurst(t + 0.04, 0.12, 1800, 3, 0.25);
-        this.toneBurst(t + 0.12, 0.09, 850, 1600, 0.22, 'sine');
+        [220, 440, 880, 1760, 3520].forEach((freq, idx) => {
+          this.modalResonator(t + idx * 0.025, freq, 18.0 + idx * 4, 0.18 / (idx * 0.5 + 1), 0.12 + idx * 0.03);
+        });
+        this.playRailFriction(t + 0.05, 0.18, 1400, 2600, 0.2);
       },
 
-      // 13. Exploded View Re-assembly Soundscape
+      // 13. Re-assembly Battery Lockup Soundscape
       playExplodeAssembly() {
         this.init();
         if (!this.ctx || !this.enabled) return;
         const t = this.ctx.currentTime;
-        this.toneBurst(t, 0.09, 1500, 600, 0.22, 'sine');
-        this.noiseBurst(t + 0.06, 0.10, 2200, 3, 0.25);
-        this.toneBurst(t + 0.14, 0.05, 180, 50, 0.38, 'triangle');
+        [3520, 1760, 880, 440, 220].forEach((freq, idx) => {
+          this.modalResonator(t + idx * 0.025, freq, 22.0 - idx * 2, 0.20 / (idx * 0.4 + 1), 0.10 + idx * 0.02);
+        });
+        this.modalStrike({ time: t + 0.16, bodyFreq: 115, trunnionFreq: 750, carrierFreq: 1520, ringFreq: 4800, intensity: 0.55, bodyDecay: 0.08 });
       },
 
-      // 14. 3D Part Selection ping
+      // 14. Dedicated Field Strip Stage SFX
+      playFieldStripStage(stage, isReverse = false) {
+        this.init();
+        if (!this.ctx || !this.enabled) return;
+        const t = this.ctx.currentTime;
+
+        if (stage === 1) {
+          if (!isReverse) {
+            this.modalResonator(t, 3400, 20.0, 0.35, 0.03);
+            this.playRailFriction(t + 0.02, 0.10, 800, 550, 0.3);
+          } else {
+            this.playMagInsert();
+          }
+        } else if (stage === 2) {
+          if (!isReverse) {
+            this.modalResonator(t, 4800, 24.0, 0.4, 0.035);
+            this.modalResonator(t, 1250, 12.0, 0.3, 0.04);
+            this.modalResonator(t + 0.04, 130, 4.0, 0.35, 0.08);
+          } else {
+            this.modalResonator(t, 140, 5.0, 0.35, 0.06);
+            this.modalResonator(t + 0.05, 4800, 22.0, 0.45, 0.04);
+          }
+        } else if (stage === 3) {
+          if (!isReverse) {
+            this.modalResonator(t, 2400, 16.0, 0.3, 0.03);
+            this.playRailFriction(t + 0.03, 0.14, 1200, 800, 0.4);
+            this.modalResonator(t + 0.15, 840, 10.0, 0.25, 0.05);
+          } else {
+            this.playRailFriction(t, 0.12, 800, 1200, 0.38);
+            this.modalStrike({ time: t + 0.12, bodyFreq: 130, trunnionFreq: 850, carrierFreq: 1600, ringFreq: 4600, intensity: 0.45, hasMicroBounce: false });
+          }
+        } else if (stage === 4) {
+          if (!isReverse) {
+            this.modalResonator(t, 5200, 28.0, 0.38, 0.03);
+            this.modalResonator(t + 0.04, 3100, 20.0, 0.32, 0.035);
+            this.modalResonator(t + 0.09, 1650, 14.0, 0.28, 0.04);
+          } else {
+            this.modalResonator(t, 1650, 14.0, 0.28, 0.04);
+            this.modalResonator(t + 0.05, 3100, 20.0, 0.32, 0.035);
+            this.modalResonator(t + 0.09, 5200, 28.0, 0.38, 0.03);
+          }
+        } else if (stage === 5) {
+          if (!isReverse) {
+            this.playExplodeDisassembly();
+          } else {
+            this.playExplodeAssembly();
+          }
+        } else if (stage === 0) {
+          this.modalStrike({ time: t, bodyFreq: 120, trunnionFreq: 760, carrierFreq: 1540, ringFreq: 5200, intensity: 0.5, bodyDecay: 0.07 });
+        }
+      },
+
+      // 15. 3D Part Selection ping
       playPartSelect() {
         this.init();
         if (!this.ctx || !this.enabled) return;
         const t = this.ctx.currentTime;
-        this.toneBurst(t, 0.03, 1600, 2400, 0.2, 'sine');
+        this.modalResonator(t, 2400, 22.0, 0.18, 0.03);
       },
 
-      // 15. Entrance Portal Warp soundscape
+      // 16. Entrance Portal Warp soundscape
       playPortalWarp() {
         this.init();
         if (!this.ctx || !this.enabled) return;
@@ -2202,8 +2513,7 @@
         this.noiseBurst(t, 0.4, 400, 6, 0.25);
         this.toneBurst(t + 0.1, 0.35, 300, 2600, 0.3, 'sine');
         const tLock = t + 0.38;
-        this.toneBurst(tLock, 0.06, 140, 45, 0.5, 'triangle');
-        this.toneBurst(tLock, 0.02, 3400, 800, 0.45, 'sine');
+        this.modalStrike({ time: tLock, bodyFreq: 110, trunnionFreq: 740, carrierFreq: 1480, ringFreq: 5400, intensity: 0.65, bodyDecay: 0.09 });
       }
     };
 
@@ -2672,9 +2982,15 @@
         } else if (key === 'e') {
           e.preventDefault();
           triggerEjectBrass();
-        } else if (key === 'x') {
+        } else if (key === 'f' || key === 'x') {
           e.preventDefault();
           toggleExplode();
+        } else if (key === '[' || key === 'arrowleft') {
+          e.preventDefault();
+          stepFieldStrip(-1);
+        } else if (key === ']' || key === 'arrowright') {
+          e.preventDefault();
+          stepFieldStrip(1);
         } else if (key === 'm') {
           e.preventDefault();
           ArmoryAudio.toggleMute();
@@ -3373,7 +3689,22 @@
       updateBoreLaser();
     }
 
+    const FIELD_STRIP_STAGES = [
+      { stage: 0, pct: 0, badge: "STAGE 0/5: IN BATTERY", desc: "Fully assembled; bolt locked into battery; magazine seated." },
+      { stage: 1, pct: 20, badge: "STAGE 1/5: MAG CLEARED", desc: "Magazine catch depressed; magazine dropped free; chamber verified clear." },
+      { stage: 2, pct: 40, badge: "STAGE 2/5: RECEIVERS SPLIT", desc: "Takedown pins pushed to detents; upper and lower receivers separated." },
+      { stage: 3, pct: 60, badge: "STAGE 3/5: BCG EXTRACTED", desc: "Charging handle unlatched; bolt carrier group withdrawn from receiver tunnel." },
+      { stage: 4, pct: 80, badge: "STAGE 4/5: BOLT DETAIL STRIPPED", desc: "Firing pin retaining pin pulled; cam pin rotated 90°; bolt head extracted." },
+      { stage: 5, pct: 100, badge: "STAGE 5/5: FULL CAD MATRIX", desc: "Barrel, gas block, handguard, and internal components exploded along 3-axis vectors." }
+    ];
+
+    let currentStripStage = 0;
+    let activeStripTween = null;
+    let isAutoStripping = false;
+    let autoStripTimeout = null;
+
     function setExplodedAmount(val) {
+      val = Number(val);
       explodedProgress = val / 100;
       isExploded = val > 0;
 
@@ -3385,27 +3716,152 @@
         ArmoryAudio.vibrate([4]);
       }
 
-      document.getElementById('tele-status').innerText = isExploded ? `EXPLODED [${val}%]` : `IN BATTERY [0%]`;
-      document.getElementById('tele-status').className = isExploded ? "text-amber-400 font-bold glow-amber" : "text-cyan-400 font-bold";
+      // Update HUD Telemetry
+      const teleStatus = document.getElementById('tele-status');
+      if (teleStatus) {
+        teleStatus.innerText = isExploded ? `EXPLODED [${Math.round(val)}%]` : `IN BATTERY [0%]`;
+        teleStatus.className = isExploded ? "text-amber-400 font-bold glow-amber" : "text-cyan-400 font-bold";
+      }
 
-      const btn = document.getElementById('explode-btn');
-      btn.innerText = isExploded ? "COLLAPSE" : "EXPLODE";
-      btn.className = isExploded 
-        ? "px-2 py-0.5 bg-amber-500 text-black font-bold rounded text-[11px] mono transition shadow-[0_0_10px_rgba(245,158,11,0.4)]"
-        : "px-2 py-0.5 bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500 hover:text-black border border-cyan-500/40 rounded text-[11px] mono font-bold transition";
+      // Determine active stage & update badges
+      const stageIdx = Math.min(5, Math.max(0, Math.round(val / 20)));
+      currentStripStage = stageIdx;
+      const stageData = FIELD_STRIP_STAGES[stageIdx] || FIELD_STRIP_STAGES[0];
+      
+      const badge = document.getElementById('strip-stage-badge');
+      if (badge) badge.innerText = stageData.badge;
+      const desc = document.getElementById('strip-stage-desc');
+      if (desc) desc.innerText = stageData.desc;
 
+      // Master button state
+      const btnText = document.getElementById('explode-btn-text');
+      if (btnText) {
+        btnText.innerText = isExploded ? "ASSEMBLE WEAPON" : "FIELD STRIP WEAPON";
+      }
+
+      // Realistic Field Strip piece-wise interpolation for each part
+      let detachedPartsCount = 0;
       currentParts.forEach(part => {
-        part.position.lerpVectors(part.userData.basePos, part.userData.explodedPos, explodedProgress);
+        const pStage = part.userData.stripStage || 5;
+        const stageStart = (pStage - 1) * 20;
+        const stageEnd = pStage * 20;
+        let partT = 0;
+
+        if (val >= stageEnd) {
+          partT = 1.0;
+        } else if (val <= stageStart) {
+          partT = 0.0;
+        } else {
+          // Smooth Hermite interpolation within its detachment stage window
+          const norm = (val - stageStart) / 20;
+          partT = norm * norm * (3 - 2 * norm);
+        }
+
+        if (partT > 0.05) detachedPartsCount++;
+        part.position.lerpVectors(part.userData.basePos, part.userData.explodedPos, partT);
       });
+
+      // Update detached count readout
+      const partCountEl = document.getElementById('strip-part-count');
+      if (partCountEl) {
+        partCountEl.innerHTML = `<span class="text-amber-400 font-bold glow-amber">${detachedPartsCount}</span> <span class="text-slate-400">/ ${currentParts.length} PARTS DETACHED</span>`;
+      }
 
       updateLeaderLines();
     }
 
+    function stepFieldStrip(dir) {
+      ArmoryAudio.init();
+      const slider = document.getElementById('explode-slider');
+      const currentVal = Number(slider.value);
+      let targetStage = Math.round(currentVal / 20) + dir;
+      targetStage = Math.max(0, Math.min(5, targetStage));
+      const targetVal = targetStage * 20;
+
+      // Play dedicated field strip stage SFX
+      ArmoryAudio.playFieldStripStage(targetStage, dir < 0);
+      ArmoryAudio.vibrate(dir > 0 ? [15, 25] : [20, 15]);
+
+      if (activeStripTween) activeStripTween.stop();
+      activeStripTween = new TWEEN.Tween({ val: currentVal })
+        .to({ val: targetVal }, 380)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .onUpdate(obj => {
+          slider.value = obj.val;
+          setExplodedAmount(obj.val);
+        })
+        .start();
+    }
+
+    function goToFieldStripStage(stage) {
+      ArmoryAudio.init();
+      const slider = document.getElementById('explode-slider');
+      const currentVal = Number(slider.value);
+      const targetVal = stage * 20;
+      const dir = targetVal > currentVal ? 1 : -1;
+
+      ArmoryAudio.playFieldStripStage(stage, dir < 0);
+      ArmoryAudio.vibrate([18]);
+
+      if (activeStripTween) activeStripTween.stop();
+      activeStripTween = new TWEEN.Tween({ val: currentVal })
+        .to({ val: targetVal }, 420)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .onUpdate(obj => {
+          slider.value = obj.val;
+          setExplodedAmount(obj.val);
+        })
+        .start();
+    }
+
+    function toggleAutoFieldStrip() {
+      ArmoryAudio.init();
+      if (isAutoStripping) {
+        stopAutoFieldStrip();
+        return;
+      }
+      isAutoStripping = true;
+      const btn = document.getElementById('btn-auto-strip');
+      const label = document.getElementById('label-auto-strip');
+      if (btn) btn.className = 'px-2 py-1 bg-amber-500 text-black rounded-lg text-[11px] font-bold transition flex items-center gap-1 shadow-[0_0_10px_rgba(245,158,11,0.4)]';
+      if (label) label.innerText = 'PAUSE AUTO';
+
+      runAutoStripSequence(1);
+    }
+
+    function stopAutoFieldStrip() {
+      isAutoStripping = false;
+      if (autoStripTimeout) clearTimeout(autoStripTimeout);
+      const btn = document.getElementById('btn-auto-strip');
+      const label = document.getElementById('label-auto-strip');
+      if (btn) btn.className = 'px-2 py-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-cyan-400 hover:text-cyan-300 rounded-lg text-[11px] font-bold transition flex items-center gap-1';
+      if (label) label.innerText = 'AUTO STRIP';
+    }
+
+    function runAutoStripSequence(stage) {
+      if (!isAutoStripping) return;
+      goToFieldStripStage(stage);
+
+      if (stage < 5) {
+        autoStripTimeout = setTimeout(() => {
+          runAutoStripSequence(stage + 1);
+        }, 1100);
+      } else {
+        autoStripTimeout = setTimeout(() => {
+          if (!isAutoStripping) return;
+          goToFieldStripStage(0);
+          autoStripTimeout = setTimeout(() => {
+            stopAutoFieldStrip();
+          }, 900);
+        }, 1800);
+      }
+    }
+
     function toggleExplode() {
       ArmoryAudio.init();
-      const targetVal = isExploded ? 0 : 100;
       const slider = document.getElementById('explode-slider');
-      slider.value = targetVal;
+      const currentVal = Number(slider.value);
+      const targetVal = currentVal > 20 ? 0 : 100;
 
       if (targetVal === 100) {
         ArmoryAudio.playExplodeDisassembly();
@@ -3415,8 +3871,9 @@
         ArmoryAudio.vibrate([20, 20, 40]);
       }
 
-      new TWEEN.Tween({ val: explodedProgress * 100 })
-        .to({ val: targetVal }, 600)
+      if (activeStripTween) activeStripTween.stop();
+      activeStripTween = new TWEEN.Tween({ val: currentVal })
+        .to({ val: targetVal }, 550)
         .easing(TWEEN.Easing.Cubic.Out)
         .onUpdate(obj => {
           slider.value = obj.val;
@@ -3573,12 +4030,26 @@
     }
 
     function filterSubassembly(sub) {
+      ArmoryAudio.init();
+      ArmoryAudio.playButtonClick();
+      ArmoryAudio.vibrate([6]);
+
       ['all', 'action', 'fcg', 'barrel', 'feed'].forEach(s => {
         const btn = document.getElementById(`sub-${s}`);
-        if (s === sub) {
-          btn.className = "px-2 py-0.5 rounded bg-amber-500 text-black font-bold";
-        } else {
-          btn.className = "px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800 hover:border-amber-500/40";
+        if (btn) {
+          if (s === sub) {
+            btn.className = "px-2 py-0.5 rounded bg-amber-500 text-black font-bold";
+          } else {
+            btn.className = "px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800 hover:border-amber-500/40";
+          }
+        }
+        const dockBtn = document.getElementById(`sub-${s}-dock`);
+        if (dockBtn) {
+          if (s === sub) {
+            dockBtn.className = "px-1.5 py-0.5 rounded bg-amber-500 text-black font-bold";
+          } else {
+            dockBtn.className = "px-1.5 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 hover:border-amber-500/40";
+          }
         }
       });
 
