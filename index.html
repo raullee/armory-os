@@ -113,7 +113,7 @@
       
       <!-- Model Selector Ribbon -->
       <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-        <div class="flex items-center gap-1.5 overflow-x-auto" id="model-buttons">
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0" id="model-buttons">
           <!-- Populated by JS -->
         </div>
         <div class="flex items-center gap-2 border-t md:border-t-0 md:border-l border-slate-800 pt-2 md:pt-0 md:pl-3 overflow-x-auto text-[11px] mono">
@@ -249,43 +249,49 @@
             <span class="text-cyan-400 font-bold uppercase tracking-wider text-[11px] flex items-center gap-1.5" id="part-name">
               <i data-lucide="cpu" class="w-3.5 h-3.5"></i> COMPONENT SPEC
             </span>
-            <span class="text-[10px] text-amber-400 bg-amber-950/40 px-2 py-0.5 rounded border border-amber-800" id="part-subgroup">SUBASSEMBLY</span>
+            <span class="text-[9px] px-1.5 py-0.5 bg-slate-900 text-slate-400 rounded border border-slate-800" id="part-subgroup">SUBASSEMBLY</span>
           </div>
           <div class="space-y-1 text-slate-300 text-[11px]">
-            <p><strong class="text-slate-400">Spec / Material:</strong> <span id="part-material" class="text-slate-200">Hardened Ordnance Alloy</span></p>
-            <p><strong class="text-slate-400">Mechanical Role:</strong> <span id="part-desc" class="text-slate-200">Operational component.</span></p>
-            <p id="part-telemetry-row" class="text-cyan-400 font-bold pt-1 border-t border-slate-800/80"><strong class="text-slate-400">CAD Diagnostics:</strong> <span id="part-telemetry">Nominal Alignment</span></p>
+            <div><strong class="text-slate-400">Material:</strong> <span id="part-material" class="text-slate-200">Ordnance Alloy</span></div>
+            <div><strong class="text-slate-400">Function:</strong> <span id="part-desc" class="text-slate-300">Hover over any part in 3D to inspect.</span></div>
+            <div class="pt-1 border-t border-slate-800/80 text-[10px] text-amber-400 font-bold flex items-center gap-1">
+              <i data-lucide="gauge" class="w-3 h-3"></i> <span id="part-telemetry">Active Stress: Nominal</span>
+            </div>
           </div>
         </div>
 
       </div>
 
-      <!-- Dual Perception Analysis Cards for Active 3D Model -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div class="bg-cyan-950/15 border border-cyan-500/30 p-4 rounded-xl">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="cpu" class="w-4 h-4 text-cyan-400"></i>
-            <h3 class="text-xs font-bold text-cyan-400 uppercase tracking-wider mono">Cyber-Wire CAD Utility & Pressure Diagnostics</h3>
+      <!-- Quick Analysis & Identification Breakdown -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+        <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-xl space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-amber-400 mono flex items-center gap-1.5">
+              <i data-lucide="eye" class="w-4 h-4"></i> SIGHT IDENTIFICATION SIGNATURE (LAYPERSON)
+            </span>
+            <span class="text-[10px] mono text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">INSTANT TELL</span>
           </div>
-          <p class="text-sm text-slate-200 leading-relaxed" id="detail-armorer">
-            The dual-layer X-Ray shader projects an inner translucent ghost volume with external high-frequency wireframe vectors. High-pressure combustion zones (chamber, gas port) are highlighted in 55,000 PSI amber, while structural housings render in 7075-T6 cyan.
+          <p class="text-slate-300 leading-relaxed" id="detail-tell">
+            Curved 30-round magazine forward of the trigger, cylindrical buffer tube stock, and T-shaped top rear charging handle.
           </p>
         </div>
 
-        <div class="bg-amber-950/15 border border-amber-500/30 p-4 rounded-xl">
-          <div class="flex items-center gap-2 mb-1.5">
-            <i data-lucide="eye" class="w-4 h-4 text-amber-400"></i>
-            <h3 class="text-xs font-bold text-amber-400 uppercase tracking-wider mono">Layperson 2-Second Sight Tell</h3>
+        <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-xl space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-cyan-400 mono flex items-center gap-1.5">
+              <i data-lucide="wrench" class="w-4 h-4"></i> ARMORER MECHANICAL & BALLISTIC TELEMETRY
+            </span>
+            <span class="text-[10px] mono text-slate-400 bg-slate-950 px-2 py-0.5 rounded border border-slate-800">SPECIFICATION</span>
           </div>
-          <p class="text-sm text-slate-200 leading-relaxed" id="detail-layperson">
-            Notice the slim curved 30-round magazine seated ahead of the pistol grip, the cylindrical rear buffer tube stock, and the straight top rail.
+          <p class="text-slate-300 leading-relaxed" id="detail-armorer">
+            Direct gas tube vents expanding combustion gas straight into the bolt carrier expansion chamber, rotating the 7-lug bolt out of battery.
           </p>
         </div>
       </div>
 
     </section>
 
-    <!-- VIEW: SPEC DATABASE (24 FIREARMS) -->
+    <!-- VIEW: COMPLETE FIREARM DATABASE (24) -->
     <section id="view-database" class="hidden space-y-6">
       <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 bg-slate-900/60 p-4 rounded-xl border border-slate-800">
         <div class="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0" id="category-filters">
@@ -341,24 +347,169 @@
             <img src="extended_armory_specs_1790493227707.jpg" class="w-full h-auto rounded cursor-pointer" onclick="openLightbox(this.src)">
           </div>
         </div>
+        <div class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 hover:border-cyan-500/50 transition-all flex flex-col">
+          <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
+            <span class="text-xs text-cyan-400 mono font-semibold">NEO-TACTICAL HUD EXHIBITION (16:9)</span>
+            <a href="neo_tactical_armory_1790490526439.jpg" target="_blank" class="px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded text-xs mono">VIEW 4K</a>
+          </div>
+          <div class="bg-slate-950 p-2 flex-1 flex items-center justify-center">
+            <img src="neo_tactical_armory_1790490526439.jpg" class="w-full h-auto rounded cursor-pointer" onclick="openLightbox(this.src)">
+          </div>
+        </div>
+        <div class="bg-slate-900 rounded-xl overflow-hidden border border-slate-800 hover:border-amber-500/50 transition-all flex flex-col">
+          <div class="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-950">
+            <span class="text-xs text-amber-400 mono font-semibold">VERTICAL NEO-TACTICAL POSTER (3:4)</span>
+            <a href="neo_tactical_portrait_1790490547419.jpg" target="_blank" class="px-3 py-1 bg-amber-500/20 text-amber-400 rounded text-xs mono">VIEW 4K</a>
+          </div>
+          <div class="bg-slate-950 p-2 flex-1 flex items-center justify-center">
+            <img src="neo_tactical_portrait_1790490547419.jpg" class="w-full h-auto rounded cursor-pointer" onclick="openLightbox(this.src)">
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- VIEW: LIVE COMPARATOR -->
-    <section id="view-compare" class="hidden space-y-6">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-900/80 p-6 rounded-xl border border-slate-800">
-        <div>
-          <label class="block text-xs font-semibold text-amber-400 mono mb-2">WEAPON ALPHA (SELECT):</label>
-          <select id="compare-select-1" onchange="renderComparison()" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-sm text-slate-200 mono">
-          </select>
+    <!-- VIEW: LIVE COMPARATOR (FLAGSHIP 3D UPGRADE) -->
+    <section id="view-compare" class="hidden space-y-5">
+
+      <!-- Header & Selector Row -->
+      <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4 shadow-xl">
+        <div class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-bold text-amber-400 mono flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-[0_0_8px_#f59e0b]"></span>
+                WEAPON ALPHA (PRIMARY):
+              </label>
+              <span id="compare-alpha-class" class="text-[10px] mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30">ASSAULT RIFLE</span>
+            </div>
+            <select id="compare-select-1" onchange="renderComparison()" class="w-full bg-slate-950 border border-amber-500/40 rounded-lg p-2.5 text-xs text-amber-300 mono focus:outline-none focus:border-amber-400">
+            </select>
+          </div>
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-bold text-cyan-400 mono flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-[0_0_8px_#06b6d4]"></span>
+                WEAPON BRAVO (CHALLENGER):
+              </label>
+              <span id="compare-bravo-class" class="text-[10px] mono px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">BATTLE RIFLE</span>
+            </div>
+            <select id="compare-select-2" onchange="renderComparison()" class="w-full bg-slate-950 border border-cyan-500/40 rounded-lg p-2.5 text-xs text-cyan-300 mono focus:outline-none focus:border-cyan-400">
+            </select>
+          </div>
         </div>
-        <div>
-          <label class="block text-xs font-semibold text-cyan-400 mono mb-2">WEAPON BRAVO (SELECT):</label>
-          <select id="compare-select-2" onchange="renderComparison()" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-3 text-sm text-slate-200 mono">
-          </select>
+        <div class="flex items-center gap-2 self-center lg:self-end">
+          <button onclick="swapComparisonWeapons()" class="px-3 py-2 bg-slate-950 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded-lg text-xs mono font-bold flex items-center gap-1.5 transition" title="Swap Weapon Alpha and Bravo">
+            <i data-lucide="arrow-left-right" class="w-4 h-4 text-amber-400"></i> SWAP
+          </button>
         </div>
       </div>
-      <div id="comparison-result" class="space-y-6"></div>
+
+      <!-- Comparator 3D Diagnostic Toolbar -->
+      <div class="bg-slate-950/90 backdrop-blur-md p-3 rounded-xl border border-slate-800 flex flex-wrap items-center justify-between gap-3 shadow-lg text-xs mono">
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Linked Rotation Toggle -->
+          <button onclick="toggleCompareLinkedRotation()" id="btn-compare-sync" class="px-2.5 py-1.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold flex items-center gap-1.5 transition">
+            <i data-lucide="link" class="w-3.5 h-3.5"></i>
+            <span id="txt-compare-sync">SYNC ROTATION: ON</span>
+          </button>
+
+          <!-- True Physical Scale 1:1 Toggle -->
+          <button onclick="toggleCompareTrueScale()" id="btn-compare-scale" class="px-2.5 py-1.5 rounded bg-slate-900 text-slate-300 border border-slate-700 hover:border-amber-500/40 font-bold flex items-center gap-1.5 transition">
+            <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+            <span id="txt-compare-scale">SCALE: NORMALIZED</span>
+          </button>
+
+          <div class="h-4 w-px bg-slate-800 hidden sm:block"></div>
+
+          <!-- Dual Explode Slider -->
+          <div class="flex items-center gap-2 bg-slate-900/80 px-2.5 py-1 rounded-lg border border-slate-800">
+            <i data-lucide="layers" class="w-3.5 h-3.5 text-amber-400"></i>
+            <span class="text-slate-400 text-[11px]">EXPLODE:</span>
+            <input type="range" id="compare-explode-slider" min="0" max="100" value="0" oninput="setCompareExplodedAmount(this.value)" class="w-24 accent-amber-500 cursor-pointer">
+            <span id="compare-explode-val" class="text-[10px] text-amber-400 w-8">0%</span>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Render Mode Switcher -->
+          <div class="flex items-center gap-1 bg-slate-900/80 p-0.5 rounded-lg border border-slate-800 text-[11px]">
+            <button onclick="setCompareRenderMode('pbr')" id="btn-comp-pbr" class="px-2 py-1 rounded bg-amber-500 text-black font-bold">PBR</button>
+            <button onclick="setCompareRenderMode('wireframe')" id="btn-comp-wire" class="px-2 py-1 rounded text-slate-400 hover:text-cyan-400">CYBER WIRE</button>
+            <button onclick="setCompareRenderMode('thermal')" id="btn-comp-thermal" class="px-2 py-1 rounded text-slate-400 hover:text-red-400">THERMAL</button>
+          </div>
+
+          <!-- Camera Angles -->
+          <div class="flex items-center gap-1">
+            <button onclick="setCompareCameraAngle('side')" class="px-2 py-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded text-[11px]" title="Side Profile">SIDE</button>
+            <button onclick="setCompareCameraAngle('top')" class="px-2 py-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded text-[11px]" title="Top View">TOP</button>
+            <button onclick="setCompareCameraAngle('iso')" class="px-2 py-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded text-[11px]" title="Isometric 3/4">3/4 ISO</button>
+            <button onclick="resetCompareCameras()" class="p-1 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded" title="Reset Cameras">
+              <i data-lucide="refresh-ccw" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DUAL 3D COMPARATOR CANVASES -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <!-- CANVAS ALPHA -->
+        <div class="relative bg-gradient-to-b from-[#0a0e17] to-[#04060a] rounded-xl border border-amber-500/40 overflow-hidden shadow-2xl h-[460px] group">
+          <canvas id="compare-canvas-1" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+          
+          <!-- Tactical HUD Alpha -->
+          <div class="absolute top-3 left-3 pointer-events-none space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 bg-amber-500/20 text-amber-400 border border-amber-500/40 text-[10px] font-bold rounded mono">ALPHA // PRIMARY</span>
+              <span class="text-[10px] mono text-slate-400" id="hud-alpha-caliber">5.56x45mm NATO</span>
+            </div>
+            <h3 class="text-xl font-black text-amber-300 tracking-wider mono uppercase glow-amber" id="hud-alpha-name">COLT M4A1</h3>
+            <div class="text-[10px] mono text-slate-400 flex items-center gap-2">
+              <span>LEN: <strong class="text-amber-400" id="hud-alpha-len">838 mm</strong></span>
+              <span>WT: <strong class="text-amber-400" id="hud-alpha-wt">3,100 g</strong></span>
+              <span>VEL: <strong class="text-amber-400" id="hud-alpha-vel">905 m/s</strong></span>
+            </div>
+          </div>
+
+          <!-- On-Canvas Raycast Inspection Tooltip Alpha -->
+          <div id="compare-part-alpha" class="absolute bottom-3 left-3 right-3 bg-slate-950/90 border border-amber-500/40 p-2.5 rounded-lg text-[10px] mono text-slate-300 pointer-events-none transition-all hidden">
+            <div class="text-amber-400 font-bold" id="compare-part-alpha-name">COMPONENT SPEC</div>
+            <div class="text-slate-400 truncate" id="compare-part-alpha-desc">Hover over any part in 3D to inspect material and function.</div>
+          </div>
+        </div>
+
+        <!-- CANVAS BRAVO -->
+        <div class="relative bg-gradient-to-b from-[#080e18] to-[#030508] rounded-xl border border-cyan-500/40 overflow-hidden shadow-2xl h-[460px] group">
+          <canvas id="compare-canvas-2" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+          
+          <!-- Tactical HUD Bravo -->
+          <div class="absolute top-3 left-3 pointer-events-none space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 text-[10px] font-bold rounded mono">BRAVO // CHALLENGER</span>
+              <span class="text-[10px] mono text-slate-400" id="hud-bravo-caliber">7.62x51mm NATO</span>
+            </div>
+            <h3 class="text-xl font-black text-cyan-300 tracking-wider mono uppercase glow-cyan" id="hud-bravo-name">FN SCAR 17H</h3>
+            <div class="text-[10px] mono text-slate-400 flex items-center gap-2">
+              <span>LEN: <strong class="text-cyan-400" id="hud-bravo-len">965 mm</strong></span>
+              <span>WT: <strong class="text-cyan-400" id="hud-bravo-wt">3,580 g</strong></span>
+              <span>VEL: <strong class="text-cyan-400" id="hud-bravo-vel">790 m/s</strong></span>
+            </div>
+          </div>
+
+          <!-- On-Canvas Raycast Inspection Tooltip Bravo -->
+          <div id="compare-part-bravo" class="absolute bottom-3 left-3 right-3 bg-slate-950/90 border border-cyan-500/40 p-2.5 rounded-lg text-[10px] mono text-slate-300 pointer-events-none transition-all hidden">
+            <div class="text-cyan-400 font-bold" id="compare-part-bravo-name">COMPONENT SPEC</div>
+            <div class="text-slate-400 truncate" id="compare-part-bravo-desc">Hover over any part in 3D to inspect material and function.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-World Physical Metric Ruler Overlay (Active in True Scale mode) -->
+      <div id="true-scale-ruler" class="hidden bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl text-center mono text-[11px] text-slate-400">
+        <span class="text-amber-400 font-bold">1:1 PHYSICAL SCALE COMPARISON ACTIVE:</span> Relative weapon lengths and volumetric masses are calibrated to exact manufacturer millimeter schematics.
+      </div>
+
+      <!-- Detailed Ballistic & Spec Comparison Matrices -->
+      <div id="comparison-result" class="space-y-5"></div>
     </section>
 
     <!-- VIEW: SIGHT ID TRAINER -->
@@ -376,198 +527,668 @@
     <img id="lightbox-img" src="" class="max-w-full max-h-[90vh] object-contain rounded shadow-2xl">
   </div>
 
-  <!-- SCRIPT DATA & CYBER-WIRE 3D ENGINE -->
   <script>
     const FIREARMS = [
-      {
-        id: "m4a1",
-        name: "Colt M4A1 SOPMOD",
-        has3D: true,
-        partCount: 46,
-        class: "assault",
-        className: "Assault Rifle / Carbine",
-        caliber: "5.56x45mm NATO",
-        action: "Direct Impingement Gas Operation",
-        velocity: 905,
-        velocityFps: 2970,
-        energy: 1750,
-        range: 500,
-        capacity: "30 rounds (STANAG)",
-        weight: "3,100 g",
-        length: "838 mm",
-        rpm: "700 - 950 RPM",
-        pressurePsi: "55,000 PSI",
-        barrelTwist: "1:7 RH Twist",
-        laypersonTell: "Curved 30-round magazine forward of the trigger, cylindrical buffer tube stock, and T-shaped top rear charging handle.",
-        armorerAnalysis: "Direct gas tube vents expanding combustion gas straight into the bolt carrier expansion chamber, rotating the 7-lug bolt out of battery.",
-        icon: "crosshair"
-      },
-      {
-        id: "glock19",
-        name: "Glock 19 Gen 5",
-        has3D: true,
-        partCount: 38,
-        class: "handgun",
-        className: "Handgun (Semi-Auto)",
-        caliber: "9x19mm Parabellum",
-        action: "Short-Recoil, Locked Breech, Striker-Fired",
-        velocity: 360,
-        velocityFps: 1180,
-        energy: 490,
-        range: 50,
-        capacity: "15 rounds (standard)",
-        weight: "670 g",
-        length: "185 mm",
-        rpm: "Semi-Auto",
-        pressurePsi: "35,000 PSI",
-        barrelTwist: "1:9.84 RH Marksman",
-        laypersonTell: "Rectangular steel slide reciprocating over a black polymer grip; magazine hidden entirely inside the handle.",
-        armorerAnalysis: "Safe Action striker mechanism with three internal passive safeties. Cold hammer-forged barrel tilts downward during recoil to unlock the slide breech.",
-        icon: "shield"
-      },
-      {
-        id: "aiax338",
-        name: "Accuracy International AX338",
-        has3D: true,
-        partCount: 42,
-        class: "sniper",
-        className: "Bolt-Action Precision Sniper",
-        caliber: ".338 Lapua Magnum (8.6x70mm)",
-        action: "Manual Turn-Bolt, 60° Short Throw",
-        velocity: 915,
-        velocityFps: 3000,
-        energy: 6680,
-        range: 1500,
-        capacity: "10 rounds (center-feed box)",
-        weight: "7,800 g",
-        length: "1,250 mm",
-        rpm: "Manual Bolt",
-        pressurePsi: "60,900 PSI",
-        barrelTwist: "1:9.35 Match",
-        laypersonTell: "Steel turn-bolt handle sticking out the side; heavy fluted barrel; enormous multi-chamber muzzle brake; bipod.",
-        armorerAnalysis: "Three-lug bolt locked directly into barrel extension. Bonded monolithic aluminum chassis prevents any stock warping from temperature swings.",
-        icon: "eye"
-      },
-      {
-        id: "benellim4",
-        name: "Benelli M4 Super 90",
-        has3D: true,
-        partCount: 38,
-        class: "shotgun",
-        className: "Combat Semi-Auto Shotgun",
-        caliber: "12 Gauge (2.75\" / 3\" Shells)",
-        action: "Auto-Regulating Gas-Operated (A.R.G.O.)",
-        velocity: 410,
-        velocityFps: 1350,
-        energy: 3100,
-        range: 50,
-        capacity: "7+1 shells (tubular mag)",
-        weight: "3,820 g",
-        length: "885 mm",
-        rpm: "Semi-Auto (~200 RPM max)",
-        pressurePsi: "11,500 PSI (12ga Magnum)",
-        barrelTwist: "Smoothbore (None)",
-        laypersonTell: "Full-length tubular magazine running parallel underneath the barrel; ghost-ring sight ears; pistol grip stock.",
-        armorerAnalysis: "Dual stainless-steel gas pistons located just forward of the chamber push directly against the bolt carrier. Completely self-cleaning.",
-        icon: "disc"
-      },
-      {
-        id: "m82a1",
-        name: "Barrett M82A1 / M107",
-        has3D: true,
-        partCount: 39,
-        class: "sniper",
-        className: "Anti-Materiel Heavy Rifle",
-        caliber: ".50 BMG (12.7x99mm NATO)",
-        action: "Short-Recoil, Rotating Bolt, Semi-Auto",
-        velocity: 853,
-        velocityFps: 2800,
-        energy: 15500,
-        range: 1800,
-        capacity: "10 rounds (heavy steel mag)",
-        weight: "14,000 g",
-        length: "1,450 mm",
-        rpm: "Semi-Auto",
-        pressurePsi: "54,000 PSI",
-        barrelTwist: "1:15 RH Twist",
-        laypersonTell: "Massive scale (nearly 5 feet long); gigantic rectangular magazine; arrowhead tank muzzle brake large enough to cover a fist.",
-        armorerAnalysis: "Short-recoil system allows barrel to recoil rearward about 25mm into the receiver, soaking up the 15,500 Joule kinetic impulse before unlocking.",
-        icon: "eye"
-      },
-      {
-        id: "steyraug",
-        name: "Steyr AUG A3",
-        has3D: true,
-        partCount: 36,
-        class: "bullpup",
-        className: "Bullpup Assault Rifle",
-        caliber: "5.56x45mm NATO",
-        action: "Short-Stroke Gas Piston, Rotating Bolt",
-        velocity: 970,
-        velocityFps: 3180,
-        energy: 1750,
-        range: 500,
-        capacity: "30 rounds (translucent)",
-        weight: "3,600 g",
-        length: "790 mm",
-        rpm: "680 - 750 RPM",
-        pressurePsi: "55,000 PSI",
-        barrelTwist: "1:9 RH Twist",
-        laypersonTell: "Translucent waffle magazine sits behind the trigger hand inside the hollow buttstock; forward folding vertical grip.",
-        armorerAnalysis: "Full 20-inch rifle barrel packed inside carbine length by relocating the action to the buttstock. Dual operating guide rods and progressive trigger.",
-        icon: "move"
-      },
-      {
-        id: "scar17h",
-        name: "FN SCAR 17H (Mk 17)",
-        has3D: true,
-        partCount: 36,
-        class: "battle",
-        className: "Battle Rifle / DMR",
-        caliber: "7.62x51mm NATO (.308 Win)",
-        action: "Short-Stroke Gas Piston, Rotating Bolt",
-        velocity: 790,
-        velocityFps: 2592,
-        energy: 3500,
-        range: 800,
-        capacity: "20 rounds (straight box)",
-        weight: "3,580 g",
-        length: "965 mm",
-        rpm: "625 RPM",
-        pressurePsi: "60,000 PSI",
-        barrelTwist: "1:12 RH Twist",
-        laypersonTell: "Wide, straight 20-round steel magazine (noticeably fatter than an M4 mag) with monolithic anodized FDE upper receiver.",
-        armorerAnalysis: "Built to deliver 3,500 Joules of barrier-penetrating energy. Self-regulating gas valve prevents over-gassing when running suppressed.",
-        icon: "activity"
-      },
-      {
-        id: "hkmp5",
-        name: "Heckler & Koch MP5A3",
-        has3D: true,
-        partCount: 34,
-        class: "smg",
-        className: "Submachine Gun (SMG)",
-        caliber: "9x19mm Parabellum",
-        action: "Roller-Delayed Blowback, Closed Bolt",
-        velocity: 400,
-        velocityFps: 1312,
-        energy: 640,
-        range: 100,
-        capacity: "30 rounds (curved stick)",
-        weight: "3,080 g",
-        length: "700 mm",
-        rpm: "800 RPM",
-        pressurePsi: "37,000 PSI",
-        barrelTwist: "1:10 RH Twist",
-        laypersonTell: "Compact shoulder-fired weapon with a narrow curved 9mm stick magazine and forward charging cocking tube.",
-        armorerAnalysis: "Two cylindrical rollers lock into receiver recesses, delaying bolt opening until chamber pressures drop. Exceptional closed-bolt single-shot accuracy.",
-        icon: "zap"
-      }
-    ];
+  {
+    "id": "m4a1",
+    "name": "Colt M4A1 SOPMOD",
+    "has3D": true,
+    "partCount": 46,
+    "class": "assault",
+    "className": "Assault Rifle / Carbine",
+    "caliber": "5.56x45mm NATO",
+    "action": "Direct Impingement Gas Operation, Rotating Bolt",
+    "velocity": 905,
+    "velocityFps": 2970,
+    "energy": 1750,
+    "range": 500,
+    "capacity": "30 rounds (STANAG)",
+    "weight": "3,100 g",
+    "weightG": 3100,
+    "length": "838 mm",
+    "lengthMm": 838,
+    "rpm": "700 - 950 RPM",
+    "pressurePsi": "55,000 PSI",
+    "pressureNum": 55000,
+    "barrelTwist": "1:7 RH Twist",
+    "laypersonTell": "Curved 30-round magazine forward of the trigger, cylindrical buffer tube stock, and T-shaped top rear charging handle.",
+    "armorerAnalysis": "Direct gas tube vents expanding combustion gas straight into the bolt carrier expansion chamber, rotating the 7-lug bolt out of battery.",
+    "icon": "crosshair"
+  },
+  {
+    "id": "ak47",
+    "name": "Kalashnikov AKM / AK-47",
+    "has3D": true,
+    "partCount": 44,
+    "class": "assault",
+    "className": "Assault Rifle",
+    "caliber": "7.62x39mm Soviet (M43)",
+    "action": "Long-Stroke Gas Piston, Rotating 2-Lug Bolt",
+    "velocity": 715,
+    "velocityFps": 2345,
+    "energy": 2050,
+    "range": 400,
+    "capacity": "30 rounds (curved steel)",
+    "weight": "3,150 g",
+    "weightG": 3150,
+    "length": "880 mm",
+    "lengthMm": 880,
+    "rpm": "600 RPM",
+    "pressurePsi": "51,500 PSI",
+    "pressureNum": 51500,
+    "barrelTwist": "1:9.45 RH Twist",
+    "laypersonTell": "Heavily curved banana magazine, distinctive wooden furniture, and high front sight tower with gas tube mounted over the barrel.",
+    "armorerAnalysis": "Massive bolt carrier permanently pinned to a long-stroke gas piston rod. Extreme 0.5mm clearances allow flawless cycling in mud and sand.",
+    "icon": "crosshair"
+  },
+  {
+    "id": "glock19",
+    "name": "Glock 19 Gen 5",
+    "has3D": true,
+    "partCount": 38,
+    "class": "handgun",
+    "className": "Handgun (Semi-Auto)",
+    "caliber": "9x19mm Parabellum",
+    "action": "Short-Recoil, Locked Breech, Striker-Fired",
+    "velocity": 360,
+    "velocityFps": 1180,
+    "energy": 490,
+    "range": 50,
+    "capacity": "15 rounds (standard)",
+    "weight": "670 g",
+    "weightG": 670,
+    "length": "185 mm",
+    "lengthMm": 185,
+    "rpm": "Semi-Auto",
+    "pressurePsi": "35,000 PSI",
+    "pressureNum": 35000,
+    "barrelTwist": "1:9.84 RH Marksman",
+    "laypersonTell": "Boxy rectangular steel slide reciprocating over a black polymer grip; magazine hidden entirely inside the handle.",
+    "armorerAnalysis": "Safe Action striker mechanism with three internal passive safeties. Cold hammer-forged barrel tilts downward during recoil to unlock the slide breech.",
+    "icon": "shield"
+  },
+  {
+    "id": "m1911",
+    "name": "Colt M1911A1 .45",
+    "has3D": true,
+    "partCount": 36,
+    "class": "handgun",
+    "className": "Handgun (Single-Action)",
+    "caliber": ".45 ACP (11.43x23mm)",
+    "action": "Short-Recoil, Tilting Barrel (Swinging Link)",
+    "velocity": 253,
+    "velocityFps": 830,
+    "energy": 485,
+    "range": 50,
+    "capacity": "7 rounds (single-stack)",
+    "weight": "1,105 g",
+    "weightG": 1105,
+    "length": "216 mm",
+    "lengthMm": 216,
+    "rpm": "Semi-Auto",
+    "pressurePsi": "21,000 PSI",
+    "pressureNum": 21000,
+    "barrelTwist": "1:16 RH Twist",
+    "laypersonTell": "Exposed rear hammer, grip safety under the hammer beavertail, and slim single-stack frame with walnut diamond grips.",
+    "armorerAnalysis": "Browning tilting-barrel design utilizing a swinging link underneath the barrel chamber lug to unlock the dual locking lugs from the slide.",
+    "icon": "shield"
+  },
+  {
+    "id": "desert_eagle",
+    "name": "Desert Eagle .50 AE",
+    "has3D": true,
+    "partCount": 40,
+    "class": "handgun",
+    "className": "Magnum Pistol",
+    "caliber": ".50 Action Express (12.7x33mm)",
+    "action": "Gas-Operated, Rotating 3-Lug Bolt",
+    "velocity": 470,
+    "velocityFps": 1540,
+    "energy": 2200,
+    "range": 100,
+    "capacity": "7 rounds",
+    "weight": "1,998 g",
+    "weightG": 1998,
+    "length": "273 mm",
+    "lengthMm": 273,
+    "rpm": "Semi-Auto",
+    "pressurePsi": "36,000 PSI",
+    "pressureNum": 36000,
+    "barrelTwist": "1:19 Polygonal RH",
+    "laypersonTell": "Enormous triangular barrel profile with integrated scope rail; massive slide and grip dwarfing all standard handguns.",
+    "armorerAnalysis": "Rifle-style gas piston system ported from the barrel driving an oversized multi-lug rotating bolt; delivers 2,200 Joules of kinetic energy.",
+    "icon": "shield"
+  },
+  {
+    "id": "hkmp5",
+    "name": "Heckler & Koch MP5A3",
+    "has3D": true,
+    "partCount": 38,
+    "class": "smg",
+    "className": "Submachine Gun (SMG)",
+    "caliber": "9x19mm Parabellum",
+    "action": "Roller-Delayed Blowback, Closed Bolt",
+    "velocity": 400,
+    "velocityFps": 1312,
+    "energy": 640,
+    "range": 100,
+    "capacity": "30 rounds (curved stick)",
+    "weight": "3,080 g",
+    "weightG": 3080,
+    "length": "700 mm",
+    "lengthMm": 700,
+    "rpm": "800 RPM",
+    "pressurePsi": "37,000 PSI",
+    "pressureNum": 37000,
+    "barrelTwist": "1:10 RH Twist",
+    "laypersonTell": "Compact shoulder-fired weapon with a narrow curved 9mm stick magazine and forward charging cocking tube.",
+    "armorerAnalysis": "Two cylindrical rollers lock into receiver recesses, delaying bolt opening until chamber pressures drop. Exceptional closed-bolt accuracy.",
+    "icon": "zap"
+  },
+  {
+    "id": "kriss_vector",
+    "name": "KRISS Vector Gen II",
+    "has3D": true,
+    "partCount": 39,
+    "class": "smg",
+    "className": "Submachine Gun (SMG)",
+    "caliber": ".45 ACP (11.43x23mm)",
+    "action": "Super V Articulated Inertia Recoil Block",
+    "velocity": 280,
+    "velocityFps": 920,
+    "energy": 520,
+    "range": 100,
+    "capacity": "30 rounds (extended stick)",
+    "weight": "2,700 g",
+    "weightG": 2700,
+    "length": "617 mm",
+    "lengthMm": 617,
+    "rpm": "1200 RPM",
+    "pressurePsi": "21,000 PSI",
+    "pressureNum": 21000,
+    "barrelTwist": "1:16 RH Twist",
+    "laypersonTell": "Tall, futuristic geometric lower body with bore line sunken low into the hand; magazine loads directly in front of the pistol grip.",
+    "armorerAnalysis": "Super V downward-redirecting slider mechanics translate horizontal recoil energy downward into the chassis, neutralizing muzzle climb at 1200 RPM.",
+    "icon": "zap"
+  },
+  {
+    "id": "p90",
+    "name": "FN P90 TR Tactical",
+    "has3D": true,
+    "partCount": 42,
+    "class": "smg",
+    "className": "Personal Defense Weapon (PDW)",
+    "caliber": "5.7x28mm NATO (SS190)",
+    "action": "Straight Blowback, Closed Bolt",
+    "velocity": 715,
+    "velocityFps": 2350,
+    "energy": 540,
+    "range": 200,
+    "capacity": "50 rounds (translucent top)",
+    "weight": "2,600 g",
+    "weightG": 2600,
+    "length": "505 mm",
+    "lengthMm": 505,
+    "rpm": "900 RPM",
+    "pressurePsi": "50,000 PSI",
+    "pressureNum": 50000,
+    "barrelTwist": "1:9 RH Twist",
+    "laypersonTell": "Futuristic compact bullpup with a flat translucent magazine lying horizontally on top of the weapon, cartridges visible through the plastic.",
+    "armorerAnalysis": "Patented spiral feed ramp turntable rotates 5.7mm rounds 90 degrees downward into the chamber; downward brass chute drops casings at shooter's feet.",
+    "icon": "zap"
+  },
+  {
+    "id": "mp7",
+    "name": "Heckler & Koch MP7A1",
+    "has3D": true,
+    "partCount": 37,
+    "class": "smg",
+    "className": "Personal Defense Weapon (PDW)",
+    "caliber": "4.6x30mm HK",
+    "action": "Short-Stroke Gas Piston, Rotating Bolt",
+    "velocity": 735,
+    "velocityFps": 2410,
+    "energy": 500,
+    "range": 200,
+    "capacity": "20 / 40 rounds (in grip)",
+    "weight": "1,900 g",
+    "weightG": 1900,
+    "length": "415 mm",
+    "lengthMm": 415,
+    "rpm": "950 RPM",
+    "pressurePsi": "58,000 PSI",
+    "pressureNum": 58000,
+    "barrelTwist": "1:6.3 RH Twist",
+    "laypersonTell": "Ultra-compact subgun with straight magazine inserted into pistol grip, folding front vertical grip, and retractable wire stock.",
+    "armorerAnalysis": "Miniaturized rifle action (short-stroke gas piston with rotating bolt) firing high-velocity micro-rifle ammo capable of defeating CRISAT body armor.",
+    "icon": "zap"
+  },
+  {
+    "id": "benellim4",
+    "name": "Benelli M4 Super 90",
+    "has3D": true,
+    "partCount": 38,
+    "class": "shotgun",
+    "className": "Combat Semi-Auto Shotgun",
+    "caliber": "12 Gauge (2.75\" / 3\" Shells)",
+    "action": "Auto-Regulating Gas-Operated (A.R.G.O.)",
+    "velocity": 410,
+    "velocityFps": 1350,
+    "energy": 3100,
+    "range": 50,
+    "capacity": "7+1 shells (tubular mag)",
+    "weight": "3,820 g",
+    "weightG": 3820,
+    "length": "885 mm",
+    "lengthMm": 885,
+    "rpm": "Semi-Auto (~200 RPM)",
+    "pressurePsi": "11,500 PSI",
+    "pressureNum": 11500,
+    "barrelTwist": "Smoothbore (None)",
+    "laypersonTell": "Full-length tubular magazine running parallel underneath the barrel; ghost-ring sight ears; pistol grip stock.",
+    "armorerAnalysis": "Dual stainless-steel gas pistons located just forward of the chamber push directly against the bolt carrier. Completely self-cleaning.",
+    "icon": "disc"
+  },
+  {
+    "id": "remington870",
+    "name": "Remington 870 Tactical",
+    "has3D": true,
+    "partCount": 35,
+    "class": "shotgun",
+    "className": "Pump-Action Shotgun",
+    "caliber": "12 Gauge (2.75\" / 3\" Shells)",
+    "action": "Manual Slide Pump, Tilting Breechblock",
+    "velocity": 390,
+    "velocityFps": 1280,
+    "energy": 2850,
+    "range": 45,
+    "capacity": "6+1 shells (tubular mag)",
+    "weight": "3,400 g",
+    "weightG": 3400,
+    "length": "980 mm",
+    "lengthMm": 980,
+    "rpm": "Manual Pump (~60 RPM)",
+    "pressurePsi": "11,500 PSI",
+    "pressureNum": 11500,
+    "barrelTwist": "Smoothbore (None)",
+    "laypersonTell": "Sliding forend under the barrel pumped manually back and forth to chamber each round; steel receiver with right ejection port.",
+    "armorerAnalysis": "Dual non-binding steel action bars connect sliding forend to breech bolt; locked into steel barrel extension to contain 11,500 PSI proof loads.",
+    "icon": "disc"
+  },
+  {
+    "id": "scar17h",
+    "name": "FN SCAR 17H (Mk 17)",
+    "has3D": true,
+    "partCount": 42,
+    "class": "battle",
+    "className": "Battle Rifle / DMR",
+    "caliber": "7.62x51mm NATO (.308 Win)",
+    "action": "Short-Stroke Gas Piston, Rotating Bolt",
+    "velocity": 790,
+    "velocityFps": 2592,
+    "energy": 3500,
+    "range": 800,
+    "capacity": "20 rounds (straight box)",
+    "weight": "3,580 g",
+    "weightG": 3580,
+    "length": "965 mm",
+    "lengthMm": 965,
+    "rpm": "625 RPM",
+    "pressurePsi": "60,000 PSI",
+    "pressureNum": 60000,
+    "barrelTwist": "1:12 RH Twist",
+    "laypersonTell": "Wide, straight 20-round steel magazine (noticeably fatter than an M4 mag) with monolithic anodized FDE upper receiver.",
+    "armorerAnalysis": "Built to deliver 3,500 Joules of barrier-penetrating energy. Self-regulating gas valve prevents over-gassing when running suppressed.",
+    "icon": "activity"
+  },
+  {
+    "id": "g3",
+    "name": "Heckler & Koch G3A3",
+    "has3D": true,
+    "partCount": 40,
+    "class": "battle",
+    "className": "Battle Rifle",
+    "caliber": "7.62x51mm NATO (.308 Win)",
+    "action": "Roller-Delayed Blowback, Fluted Chamber",
+    "velocity": 800,
+    "velocityFps": 2625,
+    "energy": 3600,
+    "range": 600,
+    "capacity": "20 rounds (straight waffle)",
+    "weight": "4,400 g",
+    "weightG": 4400,
+    "length": "1,025 mm",
+    "lengthMm": 1025,
+    "rpm": "550 - 600 RPM",
+    "pressurePsi": "55,000 PSI",
+    "pressureNum": 55000,
+    "barrelTwist": "1:12 RH Twist",
+    "laypersonTell": "Long slender profile with stamped metal receiver, forward cocking tube, olive green slim handguard, and straight waffle magazine.",
+    "armorerAnalysis": "Roller-delayed blowback with 12 longitudinal chamber flutes; combustion gases float the brass casing inside the chamber to ease high-pressure extraction.",
+    "icon": "activity"
+  },
+  {
+    "id": "steyraug",
+    "name": "Steyr AUG A3",
+    "has3D": true,
+    "partCount": 38,
+    "class": "bullpup",
+    "className": "Bullpup Assault Rifle",
+    "caliber": "5.56x45mm NATO",
+    "action": "Short-Stroke Gas Piston, Rotating Bolt",
+    "velocity": 970,
+    "velocityFps": 3180,
+    "energy": 1750,
+    "range": 500,
+    "capacity": "30 rounds (translucent)",
+    "weight": "3,600 g",
+    "weightG": 3600,
+    "length": "790 mm",
+    "lengthMm": 790,
+    "rpm": "680 - 750 RPM",
+    "pressurePsi": "55,000 PSI",
+    "pressureNum": 55000,
+    "barrelTwist": "1:9 RH Twist",
+    "laypersonTell": "Translucent waffle magazine sits behind the trigger hand inside the hollow buttstock; forward folding vertical grip.",
+    "armorerAnalysis": "Full 20-inch rifle barrel packed inside carbine length by relocating the action to the buttstock. Dual operating guide rods and progressive trigger.",
+    "icon": "move"
+  },
+  {
+    "id": "sa80",
+    "name": "L85A2 / SA80",
+    "has3D": true,
+    "partCount": 40,
+    "class": "bullpup",
+    "className": "Bullpup Assault Rifle",
+    "caliber": "5.56x45mm NATO",
+    "action": "Short-Stroke Gas Piston, Rotating Bolt",
+    "velocity": 940,
+    "velocityFps": 3084,
+    "energy": 1710,
+    "range": 500,
+    "capacity": "30 rounds (STANAG)",
+    "weight": "3,820 g",
+    "weightG": 3820,
+    "length": "785 mm",
+    "lengthMm": 785,
+    "rpm": "610 - 775 RPM",
+    "pressurePsi": "55,000 PSI",
+    "pressureNum": 55000,
+    "barrelTwist": "1:7 RH Twist",
+    "laypersonTell": "Heavy stamped steel bullpup with green synthetic handguard and cheek rest, top SUSAT/ACOG optic, and magwell inside the stock.",
+    "armorerAnalysis": "Heckler & Koch re-engineered bolt carrier with enlarged extractor claw, upgraded gas plug, and dual recoil spring guide rods.",
+    "icon": "move"
+  },
+  {
+    "id": "svd",
+    "name": "SVD Dragunov",
+    "has3D": true,
+    "partCount": 42,
+    "class": "dmr",
+    "className": "Designated Marksman Rifle (DMR)",
+    "caliber": "7.62x54mmR (Rimmed)",
+    "action": "Short-Stroke Gas Piston, Rotating 3-Lug Bolt",
+    "velocity": 830,
+    "velocityFps": 2723,
+    "energy": 3300,
+    "range": 800,
+    "capacity": "10 rounds (curved steel)",
+    "weight": "4,300 g",
+    "weightG": 4300,
+    "length": "1,225 mm",
+    "lengthMm": 1225,
+    "rpm": "Semi-Auto (~30 RPM)",
+    "pressurePsi": "52,000 PSI",
+    "pressureNum": 52000,
+    "barrelTwist": "1:9.45 RH Twist",
+    "laypersonTell": "Distinctive skeletonized wooden thumbhole buttstock with leather cheekpad, long slender barrel, and side-mounted PSO-1 scope.",
+    "armorerAnalysis": "Short-stroke gas piston system isolates bolt carrier mass from barrel harmonics, delivering 1.2 MOA with 7N1 sniper match cartridges.",
+    "icon": "target"
+  },
+  {
+    "id": "m14_ebr",
+    "name": "Mk 14 Mod 0 EBR",
+    "has3D": true,
+    "partCount": 44,
+    "class": "dmr",
+    "className": "Enhanced Battle Rifle / DMR",
+    "caliber": "7.62x51mm NATO (.308 Win)",
+    "action": "Gas-Operated, Rotating Bolt",
+    "velocity": 780,
+    "velocityFps": 2560,
+    "energy": 3400,
+    "range": 800,
+    "capacity": "20 rounds (box)",
+    "weight": "5,100 g",
+    "weightG": 5100,
+    "length": "889 mm",
+    "lengthMm": 889,
+    "rpm": "700 - 750 RPM",
+    "pressurePsi": "50,000 PSI",
+    "pressureNum": 50000,
+    "barrelTwist": "1:11 RH Twist",
+    "laypersonTell": "Heavy metallic quad-rail chassis wrapping an M14 receiver, with twin-rod telescoping stock and Leupold precision scope.",
+    "armorerAnalysis": "Sage International aircraft aluminum chassis bedded solidly to the M14 receiver, floating the barrel and eliminating thermal point-of-impact shifts.",
+    "icon": "target"
+  },
+  {
+    "id": "aiax338",
+    "name": "Accuracy International AX338",
+    "has3D": true,
+    "partCount": 45,
+    "class": "sniper",
+    "className": "Bolt-Action Precision Sniper",
+    "caliber": ".338 Lapua Magnum (8.6x70mm)",
+    "action": "Manual Turn-Bolt, 60\u00b0 Short Throw",
+    "velocity": 915,
+    "velocityFps": 3000,
+    "energy": 6680,
+    "range": 1500,
+    "capacity": "10 rounds (center-feed box)",
+    "weight": "7,800 g",
+    "weightG": 7800,
+    "length": "1,250 mm",
+    "lengthMm": 1250,
+    "rpm": "Manual Bolt",
+    "pressurePsi": "60,900 PSI",
+    "pressureNum": 60900,
+    "barrelTwist": "1:9.35 Match",
+    "laypersonTell": "Steel turn-bolt handle sticking out the side; heavy fluted barrel; enormous multi-chamber muzzle brake; bipod.",
+    "armorerAnalysis": "Three-lug bolt locked directly into barrel extension. Bonded monolithic aluminum chassis prevents any stock warping from temperature swings.",
+    "icon": "eye"
+  },
+  {
+    "id": "cheytac_m200",
+    "name": "CheyTac M200 Intervention",
+    "has3D": true,
+    "partCount": 46,
+    "class": "sniper",
+    "className": "Extreme Range Sniper Rifle",
+    "caliber": ".408 CheyTac (10.36x77mm)",
+    "action": "Manual Turn-Bolt, Heavy Fluted Receiver",
+    "velocity": 1067,
+    "velocityFps": 3500,
+    "energy": 11250,
+    "range": 2200,
+    "capacity": "7 rounds (detachable box)",
+    "weight": "14,000 g",
+    "weightG": 14000,
+    "length": "1,400 mm",
+    "lengthMm": 1400,
+    "rpm": "Manual Bolt",
+    "pressurePsi": "63,800 PSI",
+    "pressureNum": 63800,
+    "barrelTwist": "1:13 Balanced Twist",
+    "laypersonTell": "Cylindrical heavy receiver with top carry handle, massive round multi-port muzzle brake, and tubular retractable stock with screw monopod.",
+    "armorerAnalysis": "Proprietary CNC-machined solid copper-nickel monolithic projectiles with extreme ballistic coefficient (BC > 0.94); supersonic beyond 2,000 meters.",
+    "icon": "eye"
+  },
+  {
+    "id": "m82a1",
+    "name": "Barrett M82A1 / M107",
+    "has3D": true,
+    "partCount": 44,
+    "class": "sniper",
+    "className": "Anti-Materiel Heavy Rifle",
+    "caliber": ".50 BMG (12.7x99mm NATO)",
+    "action": "Short-Recoil, Rotating Bolt, Semi-Auto",
+    "velocity": 853,
+    "velocityFps": 2800,
+    "energy": 15500,
+    "range": 1800,
+    "capacity": "10 rounds (heavy steel mag)",
+    "weight": "14,000 g",
+    "weightG": 14000,
+    "length": "1,450 mm",
+    "lengthMm": 1450,
+    "rpm": "Semi-Auto",
+    "pressurePsi": "54,000 PSI",
+    "pressureNum": 54000,
+    "barrelTwist": "1:15 RH Twist",
+    "laypersonTell": "Massive scale (nearly 5 feet long); gigantic rectangular magazine; arrowhead tank muzzle brake large enough to cover a fist.",
+    "armorerAnalysis": "Short-recoil system allows barrel to recoil rearward about 25mm into the receiver, soaking up the 15,500 Joule kinetic impulse before unlocking.",
+    "icon": "eye"
+  },
+  {
+    "id": "m249",
+    "name": "FN M249 SAW / Minimi",
+    "has3D": true,
+    "partCount": 46,
+    "class": "saw",
+    "className": "Squad Automatic Weapon (LMG)",
+    "caliber": "5.56x45mm NATO",
+    "action": "Gas-Operated, Open-Bolt, Rotating Bolt",
+    "velocity": 915,
+    "velocityFps": 3000,
+    "energy": 1750,
+    "range": 800,
+    "capacity": "200-rd belt (or 30-rd mag)",
+    "weight": "7,500 g",
+    "weightG": 7500,
+    "length": "1,040 mm",
+    "lengthMm": 1040,
+    "rpm": "800 RPM",
+    "pressurePsi": "55,000 PSI",
+    "pressureNum": 55000,
+    "barrelTwist": "1:7 RH Twist",
+    "laypersonTell": "Square belt-feed tray cover on top, hanging plastic ammo drum box underneath, folding steel bipod, and carry handle.",
+    "armorerAnalysis": "Open-bolt operation ensures chamber stays cool between bursts preventing dangerous ammunition cook-offs; quick-change barrel swaps in under 6 seconds.",
+    "icon": "flame"
+  },
+  {
+    "id": "pkp",
+    "name": "PKP Pecheneg GPMG",
+    "has3D": true,
+    "partCount": 44,
+    "class": "saw",
+    "className": "General Purpose Machine Gun",
+    "caliber": "7.62x54mmR (Rimmed)",
+    "action": "Gas-Operated, Rotating Bolt, Open-Bolt",
+    "velocity": 825,
+    "velocityFps": 2706,
+    "energy": 3300,
+    "range": 1000,
+    "capacity": "100 / 200-rd belt in ammo can",
+    "weight": "8,700 g",
+    "weightG": 8700,
+    "length": "1,200 mm",
+    "lengthMm": 1200,
+    "rpm": "650 RPM",
+    "pressurePsi": "52,000 PSI",
+    "pressureNum": 52000,
+    "barrelTwist": "1:9.45 RH Twist",
+    "laypersonTell": "Heavy machine gun with ribbed steel barrel sleeve, carry handle spanning over barrel, underslung steel ammo box, and forward bipod near muzzle.",
+    "armorerAnalysis": "Forced air cooling jacket draws cool air through radial cooling ribs via barrel muzzle blast draft, enabling 600 continuous rounds without barrel swap.",
+    "icon": "flame"
+  },
+  {
+    "id": "colt_python",
+    "name": "Colt Python .357",
+    "has3D": true,
+    "partCount": 34,
+    "class": "handgun",
+    "className": "Revolver (Double-Action)",
+    "caliber": ".357 Magnum (9x33mmR)",
+    "action": "Double-Action / Single-Action Revolver",
+    "velocity": 440,
+    "velocityFps": 1440,
+    "energy": 800,
+    "range": 50,
+    "capacity": "6 rounds (swing-out cylinder)",
+    "weight": "1,230 g",
+    "weightG": 1230,
+    "length": "290 mm",
+    "lengthMm": 290,
+    "rpm": "Revolver (~30 RPM)",
+    "pressurePsi": "35,000 PSI",
+    "pressureNum": 35000,
+    "barrelTwist": "1:14 LH Twist",
+    "laypersonTell": "6-chamber revolving cylinder, ventilated rib along the top of the barrel, full under-barrel ejector shroud, and checkered wood grip.",
+    "armorerAnalysis": "Hand-fitted lockwork with leaf-spring mainspring. Cylinder rotates and locks tightly against the frame window right as the hammer falls, minimizing barrel gap flash.",
+    "icon": "disc"
+  },
+  {
+    "id": "asval",
+    "name": "AS Val Silent Carbine",
+    "has3D": true,
+    "partCount": 41,
+    "class": "assault",
+    "className": "Integrally Suppressed Assault Rifle",
+    "caliber": "9x39mm Subsonic (SP-5 / SP-6)",
+    "action": "Gas-Operated, Rotating 6-Lug Bolt",
+    "velocity": 295,
+    "velocityFps": 968,
+    "energy": 700,
+    "range": 300,
+    "capacity": "20 rounds (dark polymer)",
+    "weight": "2,500 g",
+    "weightG": 2500,
+    "length": "875 mm",
+    "lengthMm": 875,
+    "rpm": "900 RPM",
+    "pressurePsi": "40,000 PSI",
+    "pressureNum": 40000,
+    "barrelTwist": "1:8.26 RH Twist",
+    "laypersonTell": "Massive cylindrical integral sound suppressor forming the entire front half of the rifle; side-folding tubular skeleton stock.",
+    "armorerAnalysis": "Barrel has 54 gas bleed ports venting gas inside the outer expansion suppressor tube. Subsonic 250-grain tungsten penetrator defeats Level III armor silently.",
+    "icon": "crosshair"
+  }
+];
 
-    // ==========================================
-    // PROCEDURAL PBR & HIGH-UTILITY CYBER-WIRE MATERIALS
-    // ==========================================
+    let scene, camera, renderer, controls;
+    let currentWeaponGroup = null;
+    let currentParts = [];
+    let lineSegments = null;
+    let boreLaserLine = null;
+    let activeModelId = 'm4a1';
+    let explodedProgress = 0;
+    let isExploded = false;
+    let renderMode = 'wireframe';
+    let currentFinish = 'black';
+    let showLeaderLines = true;
+    let showBoreLaser = true;
+    let isScanlineActive = false;
+    let activeTab = '3d';
+
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    let hoveredPart = null;
+
+    // COMPARATOR 3D ENGINE VARIABLES
+    let compareRenderer1 = null, compareScene1 = null, compareCamera1 = null, compareControls1 = null;
+    let compareRenderer2 = null, compareScene2 = null, compareCamera2 = null, compareControls2 = null;
+    let compareGroup1 = null, compareGroup2 = null;
+    let compareParts1 = [], compareParts2 = [];
+    let compareLines1 = null, compareLines2 = null;
+    let compareExplodeProgress = 0;
+    let isCompareRotationLinked = true;
+    let isCompareTrueScale = false;
+    let compareRenderMode = 'pbr';
+    let compareHovered1 = null, compareHovered2 = null;
+    const compareMouse1 = new THREE.Vector2(-999, -999);
+    const compareMouse2 = new THREE.Vector2(-999, -999);
+
+
     function createNoiseCanvas(w, h, grain = 30) {
       const c = document.createElement('canvas');
       c.width = w; c.height = h;
@@ -596,16 +1217,17 @@
         polymer: new THREE.MeshStandardMaterial({ color: 0x0f1115, roughness: 0.72, metalness: 0.12, bumpMap: stippleBump, bumpScale: 0.008 }),
         brass: new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.12, metalness: 0.98 }),
         copper: new THREE.MeshStandardMaterial({ color: 0xb87333, roughness: 0.18, metalness: 0.92 }),
-        glass: new THREE.MeshPhysicalMaterial({ color: 0x0ea5e9, roughness: 0.04, transmission: 0.92, opacity: 0.85, transparent: true })
+        glass: new THREE.MeshPhysicalMaterial({ color: 0x0ea5e9, roughness: 0.04, transmission: 0.92, opacity: 0.85, transparent: true }),
+        wood: new THREE.MeshStandardMaterial({ color: 0x8b5a2b, roughness: 0.55, metalness: 0.05, bumpMap: stippleBump, bumpScale: 0.005 }),
+        fde: new THREE.MeshStandardMaterial({ color: 0x9e8563, roughness: 0.42, metalness: 0.65, bumpMap: stippleBump, bumpScale: 0.004 }),
+        chrome: new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.12, metalness: 0.98 }),
+        od_green: new THREE.MeshStandardMaterial({ color: 0x3d4a34, roughness: 0.65, metalness: 0.15, bumpMap: stippleBump, bumpScale: 0.006 }),
+        translucent: new THREE.MeshPhysicalMaterial({ color: 0xca8a04, roughness: 0.25, transmission: 0.75, opacity: 0.8, transparent: true })
       },
       thermal: new THREE.MeshStandardMaterial({ color: 0xef4444, roughness: 0.4, emissive: 0x7f1d1d, emissiveIntensity: 0.6 })
     };
 
-    // ==========================================
-    // CYBER-WIRE DUAL-LAYER SHADERS (HIGH-UTILITY)
-    // ==========================================
     const CYBER_MATS = {
-      // High-pressure combustion zones (Chamber, Gas Tube, Bolt Face): Glowing Amber
       actionGhost: new THREE.MeshStandardMaterial({
         color: 0xf59e0b,
         roughness: 0.1,
@@ -619,33 +1241,14 @@
         color: 0xfbbf24,
         wireframe: true,
         transparent: true,
-        opacity: 0.85
+        opacity: 0.9
       }),
-
-      // Structural Components (Lower, Upper Receiver, Handguard): High-Definition Cyan
-      structGhost: new THREE.MeshStandardMaterial({
-        color: 0x0284c7,
-        roughness: 0.1,
-        metalness: 0.9,
-        transparent: true,
-        opacity: 0.16,
-        blending: THREE.AdditiveBlending,
-        depthWrite: false
-      }),
-      structWire: new THREE.MeshBasicMaterial({
-        color: 0x06b6d4,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.75
-      }),
-
-      // Feed Systems (Magazine, Follower, Cartridges): Luminous Emerald & Gold
       feedGhost: new THREE.MeshStandardMaterial({
-        color: 0x059669,
+        color: 0x10b981,
         roughness: 0.1,
         metalness: 0.8,
         transparent: true,
-        opacity: 0.18,
+        opacity: 0.2,
         blending: THREE.AdditiveBlending,
         depthWrite: false
       }),
@@ -653,32 +1256,936 @@
         color: 0x34d399,
         wireframe: true,
         transparent: true,
-        opacity: 0.8
+        opacity: 0.85
+      }),
+      structGhost: new THREE.MeshStandardMaterial({
+        color: 0x0284c7,
+        roughness: 0.2,
+        metalness: 0.9,
+        transparent: true,
+        opacity: 0.15,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      }),
+      structWire: new THREE.MeshBasicMaterial({
+        color: 0x38bdf8,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.75
       })
     };
 
-    // ==========================================
-    // 3D SCENE & ENGINE
-    // ==========================================
-    let scene, camera, renderer, controls;
-    let currentModelGroup = null;
-    let currentParts = [];
-    let lineSegments = null;
-    let boreLaserLine = null;
-    let isExploded = false;
-    let explodedProgress = 0;
-    let activeModelId = "m4a1";
-    let renderMode = "wireframe"; // Default to Cyber Wire for maximum utility showcase
-    let currentFinish = "black";
-    let activeSubFilter = "all";
-    let showLeaderLines = true;
-    let showBoreLaser = true;
-    let isScanlineActive = false;
+    function createHelicalSpring(radius, length, turns, tubeRadius, mat) {
+      const points = [];
+      const steps = turns * 24;
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        const angle = t * turns * Math.PI * 2;
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        const z = (t - 0.5) * length;
+        points.push(new THREE.Vector3(x, y, z));
+      }
+      const curve = new THREE.CatmullRomCurve3(points);
+      const geo = new THREE.TubeGeometry(curve, steps, tubeRadius, 8, false);
+      return new THREE.Mesh(geo, mat);
+    }
 
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-    let hoveredPart = null;
+    function createCartridge(m, caliberScale = 1.0, lengthScale = 1.0) {
+      const cart = new THREE.Group();
+      const caseGeo = new THREE.CylinderGeometry(0.045 * caliberScale, 0.048 * caliberScale, 0.28 * lengthScale, 16);
+      caseGeo.rotateX(Math.PI / 2);
+      cart.add(new THREE.Mesh(caseGeo, m.brass));
 
+      const rimGeo = new THREE.CylinderGeometry(0.052 * caliberScale, 0.052 * caliberScale, 0.03 * lengthScale, 16);
+      rimGeo.rotateX(Math.PI / 2);
+      const rMesh = new THREE.Mesh(rimGeo, m.brass);
+      rMesh.position.set(0, 0, -0.14 * lengthScale);
+      cart.add(rMesh);
+
+      const bulGeo = new THREE.ConeGeometry(0.042 * caliberScale, 0.16 * lengthScale, 16);
+      bulGeo.rotateX(Math.PI / 2);
+      const bMesh = new THREE.Mesh(bulGeo, m.copper);
+      bMesh.position.set(0, 0, 0.2 * lengthScale);
+      cart.add(bMesh);
+      return cart;
+    }
+
+
+    function createWeaponMeshUltra(id, finish = currentFinish) {
+      const group = new THREE.Group();
+      const parts = [];
+      const m = MATS[finish] || MATS.black;
+
+      function V3(x, y, z) { return new THREE.Vector3(x, y, z); }
+
+      function registerPart(mesh, normalPos, explodeDelta, name, subgroup, materialInfo, desc, telemetry) {
+        mesh.position.copy(normalPos);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+        mesh.userData = {
+          basePos: normalPos.clone(),
+          explodedPos: normalPos.clone().add(explodeDelta),
+          name: name,
+          subgroup: subgroup,
+          materialInfo: materialInfo,
+          desc: desc,
+          telemetry: telemetry || "Nominal Tolerance",
+          origMaterial: mesh.material
+        };
+        group.add(mesh);
+        parts.push(mesh);
+        return mesh;
+      }
+
+      function addBox(name, sub, w, h, d, mat, pos, delta, desc, spec, tele) {
+        const geo = new THREE.BoxGeometry(w, h, d);
+        const mesh = new THREE.Mesh(geo, mat);
+        return registerPart(mesh, pos, delta, name, sub, spec, desc, tele);
+      }
+
+      function addCyl(name, sub, rt, rb, len, segs, rotAxis, mat, pos, delta, desc, spec, tele) {
+        const geo = new THREE.CylinderGeometry(rt, rb, len, segs);
+        if (rotAxis === 'x') geo.rotateX(Math.PI / 2);
+        if (rotAxis === 'z') geo.rotateZ(Math.PI / 2);
+        const mesh = new THREE.Mesh(geo, mat);
+        return registerPart(mesh, pos, delta, name, sub, spec, desc, tele);
+      }
+
+      function addSpring(name, sub, rad, len, turns, tubeRad, mat, pos, delta, desc, spec, tele) {
+        const mesh = createHelicalSpring(rad, len, turns, tubeRad, mat);
+        return registerPart(mesh, pos, delta, name, sub, spec, desc, tele);
+      }
+
+      function addCartridges(count, calScale, lenScale, sub, pos, deltaBase, namePrefix, spec, tele) {
+        for (let c = 0; c < count; c++) {
+          const cart = createCartridge(m, calScale, lenScale);
+          const normalPos = new THREE.Vector3(pos.x, pos.y + c * 0.05, pos.z + c * 0.08);
+          const explodeDelta = new THREE.Vector3(deltaBase.x - c * 0.2, deltaBase.y - c * 0.15, deltaBase.z + c * 0.25);
+          registerPart(cart, normalPos, explodeDelta, `${namePrefix} #${c + 1}`, sub, spec, "High-pressure ballistic ammunition cartridge.", tele || "Chamber Peak: 55,000 PSI");
+        }
+      }
+
+      if (id === 'm4a1') {
+        addBox("Forged Lower Receiver", "fcg", 0.32, 0.38, 1.25, m.receiver, V3(0, -0.15, -0.1), V3(0, -0.35, 0), "Houses trigger group, magwell, and buffer tube threading.", "7075-T6 Hardcoat Anodized Aluminum", "Tensile Yield: 73,000 PSI");
+        addBox("Flattop Upper Receiver", "barrel", 0.33, 0.35, 1.25, m.receiver, V3(0, 0.22, 0.0), V3(0, 0.45, 0), "Mil-STD-1913 continuous top rail and brass deflector.", "Forged 7075-T6 with M4 Feed Ramps", "Picatinny True Spec 1913");
+        addCyl("Barrel Nut & Delta Wave Spring", "barrel", 0.12, 0.12, 0.15, 18, 'x', m.internalSteel, V3(0, 0.22, 0.65), V3(0, 0.45, 0.4), "Torqued to 45 ft-lbs, locking barrel flange to upper receiver.", "4140 Phos Steel", "Torque: 45 ft-lbs");
+        addCyl("14.5-inch  Chrome-Moly M4 Barrel", "barrel", 0.048, 0.048, 2.1, 16, 'x', m.barrel, V3(0, 0.22, 1.7), V3(0, 0.45, 1.1), "5.56 NATO chamber with button rifling.", "Cold Hammer-Forged 1:7 RH Twist", "Muzzle Velocity: 905 m/s");
+        addBox("Pinned Gas Block & Gas Tube", "barrel", 0.14, 0.32, 0.22, m.internalSteel, V3(0, 0.28, 1.8), V3(0, 1.0, 1.3), "Routes high-pressure combustion gas directly to bolt carrier key.", "Seamless Stainless Steel Tube", "Gas Port Pressure: 15,000 PSI");
+        addCyl("A2 Birdcage Flash Suppressor", "barrel", 0.065, 0.065, 0.32, 16, 'x', m.barrel, V3(0, 0.22, 2.8), V3(0, 0.45, 2.0), "Five directional top vents prevent dust kickup and suppress flash.", "Phosphated High-Carbon Steel", "Flash Reduction: 92%");
+        addBox("KAC RIS Quad-Rail Handguard", "barrel", 0.28, 0.32, 1.1, m.polymer, V3(0, 0.22, 1.15), V3(0, -0.6, 0.6), "Four Picatinny rails for mounting tactical lasers and foregrips.", "Aerospace Aluminum with Rail Heat Shields", "Operating Temp: <120°C");
+        addCyl("M16 Full-Auto Bolt Carrier", "action", 0.09, 0.09, 0.95, 16, 'x', m.internalSteel, V3(0, 0.22, -0.15), V3(0.6, 0.8, -0.3), "Houses cam pin track and firing pin channel.", "8620 Steel, Chrome-Lined Gas Expansion Channel", "Cycle Time: 68ms");
+        addBox("Staked Gas Key & Grade 8 Screws", "action", 0.08, 0.12, 0.4, m.internalSteel, V3(0, 0.35, -0.15), V3(0.6, 1.25, -0.3), "Mates directly to gas tube during battery lockup.", "4140 Billet Steel, Permatex Staked", "Torque Spec: 55 in-lbs Staked");
+        addCyl("Hardened Bolt Cam Pin", "action", 0.045, 0.045, 0.24, 12, 'y', m.internalSteel, V3(0, 0.35, 0.1), V3(0.6, 1.5, 0.1), "Forces 22.5° rotation of the bolt head as carrier travels rearward.", "Case-Hardened Tool Steel", "Rotation Angle: 22.5°");
+        addCyl("Chrome-Plated Firing Pin", "action", 0.015, 0.02, 0.75, 12, 'x', m.internalSteel, V3(0, 0.22, -0.3), V3(0.6, 0.8, -1.1), "Free-floating firing pin struck by hammer to detonate primer.", "Hard Chrome 8740 Steel", "Strike Energy: 0.048 Joules");
+        addCyl("7-Lug Rotating Bolt Head", "action", 0.075, 0.075, 0.38, 16, 'x', m.internalSteel, V3(0, 0.22, 0.25), V3(0.6, 0.8, 0.6), "Locks into barrel extension lugs, containing 55,000 PSI deflagration.", "Carpenter 158 Steel (MPI & HPT)", "Chamber Peak: 55,000 PSI");
+        addBox("Hammer & J-Spring", "fcg", 0.08, 0.25, 0.12, m.internalSteel, V3(0, 0.05, -0.05), V3(0.35, 0.35, 0), "Driven by high-power hammer spring to impact firing pin.", "Case-Hardened 8620 Alloy", "Lock Time: 5.6 ms");
+        addBox("Combat Trigger & Disconnector", "fcg", 0.08, 0.22, 0.18, m.internalSteel, V3(0, -0.2, -0.05), V3(0.35, -0.2, 0), "Single-stage combat trigger engaging hammer sear.", "Tool Steel Parkerized", "Pull Weight: 5.5 lbs");
+        addCyl("6-Position Mil-Spec Buffer Tube", "fcg", 0.065, 0.065, 1.1, 16, 'x', m.receiver, V3(0, 0.08, -1.0), V3(0, 0, -0.9), "Receiver extension housing recoil buffer and spring.", "7075-T6 Impact Extruded", "Internal Dia: 1.148-inch");
+        addSpring("Helical Buffer Recoil Spring", "fcg", 0.05, 0.9, 14, 0.008, m.springSteel, V3(0, 0.08, -1.0), V3(0, 0.35, -1.4), "Returns carrier group into battery after absorbing recoil pulse.", "17-7 PH Stainless Steel", "Spring Rate: 1.8 lbs/in");
+        addBox("SOPMOD Crane Stock", "fcg", 0.24, 0.48, 0.75, m.polymer, V3(0, 0.04, -1.25), V3(0, 0, -1.7), "Provides cheek rest and multiple shoulder positioning stops.", "Reinforced Composite with Rubber Pad", "Length of Pull: 10.5 to 14.5 inches");
+        addBox("30-Round PMAG Magazine Body", "feed", 0.18, 0.85, 0.45, m.polymer, V3(0, -0.55, 0.25), V3(0, -1.1, 0.1), "Feeds 5.56x45mm NATO rounds reliably.", "Heat-Treated Polymer with Anti-Glare", "Capacity: 30 Rounds");
+        addSpring("High-Tensile Magazine Spring", "feed", 0.06, 0.75, 12, 0.007, m.springSteel, V3(0, -0.55, 0.25), V3(0, -1.7, 0.1), "Pushes follower and cartridge column into feed lips.", "Chrome-Silicon Spring Wire", "Lifter Force: 4.2 lbs");
+        addBox("Anti-Tilt Green Polymer Follower", "feed", 0.16, 0.12, 0.42, m.polymer, V3(0, -0.25, 0.25), V3(0, -0.75, 0.1), "Prevents forward/rearward tilt jamming during feeding.", "Self-Lubricating Acetal", "Tilt Angle Limit: <2°");
+        addCartridges(3, 1.0, 1.0, "feed", V3(0, -0.15, 0.25), V3(-0.4, -0.3, 0.4), "5.56 NATO M855A1 Round", "62-grain steel penetrator bullet delivering 1,750 Joules.", "Energy: 1,750 J");
+        addBox("EOTech EXPS3 Holographic Sight", "barrel", 0.26, 0.28, 0.52, m.polymer, V3(0, 0.45, 0.05), V3(0, 1.0, 0), "True holographic transmission with 68 MOA aiming ring.", "Aircraft Aluminum Roll-Bar Hood", "Reticle: 68 MOA Ring / 1 MOA Dot");
+      }
+      else if (id === 'ak47') {
+        addBox("Stamped Steel Receiver", "fcg", 0.32, 0.38, 1.35, m.receiver, V3(0, -0.05, 0.0), V3(0, -0.3, 0), "1.0mm sheet steel with trunnion rivets.", "Ordnance Steel Parkerized", "Yield: 60,000 PSI");
+        addBox("Ribbed Dust Cover", "barrel", 0.31, 0.18, 1.25, m.receiver, V3(0, 0.2, 0.0), V3(0, 0.4, 0), "Protects internal action from dirt and sand.", "Stamped Steel Sheet", "Tolerance: Loose Mil-Spec");
+        addBox("Solid Laminate Wood Buttstock", "fcg", 0.22, 0.45, 0.95, m.wood, V3(0, -0.08, -1.1), V3(0, 0, -1.1), "Fixed Russian birch laminate stock with steel buttplate.", "Laminated Birch", "Impact Strength: Heavy");
+        addBox("Vented Wooden Lower Handguard", "barrel", 0.28, 0.25, 0.85, m.wood, V3(0, 0.08, 1.05), V3(0, -0.4, 0.4), "Ergonomic swell handguard with internal heat shield.", "Laminated Birch", "Heat Rating: 250°C");
+        addBox("Upper Gas Cylinder Handguard", "barrel", 0.24, 0.2, 0.65, m.wood, V3(0, 0.26, 1.0), V3(0, 0.5, 0.4), "Encapsulates gas piston tube.", "Laminated Birch", "Heat Rating: 300°C");
+        addCyl("16.3-inch  Cold Hammer-Forged Barrel", "barrel", 0.05, 0.05, 2.2, 16, 'x', m.barrel, V3(0, 0.12, 1.7), V3(0, 0.3, 0.9), "Chrome-lined bore with 1:9.45 twist.", "Chrome-Moly Steel", "Muzzle Velocity: 715 m/s");
+        addCyl("Gas Piston Expansion Cylinder", "barrel", 0.04, 0.04, 0.9, 14, 'x', m.internalSteel, V3(0, 0.24, 1.05), V3(0, 0.7, 0.4), "Channels high pressure gas from gas block.", "Seamless Steel Tube", "Gas Port: 20,000 PSI");
+        addCyl("45° Slant Muzzle Compensator", "barrel", 0.065, 0.065, 0.25, 14, 'x', m.barrel, V3(0, 0.12, 2.85), V3(0, 0.3, 1.8), "Deflects blast upward to counter rightward muzzle climb.", "Threaded Steel 14x1mm LH", "Compensator Vector: +28° Up");
+        addCyl("Long-Stroke Gas Piston & Bolt Carrier", "action", 0.075, 0.075, 1.45, 16, 'x', m.internalSteel, V3(0, 0.18, 0.4), V3(0.6, 0.8, 0.1), "Rigidly attached 8-inch steel gas piston rod and charging handle.", "Forged 4140 Steel", "Recoil Stroke: 120mm");
+        addCyl("Heavy 2-Lug Rotating Bolt Head", "action", 0.065, 0.065, 0.42, 14, 'x', m.internalSteel, V3(0, 0.12, 0.25), V3(0.6, 0.8, 0.7), "Massive locking lugs containing 51,500 PSI deflagration.", "Case-Hardened Steel", "Chamber Peak: 51,500 PSI");
+        addSpring("Telescoping Recoil Guide & Spring", "action", 0.045, 0.95, 16, 0.007, m.springSteel, V3(0, 0.18, -0.4), V3(0, 0.4, -0.9), "Dual-strut wire recoil spring driving carrier into battery.", "Spring Steel Wire", "Spring Pre-load: 8.5 lbs");
+        addBox("AK Combat Trigger & Hammer", "fcg", 0.08, 0.25, 0.18, m.internalSteel, V3(0, -0.15, -0.05), V3(0.35, -0.2, 0), "Two-stage military trigger with disconnector.", "Forged Steel", "Pull Weight: 6.2 lbs");
+        addBox("Contoured Bakelite Grip", "fcg", 0.2, 0.45, 0.25, m.wood, V3(0, -0.4, -0.3), V3(0, -0.8, -0.3), "Checkered grip with internal fastening screw.", "Russian Bakelite / Phenolic Resin", "Ergonomic Angle: 17°");
+        addBox("30-Round Ribbed Steel Magazine", "feed", 0.2, 0.95, 0.5, m.receiver, V3(0, -0.55, 0.35), V3(0, -1.2, 0.2), "Heavy-gauge ribbed stamped steel 7.62x39mm magazine.", "Stamped Steel Sheet", "Capacity: 30 Rounds");
+        addBox("Adjustable 1000m Tangent Rear Sight", "barrel", 0.12, 0.12, 0.3, m.receiver, V3(0, 0.24, 0.55), V3(0, 0.6, 0.2), "Graduated range markings from 100m to 1,000m.", "Tool Steel", "Graduations: 1-10 (100-1000m)");
+        addCartridges(3, 1.15, 1.0, "feed", V3(0, -0.12, 0.35), V3(-0.4, -0.3, 0.5), "7.62x39mm M43 Round", "123-grain steel core boat-tail delivering 2,050 Joules.", "Energy: 2,050 J");
+      }
+      else if (id === 'glock19') {
+        addBox("Gen 5 Polymer Frame & Rail", "fcg", 0.28, 0.6, 0.85, m.polymer, V3(0, -0.2, -0.1), V3(0, -0.35, 0), "Reinforced polymer chassis with steel slide rail inserts.", "Glock Polymer with Textured Stippling", "Drop Safety: Certified");
+        addBox("nDLC-Coated Steel Slide", "action", 0.29, 0.32, 1.1, m.receiver, V3(0, 0.15, 0.0), V3(0, 0.45, 0), "Houses striker assembly, extractor, and ejection port.", "Forged Ordnance Steel with nDLC Finish", "Surface Hardness: 64 HRC");
+        addCyl("4.02-inch  Marksman Rifled Barrel", "barrel", 0.055, 0.055, 0.95, 16, 'x', m.barrel, V3(0, 0.15, 0.2), V3(0, 0.45, 0.8), "Chamber block locks directly into slide ejection port window.", "Cold Hammer-Forged Marksman Rifling", "Twist: 1:9.84 RH");
+        addSpring("Captive Dual Recoil Spring Assembly", "action", 0.035, 0.65, 14, 0.007, m.springSteel, V3(0, 0.02, 0.15), V3(0, -0.2, 0.7), "Dual-rate concentric springs reduce felt recoil impulse.", "Stainless Steel Guide Rod & Wire", "Recoil Absorption: 40%");
+        addCyl("Striker Firing Pin & Spring Cups", "action", 0.02, 0.02, 0.5, 12, 'x', m.internalSteel, V3(0, 0.15, -0.3), V3(0.4, 0.45, -0.8), "Pre-cocked striker spring compressed and released by trigger bar.", "Hardened Tool Steel", "Ignition Velocity: High");
+        addBox("Safe Action Trigger & Safety Shoe", "fcg", 0.08, 0.22, 0.2, m.polymer, V3(0, -0.05, 0.05), V3(0.35, -0.05, 0.05), "Integrated trigger safety lever prevents inertial firing.", "Polymer Shoe with Stamped Steel Bar", "Pull Weight: 5.5 lbs");
+        addBox("15-Round Double-Stack Mag", "feed", 0.18, 0.75, 0.38, m.polymer, V3(0, -0.4, -0.12), V3(0, -0.9, -0.12), "Steel-lined polymer magazine body with witness holes.", "Steel Core with Overmolded Polymer", "Capacity: 15 Rounds");
+        addCartridges(3, 0.9, 0.75, "feed", V3(0, -0.1, -0.1), V3(-0.35, -0.2, 0.2), "9x19mm Luger Round", "124-grain FMJ cartridge delivering 490 Joules.", "Energy: 490 J");
+        addBox("Contrast 3-Dot Combat Sights", "barrel", 0.08, 0.08, 0.9, m.polymer, V3(0, 0.33, 0.05), V3(0, 0.7, 0.05), "Fixed front dot and white-bracket rear notch sight.", "High-Contrast Polymer", "Sight Radius: 153 mm");
+      }
+      else if (id === 'm1911') {
+        addBox("Forged Carbon Steel Frame", "fcg", 0.26, 0.62, 0.9, m.receiver, V3(0, -0.22, -0.1), V3(0, -0.35, 0), "Full-size Government model frame with checkered front strap.", "Forged 4140 Carbon Steel", "Tensile Yield: 85,000 PSI");
+        addBox("Checkered Walnut Diamond Grip Panels", "fcg", 0.3, 0.48, 0.28, m.wood, V3(0, -0.35, -0.18), V3(0.3, -0.35, -0.18), "Classic double-diamond checkered grip panels.", "American Walnut", "Grain: Traditional Hand-Fitted");
+        addBox("Rounded Contour Steel Slide", "action", 0.28, 0.32, 1.25, m.receiver, V3(0, 0.16, 0.05), V3(0, 0.45, 0), "Contains dual locking lug recesses and internal extractor.", "Forged Steel Parkerized", "Hardness: 58 HRC");
+        addCyl("5.0-inch  Match Barrel & Swinging Link", "barrel", 0.06, 0.06, 1.1, 16, 'x', m.barrel, V3(0, 0.16, 0.25), V3(0, 0.45, 0.9), "Swinging link pulls chamber down to unlock lugs from slide.", "National Match Carbon Steel", "Twist: 1:16 RH");
+        addCyl("Barrel Bushing & Checkered Plug", "barrel", 0.08, 0.08, 0.18, 14, 'x', m.internalSteel, V3(0, 0.16, 0.82), V3(0, 0.45, 1.5), "Muzzle lockup bushing and recoil spring plug.", "Hardened Tool Steel", "Bushing Fit: Match Hand-Honed");
+        addSpring("16-lb Government Recoil Spring", "action", 0.035, 0.75, 16, 0.007, m.springSteel, V3(0, 0.03, 0.2), V3(0, -0.2, 0.8), "Absorbs recoil impulse of the heavy .45 ACP round.", "Music Wire Spring Steel", "Rating: 16 lbs");
+        addBox("Exposed Spur Hammer & Beavertail", "fcg", 0.08, 0.28, 0.2, m.internalSteel, V3(0, 0.08, -0.45), V3(0.35, 0.15, -0.45), "Checkered thumb spur and extended upswept grip safety.", "Case-Hardened Carbon Steel", "Single-Action Trigger Pull: 4.5 lbs");
+        addBox("7-Round Single-Stack Magazine", "feed", 0.15, 0.75, 0.35, m.receiver, V3(0, -0.42, -0.15), V3(0, -0.95, -0.15), "Heat-treated steel magazine with flat steel follower.", "Cold-Rolled Sheet Steel", "Capacity: 7 Rounds");
+        addCartridges(3, 1.15, 0.85, "feed", V3(0, -0.12, -0.12), V3(-0.35, -0.2, 0.2), ".45 ACP 230gr Ball Round", "230-grain copper FMJ bullet delivering 485 Joules.", "Energy: 485 J");
+      }
+      else if (id === 'desert_eagle') {
+        addBox("Oversized Steel Frame", "fcg", 0.32, 0.65, 1.05, m.chrome, V3(0, -0.2, -0.1), V3(0, -0.35, 0), "Solid steel investment casting frame with wraparound grip.", "Brushed Stainless Steel", "Weight: 1,998 g");
+        addBox("Triangular Polygonal Barrel & Rail", "barrel", 0.32, 0.38, 1.35, m.chrome, V3(0, 0.18, 0.35), V3(0, 0.45, 0.7), "Triangular contour barrel with Weaver rail and gas port.", "Cold Hammer-Forged Match Grade", "Polygonal Rifling: 1:19");
+        addBox("Reciprocating Magnum Slide", "action", 0.33, 0.35, 1.15, m.chrome, V3(0, 0.18, -0.1), V3(0, 0.45, -0.3), "Contains rotating bolt carrier and twin recoil spring guides.", "Brushed Stainless Steel", "Chamber Pressure: 36,000 PSI");
+        addCyl("3-Lug Rotating Rifle-Style Bolt", "action", 0.09, 0.09, 0.45, 16, 'x', m.internalSteel, V3(0, 0.18, 0.2), V3(0.5, 0.7, 0.5), "Rifle-style triangular locking lugs contain 36,000 PSI.", "Carpenter 158 High-Tensile Steel", "Rotational Angle: 25°");
+        addCyl("Short-Stroke Gas Piston", "barrel", 0.035, 0.035, 0.45, 12, 'x', m.internalSteel, V3(0, 0.02, 0.45), V3(0, -0.3, 0.9), "Operated by gas tapped directly from chamber.", "Stainless Steel Piston", "Piston Stroke: 32mm");
+        addBox("7-Round .50 AE Steel Magazine", "feed", 0.2, 0.8, 0.45, m.receiver, V3(0, -0.45, -0.15), V3(0, -1.0, -0.15), "Feeds half-inch diameter magnum cartridges.", "Phosphated Heavy Sheet Steel", "Capacity: 7 Rounds");
+        addCartridges(3, 1.45, 1.05, "feed", V3(0, -0.15, -0.12), V3(-0.4, -0.2, 0.3), ".50 Action Express Magnum Round", "300-grain flat-point copper bullet delivering 2,200 Joules.", "Energy: 2,200 J");
+      }
+      else if (id === 'hkmp5') {
+        addBox("Stamped Sheet Steel Receiver", "fcg", 0.28, 0.38, 1.1, m.receiver, V3(0, 0.05, -0.1), V3(0, -0.3, 0), "Weld-fabricated stamped steel receiver with internal grooves.", "Stamped Sheet Steel Phosphated", "Recoil System: Roller Delayed");
+        addCyl("Forward Cocking Tube & Slap Notch", "barrel", 0.05, 0.05, 1.1, 14, 'x', m.receiver, V3(0, 0.28, 0.4), V3(0, 0.6, 0.3), "Contains cocking handle and support detent.", "Seamless Steel Tubing", "Slap Notch Angle: 45°");
+        addCyl("8.9-inch  Cold Hammer-Forged 3-Lug Barrel", "barrel", 0.045, 0.045, 1.2, 16, 'x', m.barrel, V3(0, 0.14, 0.8), V3(0, 0.35, 0.9), "Fluted chamber with 3-lug quick detach muzzle.", "Cold Hammer-Forged Steel", "Chamber Flutes: 16");
+        addBox("Tropical Polymer Handguard", "barrel", 0.26, 0.28, 0.75, m.polymer, V3(0, 0.12, 0.65), V3(0, -0.4, 0.5), "Wide tropical combat forend with palm swell.", "High-Impact Polyamide", "Operating Temp: <140°C");
+        addCyl("Roller-Delayed Bolt Head & Carrier", "action", 0.075, 0.075, 0.85, 16, 'x', m.internalSteel, V3(0, 0.14, -0.05), V3(0.5, 0.7, 0.1), "Dual cylindrical rollers lock into receiver recesses.", "Case-Hardened Ordnance Steel", "Delay Geometry: 100° Wedge");
+        addBox("Navy SEF Polymer Trigger Module", "fcg", 0.26, 0.55, 0.5, m.polymer, V3(0, -0.28, -0.2), V3(0, -0.7, -0.2), "Ergonomic ambidextrous lower trigger pack.", "Glass-Filled Nylon", "Cyclic Rate: 800 RPM");
+        addCyl("Dual-Strut Retractable Wire Stock", "fcg", 0.02, 0.02, 1.1, 12, 'x', m.internalSteel, V3(0, 0.05, -0.9), V3(0, 0, -1.2), "Dual steel struts collapse along receiver sides.", "Spring Steel Struts & Rubber Buttpad", "Length: Compact");
+        addBox("30-Round Curved 9mm Magazine", "feed", 0.16, 0.9, 0.35, m.receiver, V3(0, -0.5, 0.2), V3(0, -1.1, 0.1), "Distinct curved waffle-stamped steel stick magazine.", "Phosphated Steel Sheet", "Capacity: 30 Rounds");
+        addCartridges(3, 0.9, 0.75, "feed", V3(0, -0.1, 0.2), V3(-0.35, -0.2, 0.3), "9x19mm Luger Round", "124-grain FMJ cartridge delivering 640 Joules.", "Energy: 640 J");
+      }
+      else if (id === 'kriss_vector') {
+        addBox("Super V Slider Chassis Housing", "fcg", 0.32, 0.75, 0.85, m.polymer, V3(0, -0.25, 0.1), V3(0, -0.4, 0), "Houses the patented downward-recoiling Super V mechanism.", "Advanced Polymer with Steel Inserts", "Recoil Reduction: 60%");
+        addBox("Picatinny Monolithic Upper", "action", 0.3, 0.32, 1.0, m.polymer, V3(0, 0.2, 0.0), V3(0, 0.4, 0), "Full-length top rail with ejection port and ambidextrous safety.", "Reinforced Polymer", "Rail Length: 330 mm");
+        addBox("Articulated Inertia Recoil Slider", "action", 0.22, 0.45, 0.35, m.internalSteel, V3(0, -0.15, 0.1), V3(0.5, -0.3, 0.1), "Redirects horizontal recoil energy downward into frame.", "Tungsten Alloy Inertia Block", "Muzzle Climb: Neutralized");
+        addCyl("5.5-inch  Low-Bore Axis Barrel", "barrel", 0.05, 0.05, 0.9, 14, 'x', m.barrel, V3(0, -0.02, 0.7), V3(0, 0.2, 0.8), "Sunken bore line eliminates rotational muzzle climb.", "Cold Hammer-Forged 4140", "Twist: 1:16 RH");
+        addBox("Side-Folding Skeleton Stock", "fcg", 0.18, 0.4, 0.8, m.polymer, V3(0, 0.1, -0.8), V3(0, 0, -1.2), "Locks securely to right side of receiver when folded.", "High-Impact Composite", "Folded Length: 410 mm");
+        addBox("30-Round Extended Stick Mag", "feed", 0.16, 1.05, 0.35, m.polymer, V3(0, -0.65, 0.32), V3(0, -1.3, 0.2), "Extended Glock 21 .45 ACP compatible magazine.", "Steel-Lined Polymer", "Capacity: 30 Rounds");
+        addCartridges(3, 1.15, 0.85, "feed", V3(0, -0.15, 0.32), V3(-0.35, -0.2, 0.4), ".45 ACP 230gr Ball Round", "Heavy .45 caliber round delivering 520 Joules.", "Cyclic Rate: 1,200 RPM");
+      }
+      else if (id === 'p90') {
+        addBox("Thumbhole Bullpup Chassis", "fcg", 0.32, 0.65, 1.45, m.polymer, V3(0, -0.05, 0.0), V3(0, -0.2, 0), "Reinforced polymer shell enclosing barrel and action.", "Impact Polymer with Dual Thumbholes", "Ergonomics: Fully Ambidextrous");
+        addBox("50-Round Translucent Magazine", "feed", 0.26, 0.15, 1.15, m.translucent, V3(0, 0.3, 0.05), V3(0, 0.65, 0), "Horizontal top magazine with 90° spiral feed ramp.", "Translucent Polycarbonate", "Capacity: 50 Rounds");
+        addCyl("10.4-inch  Cold Hammer-Forged Barrel", "barrel", 0.045, 0.045, 1.4, 16, 'x', m.barrel, V3(0, 0.12, 0.7), V3(0, 0.35, 0.8), "Equipped with birdcage flash suppressor.", "Chrome-Lined Steel", "Muzzle Velocity: 715 m/s");
+        addCyl("Dual Guide-Rod Blowback Bolt", "action", 0.08, 0.08, 0.7, 14, 'x', m.internalSteel, V3(0, 0.12, -0.3), V3(0.5, 0.6, -0.4), "Twin guide rods and recoil springs dampen cycle impulse.", "Machined Steel Block", "Operating Cycle: 900 RPM");
+        addBox("Triple Picatinny Rail & Reflex Sight", "barrel", 0.24, 0.22, 0.55, m.receiver, V3(0, 0.42, 0.4), V3(0, 0.9, 0.4), "Houses red-dot reflex optical sight.", "Aircraft Aluminum Bridge", "Reticle: 3 MOA Dot");
+        addCartridges(3, 0.75, 0.85, "feed", V3(0, 0.25, 0.2), V3(-0.35, 0.3, 0.3), "5.7x28mm SS190 Penetrator", "Miniature high-velocity armor-piercing cartridge.", "Energy: 540 J");
+      }
+      else if (id === 'mp7') {
+        addBox("Compact Polymer PDW Chassis", "fcg", 0.26, 0.5, 1.05, m.polymer, V3(0, -0.05, 0.0), V3(0, -0.25, 0), "Lightweight fiber-reinforced polymer frame.", "Fiber-Reinforced Polyamide", "Total Weight: 1,900 g");
+        addCyl("7.1-inch  Match Barrel & Flash Hider", "barrel", 0.045, 0.045, 1.1, 14, 'x', m.barrel, V3(0, 0.12, 0.8), V3(0, 0.35, 0.8), "Slotted flash hider.", "Cold Hammer-Forged 1:6.3 Twist", "Muzzle Velocity: 735 m/s");
+        addCyl("Folding Forward Vertical Foregrip", "barrel", 0.03, 0.03, 0.55, 12, 'y', m.polymer, V3(0, -0.15, 0.7), V3(0, -0.6, 0.7), "Folds flat into the front receiver.", "Polymer", "Lock: Push-Button Spring Detent");
+        addCyl("Short-Stroke Gas Piston & Bolt", "action", 0.07, 0.07, 0.75, 14, 'x', m.internalSteel, V3(0, 0.12, -0.05), V3(0.5, 0.7, 0.1), "Miniaturized rifle action rotating bolt.", "Hardened Tool Steel", "Chamber Pressure: 58,000 PSI");
+        addCyl("Dual-Strut Telescoping Wire Stock", "fcg", 0.018, 0.018, 0.95, 12, 'x', m.internalSteel, V3(0, 0.08, -0.75), V3(0, 0, -1.1), "Collapses cleanly into frame.", "Spring Steel", "Extended Length: 638 mm");
+        addBox("20-Round 4.6mm Magazine in Grip", "feed", 0.15, 0.85, 0.32, m.receiver, V3(0, -0.45, -0.1), V3(0, -1.0, -0.1), "Inserted directly into the pistol grip.", "Steel Sheet", "Capacity: 20 Rounds");
+        addBox("Micro Reflex Red-Dot Sight", "barrel", 0.2, 0.22, 0.45, m.polymer, V3(0, 0.32, 0.25), V3(0, 0.75, 0.25), "Low-profile tactical reflex sight.", "Aluminum Hood", "Sight: Parallax-Free");
+        addCartridges(3, 0.7, 0.8, "feed", V3(0, -0.1, -0.1), V3(-0.35, -0.2, 0.3), "4.6x30mm Armor-Piercing Round", "Delivers 500 Joules.", "Penetration: CRISAT Target Defeated");
+      }
+      else if (id === 'benellim4') {
+        addBox("Anodized Combat Receiver", "fcg", 0.32, 0.42, 1.35, m.receiver, V3(0, 0.05, 0.0), V3(0, -0.25, 0), "Aircraft-grade aluminum with MIL-STD-1913 optic rail.", "Anodized 7075-T6 Aluminum", "Hardcoat: Type III");
+        addCyl("18.5-inch  Smoothbore Combat Barrel", "barrel", 0.065, 0.065, 2.2, 16, 'x', m.barrel, V3(0, 0.18, 1.3), V3(0, 0.4, 0.8), "Smoothbore cylinder with winged combat front sight.", "Chrome-Lined Ordnance Steel", "Muzzle Velocity: 410 m/s");
+        addCyl("Full-Length 7-Round Mag Tube", "feed", 0.055, 0.055, 2.0, 16, 'x', m.receiver, V3(0, 0.05, 1.2), V3(0, -0.35, 0.8), "Under-barrel tubular magazine with knurled end cap.", "Seamless Steel Tubing", "Capacity: 7+1 (12ga)");
+        addCyl("Dual ARGO Stainless Gas Pistons", "barrel", 0.03, 0.03, 0.45, 12, 'x', m.internalSteel, V3(0.08, 0.12, 0.75), V3(0.4, 0.5, 0.6), "Self-cleaning auto-regulating pistons push directly on bolt.", "Stainless Steel Pistons", "A.R.G.O. Cycle: 100% Reliable");
+        addCyl("Dual-Lug Rotating Bolt & Carrier", "action", 0.085, 0.085, 0.75, 16, 'x', m.internalSteel, V3(0, 0.18, 0.15), V3(0.5, 0.7, 0.1), "Rotating two-lug bolt head locking into barrel extension.", "Case-Hardened Tool Steel", "Chamber Pressure: 11,500 PSI");
+        addBox("Ribbed Synthetic Forend", "barrel", 0.28, 0.3, 1.1, m.polymer, V3(0, 0.08, 0.95), V3(0, -0.6, 0.6), "Ergonomic forend shielding gas cylinders.", "Glass-Filled Polymer", "Grip: Combat Stippled");
+        addBox("Pistol Grip & Telescoping Stock", "fcg", 0.24, 0.55, 1.15, m.polymer, V3(0, -0.15, -1.0), V3(0, 0, -1.3), "Allows 3-position length-of-pull adjustment.", "Reinforced Polymer & Steel Rails", "Length of Pull: 14.3-inch");
+        addCartridges(3, 1.5, 1.1, "feed", V3(0, 0.05, 0.4), V3(-0.45, -0.2, 0.4), "12-Gauge 00-Buckshot Shell", "Red plastic hull with high brass head delivering 3,100 Joules.", "Energy: 3,100 J");
+      }
+      else if (id === 'remington870') {
+        addBox("Milled Billet Steel Receiver", "fcg", 0.32, 0.45, 1.4, m.receiver, V3(0, 0.05, 0.0), V3(0, -0.25, 0), "Machined from a solid billet of ordnance carbon steel.", "Milled 4140 Carbon Steel", "Tensile Yield: 90,000 PSI");
+        addCyl("18.5-inch  Heavy Barrel & Breacher Brake", "barrel", 0.065, 0.065, 2.3, 16, 'x', m.barrel, V3(0, 0.18, 1.35), V3(0, 0.4, 0.9), "Standoff castellated breacher muzzle brake.", "Ordnance Steel with Parkerized Finish", "Muzzle Velocity: 390 m/s");
+        addCyl("6-Round Tubular Magazine", "feed", 0.055, 0.055, 1.8, 16, 'x', m.receiver, V3(0, 0.05, 1.1), V3(0, -0.35, 0.7), "Under-barrel spring-loaded tubular magazine.", "Cold-Drawn Steel Tubing", "Capacity: 6+1 (12ga)");
+        addBox("Ribbed Sliding Pump Forend", "action", 0.28, 0.32, 0.95, m.polymer, V3(0, 0.05, 1.05), V3(0, -0.6, 0.7), "Manually racked back and forth to cycle action.", "Glass-Filled Polymer", "Pump Stroke: 85 mm");
+        addBox("Dual Action Bars & Tilting Bolt", "action", 0.2, 0.18, 0.8, m.internalSteel, V3(0, 0.15, 0.2), V3(0.5, 0.6, 0.1), "Twin non-binding bars connecting pump to locking bolt.", "Hardened Tool Steel", "Lock: Steel Extension Lug");
+        addBox("Fixed Synthetic Buttstock", "fcg", 0.22, 0.5, 1.2, m.polymer, V3(0, -0.15, -1.05), V3(0, 0, -1.3), "Solid stock with thick recoil absorption pad.", "High-Density Polymer", "Recoil Pad: Solid Rubber");
+        addCartridges(3, 1.5, 1.1, "feed", V3(0, 0.05, 0.3), V3(-0.45, -0.2, 0.4), "12-Gauge Magnum Slug Shell", "Solid 1-oz lead slug delivering 2,850 Joules.", "Energy: 2,850 J");
+      }
+      else if (id === 'scar17h') {
+        addBox("Monolithic Extruded FDE Upper", "barrel", 0.34, 0.38, 1.5, m.fde, V3(0, 0.2, 0.0), V3(0, 0.45, 0), "Continuous top Picatinny rail with integral case deflector.", "Hardcoat Anodized FDE Aluminum", "Upper Weight: Lightweight Extrusion");
+        addBox("Polymer Lower Trigger Module", "fcg", 0.32, 0.4, 1.25, m.fde, V3(0, -0.16, -0.1), V3(0, -0.35, 0), "Houses magazine well and fire control group.", "Impact Polymer Coyote Tan", "Mag Release: Ambidextrous");
+        addCyl("16-inch  Heavy Free-Floating Barrel", "barrel", 0.055, 0.055, 2.3, 16, 'x', m.barrel, V3(0, 0.18, 1.7), V3(0, 0.4, 1.0), "Equipped with 3-prong flash hider.", "Cold Hammer-Forged Match Grade", "Muzzle Velocity: 790 m/s");
+        addCyl("Short-Stroke Gas Piston & Regulator", "barrel", 0.04, 0.04, 0.65, 14, 'x', m.internalSteel, V3(0, 0.32, 1.2), V3(0, 0.8, 0.6), "2-position adjustable regulator for suppressed firing.", "Stainless Steel Piston", "Regulator Modes: Normal / Suppressed");
+        addCyl("Heavy SCAR Bolt Carrier & 7-Lug Bolt", "action", 0.095, 0.095, 1.05, 16, 'x', m.internalSteel, V3(0, 0.2, -0.1), V3(0.6, 0.8, -0.2), "Heavy carrier absorbs 7.62 NATO chamber pressures.", "Forged 8620 Case-Hardened Steel", "Chamber Peak: 60,000 PSI");
+        addBox("Folding Telescoping Ugg-Boot Stock", "fcg", 0.26, 0.52, 1.0, m.fde, V3(0, 0.08, -1.25), V3(0, 0, -1.6), "Adjustable cheek riser and multi-position length.", "Reinforced Composite", "Cheek Riser: 2 Position");
+        addBox("20-Round 7.62 NATO Steel Magazine", "feed", 0.22, 0.9, 0.55, m.receiver, V3(0, -0.55, 0.25), V3(0, -1.1, 0.1), "Straight steel box magazine with witness holes.", "Phosphated Steel Sheet", "Capacity: 20 Rounds");
+        addBox("Elcan SpecterDR 1x/4x Dual-Role Optic", "barrel", 0.28, 0.3, 0.65, m.fde, V3(0, 0.48, 0.1), V3(0, 1.05, 0.1), "Switchable magnification combat optic.", "Anodized Aerospace Aluminum", "Reticle: CX5395 Ballistic");
+        addCartridges(3, 1.2, 1.15, "feed", V3(0, -0.15, 0.25), V3(-0.4, -0.3, 0.4), "7.62x51mm NATO M80 Ball", "147-grain FMJ delivering 3,500 Joules.", "Energy: 3,500 J");
+      }
+      else if (id === 'g3') {
+        addBox("Stamped Steel Receiver", "fcg", 0.3, 0.4, 1.35, m.receiver, V3(0, 0.08, 0.0), V3(0, -0.25, 0), "Fluted chamber with 12 longitudinal gas channels.", "Stamped Sheet Steel", "Action: Roller-Delayed Blowback");
+        addCyl("Forward Cocking Tube & Handle", "barrel", 0.05, 0.05, 1.35, 14, 'x', m.receiver, V3(0, 0.3, 0.6), V3(0, 0.6, 0.4), "Forward charging handle locking into notch.", "Seamless Steel Tubing", "Cocking Handle: Folding Steel");
+        addCyl("17.7-inch  Cold Hammer-Forged Barrel", "barrel", 0.055, 0.055, 2.4, 16, 'x', m.barrel, V3(0, 0.15, 1.8), V3(0, 0.35, 1.1), "Chrome-lined bore with birdcage flash suppressor.", "Cold Hammer-Forged 1:12 Twist", "Muzzle Velocity: 800 m/s");
+        addBox("Tropical Green Slim Handguard", "barrel", 0.26, 0.28, 1.1, m.od_green, V3(0, 0.15, 1.05), V3(0, -0.4, 0.6), "Slender polymer forend with heat shield.", "High-Impact Polyamide", "Heat Resistance: Mil-Spec");
+        addCyl("Roller-Delayed Bolt & Carrier", "action", 0.085, 0.085, 1.0, 16, 'x', m.internalSteel, V3(0, 0.15, 0.05), V3(0.5, 0.7, 0.1), "Dual rollers delay breech opening until pressure drops.", "Hardened Chrome-Moly Steel", "Chamber Pressure: 55,000 PSI");
+        addBox("Green Polymer Fixed Buttstock", "fcg", 0.22, 0.52, 1.15, m.od_green, V3(0, -0.05, -1.15), V3(0, 0, -1.5), "Solid fixed buttstock with steel buffer.", "Impact Polyamide", "Buffer: Heavy Hydraulic");
+        addBox("20-Round Waffle Aluminum Magazine", "feed", 0.2, 0.9, 0.55, m.receiver, V3(0, -0.5, 0.3), V3(0, -1.1, 0.2), "Lightweight waffle-pattern aluminum box magazine.", "Anodized Aluminum", "Weight: 140 g (Empty)");
+        addCartridges(3, 1.2, 1.15, "feed", V3(0, -0.15, 0.3), V3(-0.4, -0.3, 0.4), "7.62x51mm NATO Round", "147-grain FMJ delivering 3,600 Joules.", "Energy: 3,600 J");
+      }
+      else if (id === 'steyraug') {
+        addBox("Synthetic Bullpup Chassis", "fcg", 0.32, 0.6, 1.65, m.od_green, V3(0, -0.05, 0.0), V3(0, -0.25, 0), "Seamless synthetic stock with integral trigger group.", "Reinforced Polyamide 66", "Bullpup Configuration");
+        addCyl("20-inch  Quick-Detach Match Barrel", "barrel", 0.05, 0.05, 2.4, 16, 'x', m.barrel, V3(0, 0.15, 1.35), V3(0, 0.35, 1.0), "Swaps in 3 seconds by pushing barrel lock button.", "Chrome-Lined Steel with Tulip Brake", "Muzzle Velocity: 970 m/s");
+        addCyl("Folding Forward Vertical Foregrip", "barrel", 0.035, 0.035, 0.65, 12, 'y', m.od_green, V3(0, -0.18, 1.35), V3(0, -0.7, 1.35), "Locks vertically or folds flat along barrel.", "High-Impact Polymer", "Grip Positions: Vertical / Folded");
+        addBox("Bolt Carrier & Dual Steel Guide Rods", "action", 0.22, 0.24, 0.95, m.internalSteel, V3(0, 0.14, -0.4), V3(0.5, 0.7, -0.3), "Dual operating rods connect trigger bar to bolt carrier.", "Hardened Ordnance Steel", "Operating Guide: Dual Rods");
+        addBox("30-Round Translucent Waffle Mag", "feed", 0.18, 0.85, 0.45, m.translucent, V3(0, -0.5, -0.45), V3(0, -1.1, -0.45), "Waffle-ribbed translucent magazine in buttstock.", "Impact-Resistant Polycarbonate", "Capacity: 30 Rounds");
+        addCyl("Integrated 1.5x Telescopic Sight", "barrel", 0.065, 0.065, 0.8, 16, 'x', m.od_green, V3(0, 0.38, 0.4), V3(0, 0.9, 0.4), "Circle reticle optimized for rapid CQB target acquisition.", "Cast Aluminum with Coated Lenses", "Reticle: Circle-Dot 1.5x");
+        addCartridges(3, 1.0, 1.0, "feed", V3(0, -0.15, -0.45), V3(-0.4, -0.3, -0.2), "5.56x45mm NATO Round", "62-grain penetrator delivering 1,750 Joules.", "Energy: 1,750 J");
+      }
+      else if (id === 'sa80') {
+        addBox("Stamped Steel Bullpup Receiver", "fcg", 0.32, 0.5, 1.55, m.receiver, V3(0, 0.02, 0.0), V3(0, -0.25, 0), "Rigid welded sheet steel receiver.", "Stamped Sheet Steel", "Configuration: Bullpup");
+        addBox("Green Polymer Handguard & Cheek Rest", "barrel", 0.28, 0.32, 1.0, m.od_green, V3(0, 0.12, 0.85), V3(0, -0.4, 0.6), "Shields shooter's hand from gas cylinder heat.", "Reinforced Polymer", "Thermal Shield: Integrated");
+        addCyl("20.4-inch  Cold Hammer-Forged Barrel", "barrel", 0.05, 0.05, 2.3, 16, 'x', m.barrel, V3(0, 0.14, 1.45), V3(0, 0.35, 1.1), "Chrome-lined rifle barrel with flash suppressor.", "Cold Hammer-Forged 1:7 Twist", "Muzzle Velocity: 940 m/s");
+        addCyl("Short-Stroke Gas Piston System", "barrel", 0.035, 0.035, 0.8, 14, 'x', m.internalSteel, V3(0, 0.28, 1.0), V3(0, 0.7, 0.6), "3-position gas regulator pushing operating rod.", "Stainless Steel Piston", "Gas Pressure: 22,000 PSI");
+        addCyl("H&K Upgraded Bolt & Carrier", "action", 0.08, 0.08, 0.9, 16, 'x', m.internalSteel, V3(0, 0.14, -0.35), V3(0.5, 0.7, -0.2), "Enlarged extractor and dual recoil spring guide rods.", "Tool Steel Parkerized", "Reliability Index: 99.98%");
+        addBox("30-Round Steel STANAG Magazine", "feed", 0.18, 0.85, 0.45, m.receiver, V3(0, -0.5, -0.4), V3(0, -1.1, -0.4), "Mounted behind trigger inside buttstock.", "Steel Sheet Phosphate", "Capacity: 30 Rounds");
+        addBox("SUSAT 4x Optical Sight & Rubber Eyepiece", "barrel", 0.24, 0.26, 0.65, m.receiver, V3(0, 0.42, 0.25), V3(0, 0.95, 0.25), "Tritium-illuminated post reticle.", "Cast Aluminum with Rubber Eyepiece", "Magnification: 4x");
+        addCartridges(3, 1.0, 1.0, "feed", V3(0, -0.15, -0.4), V3(-0.4, -0.3, -0.2), "5.56x45mm NATO Round", "Delivers 1,710 Joules.", "Energy: 1,710 J");
+      }
+      else if (id === 'svd') {
+        addBox("Milled Precision Steel Receiver", "fcg", 0.28, 0.38, 1.45, m.receiver, V3(0, 0.05, 0.0), V3(0, -0.25, 0), "Lightened milled receiver with side scope dovetail rail.", "Forged 4140 Ordnance Steel", "Accuracy Spec: 1.2 MOA");
+        addBox("Laminate Wood Skeleton Thumbhole Stock", "fcg", 0.22, 0.52, 1.25, m.wood, V3(0, -0.1, -1.25), V3(0, 0, -1.6), "Ergonomic thumbhole cutout with leather cheek riser.", "Laminated Russian Birch", "Cheekpad: Natural Leather");
+        addCyl("24.4-inch  Slender Match Barrel & Flash Hider", "barrel", 0.045, 0.045, 2.9, 16, 'x', m.barrel, V3(0, 0.14, 2.05), V3(0, 0.35, 1.3), "Long slender contour with integral slotted flash suppressor.", "Cold Hammer-Forged Match Grade", "Muzzle Velocity: 830 m/s");
+        addBox("Vented Wooden Handguards", "barrel", 0.24, 0.26, 1.15, m.wood, V3(0, 0.14, 1.1), V3(0, -0.4, 0.7), "Dual ventilated halves with 6 cooling slots.", "Laminated Birch", "Cooling Slots: 6 Ports");
+        addCyl("Short-Stroke Piston & 3-Lug Bolt", "action", 0.075, 0.075, 1.1, 16, 'x', m.internalSteel, V3(0, 0.14, 0.15), V3(0.5, 0.7, 0.1), "Separate short-stroke piston minimizes barrel vibration.", "Case-Hardened Steel", "Chamber Pressure: 52,000 PSI");
+        addBox("10-Round Ribbed Steel Magazine", "feed", 0.18, 0.7, 0.45, m.receiver, V3(0, -0.45, 0.35), V3(0, -1.0, 0.25), "Curved box magazine feeding rimmed 7.62x54mmR rounds.", "Stamped Steel Sheet", "Capacity: 10 Rounds");
+        addCyl("PSO-1 4x24 Telescopic Sniper Scope", "barrel", 0.07, 0.07, 1.15, 16, 'x', m.receiver, V3(-0.15, 0.35, 0.2), V3(-0.6, 0.85, 0.2), "Integral rangefinding stadiametric reticle and sunshade.", "Magnesium Alloy with Coated Optics", "Reticle: 1.7m Stadiametric");
+        addCartridges(3, 1.25, 1.2, "feed", V3(0, -0.15, 0.35), V3(-0.4, -0.3, 0.5), "7.62x54mmR 7N1 Sniper Round", "Rimmed match cartridge delivering 3,300 Joules.", "Energy: 3,300 J");
+      }
+      else if (id === 'm14_ebr') {
+        addBox("Sage Monolithic Aluminum EBR Chassis", "fcg", 0.32, 0.48, 1.6, m.receiver, V3(0, 0.05, 0.0), V3(0, -0.25, 0), "Solid aircraft aluminum chassis with 4 Picatinny rails.", "7075-T6 Billet Aluminum", "Chassis Bedding: Full Contact");
+        addCyl("18-inch  Medium Match Barrel & Vortex Brake", "barrel", 0.055, 0.055, 2.3, 16, 'x', m.barrel, V3(0, 0.15, 1.7), V3(0, 0.35, 1.0), "Vortex 4-prong flash suppressor.", "Match-Grade Chrome-Moly", "Muzzle Velocity: 780 m/s");
+        addCyl("Under-Barrel Gas Cylinder & Piston", "barrel", 0.04, 0.04, 0.85, 14, 'x', m.internalSteel, V3(0, 0.02, 1.2), V3(0, -0.4, 0.7), "Under-barrel gas operating rod system.", "Stainless Steel Piston", "Gas System: Cutoff/Expansion");
+        addCyl("M14 Roller Bolt & Operating Rod", "action", 0.08, 0.08, 1.15, 16, 'x', m.internalSteel, V3(0, 0.15, 0.1), V3(0.5, 0.7, 0.1), "High-speed roller cam bolt mechanism.", "Forged Ordnance Steel", "Chamber Pressure: 50,000 PSI");
+        addBox("Twin-Rod Collapsible Stock & Riser", "fcg", 0.24, 0.5, 1.1, m.receiver, V3(0, 0.02, -1.2), V3(0, 0, -1.5), "Multi-position stock with adjustable cheek rest.", "Aircraft Aluminum Rails", "Stock Adjustment: 5-Position");
+        addBox("20-Round 7.62 NATO Box Magazine", "feed", 0.2, 0.9, 0.55, m.receiver, V3(0, -0.5, 0.25), V3(0, -1.1, 0.15), "Feeds 7.62x51mm rounds into receiver.", "Phosphated Steel Sheet", "Capacity: 20 Rounds");
+        addCyl("Leupold Mark 4 Tactical Sniper Scope", "barrel", 0.075, 0.075, 1.2, 16, 'x', m.receiver, V3(0, 0.42, 0.2), V3(0, 0.95, 0.2), "High-magnification scope with Mil-Dot reticle.", "Anodized Aircraft Aluminum", "Magnification: 3.5-10x");
+        addCartridges(3, 1.2, 1.15, "feed", V3(0, -0.15, 0.25), V3(-0.4, -0.3, 0.4), "7.62x51mm NATO Match Round", "168-grain BTHP delivering 3,400 Joules.", "Energy: 3,400 J");
+      }
+      else if (id === 'aiax338') {
+        addBox("AX338 Monolithic Aluminum Chassis", "fcg", 0.32, 0.45, 1.6, m.receiver, V3(0, 0.05, 0.0), V3(0, -0.25, 0), "Bonded aluminum chassis prevents thermal deflection.", "7075-T6 Aerospace Aluminum", "Sub-MOA Precision Guaranteed");
+        addCyl("27-inch  Match Fluted Barrel", "barrel", 0.065, 0.065, 3.2, 18, 'x', m.barrel, V3(0, 0.18, 2.2), V3(0, 0.4, 1.4), "Fluted stainless match barrel for maximum rigidity.", "Match-Grade Stainless Steel", "Muzzle Velocity: 915 m/s");
+        addCyl("Double-Baffle Heavy Muzzle Brake", "barrel", 0.09, 0.09, 0.45, 16, 'x', m.barrel, V3(0, 0.18, 3.85), V3(0, 0.4, 2.6), "Multi-chamber tactical brake cutting 65% of .338 recoil.", "4140 Phos Steel", "Recoil Reduction: 65%");
+        addCyl("60° Short-Throw 3-Lug Turn Bolt", "action", 0.085, 0.085, 1.1, 16, 'x', m.internalSteel, V3(0, 0.18, -0.2), V3(0.6, 0.8, -0.4), "Equipped with oversized tactical bolt knob.", "Case-Hardened Tool Steel", "Chamber Pressure: 60,900 PSI");
+        addBox("Fully Adjustable Folding Sniper Stock", "fcg", 0.22, 0.55, 1.2, m.receiver, V3(0, 0.05, -1.35), V3(0, 0, -1.7), "Tool-free cheekpiece and buttpad adjustment.", "Forged Aluminum Chassis", "Cheek Height: Micrometer Dial");
+        addBox("10-Round Center-Feed Steel Mag", "feed", 0.22, 0.85, 0.6, m.receiver, V3(0, -0.5, 0.25), V3(0, -1.1, 0.15), "Feeds .338 Lapua Magnum ammunition flawlessly.", "Stamped Steel Heat-Treated", "Capacity: 10 Rounds");
+        addCyl("Schmidt & Bender 5-25x56 PM II Scope", "barrel", 0.09, 0.09, 1.35, 18, 'x', m.receiver, V3(0, 0.46, 0.3), V3(0, 1.05, 0.3), "First-focal-plane illuminated reticle with sunshade.", "34mm Aluminum Tube with HD Glass", "Reticle: P4FL First Focal Plane");
+        addCartridges(3, 1.45, 1.4, "feed", V3(0, -0.15, 0.25), V3(-0.45, -0.3, 0.5), ".338 Lapua Magnum Match Round", "250-grain Scenar bullet delivering 6,680 Joules.", "Energy: 6,680 J");
+      }
+      else if (id === 'cheytac_m200') {
+        addCyl("Cylindrical Billet Steel Receiver", "fcg", 0.15, 0.15, 1.8, 18, 'x', m.receiver, V3(0, 0.1, 0.0), V3(0, -0.25, 0), "Solid billet steel cylindrical receiver.", "High-Tensile Billet Steel", "Pressure Limit: 68,000 PSI");
+        addCyl("29-inch  Fluted Match Barrel & Ported Brake", "barrel", 0.075, 0.075, 3.4, 18, 'x', m.barrel, V3(0, 0.1, 2.3), V3(0, 0.35, 1.4), "Equipped with massive cylindrical multi-port brake.", "Kryptek Match-Grade Steel", "Muzzle Velocity: 1,067 m/s");
+        addCyl("Manual Turn-Bolt & Oversized Handle", "action", 0.095, 0.095, 1.2, 16, 'x', m.internalSteel, V3(0, 0.1, -0.3), V3(0.6, 0.8, -0.4), "Manual turn bolt engineered for extreme pressures.", "Tool Steel", "Bolt Throw: 90° Heavy Throw");
+        addBox("Retractable Wire Stock & Monopod", "fcg", 0.22, 0.45, 1.2, m.receiver, V3(0, 0.02, -1.35), V3(0, 0, -1.7), "Tubular struts with screw-type rear monopod.", "Steel Tubes & Rubber Buttpad", "Monopod: Micro-Screw Adjustment");
+        addBox("7-Round Detachable Steel Magazine", "feed", 0.22, 0.95, 0.65, m.receiver, V3(0, -0.55, 0.3), V3(0, -1.2, 0.2), "Feeds .408 CheyTac ammunition.", "Heat-Treated Steel", "Capacity: 7 Rounds");
+        addCyl("Nightforce ATACR 7-35x56 Scope", "barrel", 0.095, 0.095, 1.4, 18, 'x', m.receiver, V3(0, 0.38, 0.3), V3(0, 0.95, 0.3), "Extreme range optic with 120 MOA elevation.", "34mm Tube with ED Glass", "Elevation Travel: 120 MOA");
+        addCartridges(3, 1.6, 1.6, "feed", V3(0, -0.15, 0.3), V3(-0.5, -0.3, 0.5), ".408 CheyTac 419gr Solid Round", "Monolithic solid copper projectile delivering 11,250 Joules.", "Energy: 11,250 J");
+      }
+      else if (id === 'm82a1') {
+        addBox("Massive Stamped Steel Receiver", "fcg", 0.4, 0.55, 2.0, m.receiver, V3(0, 0.08, 0.0), V3(0, -0.25, 0), "Heavy two-piece stamped steel receiver with cross pins.", "Heavy-Gauge Stamped Steel", "Receiver Mass: 6.2 kg");
+        addCyl("29-inch  Fluted Recoiling Heavy Barrel", "barrel", 0.09, 0.09, 3.5, 18, 'x', m.barrel, V3(0, 0.2, 2.4), V3(0, 0.4, 1.5), "Recoils rearward 25mm to soak up 15,500 Joules.", "Chrome-Chambered Heavy Match Steel", "Recoil Stroke: 25 mm");
+        addBox("Arrowhead 2-Chamber Tank Brake", "barrel", 0.28, 0.24, 0.65, m.barrel, V3(0, 0.2, 4.25), V3(0, 0.4, 2.9), "Giant directional muzzle brake covers 70% of recoil impulse.", "Forged Steel Billet", "Recoil Absorption: 70%");
+        addCyl("Giant Rotating Bolt Carrier Group", "action", 0.13, 0.13, 1.35, 16, 'x', m.internalSteel, V3(0, 0.2, -0.2), V3(0.6, 0.8, -0.3), "Absorbs 54,000 PSI chamber deflagration.", "Heavy Heat-Treated Ordnance Steel", "Carrier Weight: 1.8 kg");
+        addBox("Steel Carry Handle & Folding Bipod", "barrel", 0.35, 0.35, 0.65, m.internalSteel, V3(0, 0.42, 1.2), V3(0, 0.95, 1.0), "Heavy-duty folding steel bipod and carry handle.", "Forged Steel", "Bipod Stance: Wide Heavy");
+        addBox("10-Round Stamped Steel Box Mag", "feed", 0.26, 1.1, 0.85, m.receiver, V3(0, -0.65, 0.35), V3(0, -1.3, 0.2), "Holds 10 rounds of .50 BMG (12.7x99mm) ammunition.", "Heavy Sheet Steel Phosphate", "Capacity: 10 Rounds (.50 BMG)");
+        addCyl("Leupold 4.5-14x50mm Tactical Optic", "barrel", 0.09, 0.09, 1.3, 18, 'x', m.receiver, V3(0, 0.48, 0.2), V3(0, 1.1, 0.2), "Equipped with Barrett BORS ballistic computer.", "30mm Steel Tube", "Extreme Caliber Shockproof");
+        addCartridges(3, 1.8, 1.8, "feed", V3(0, -0.2, 0.35), V3(-0.55, -0.3, 0.6), ".50 BMG M33 Ball Round", "660-grain solid penetrator delivering 15,500 Joules.", "Energy: 15,500 J");
+      }
+      else if (id === 'm249') {
+        addBox("Heavy Stamped Steel Receiver & Tray", "fcg", 0.36, 0.5, 1.5, m.receiver, V3(0, 0.08, 0.0), V3(0, -0.25, 0), "Hinged top feed tray cover opens for belt loading.", "Heavy Stamped Steel Parkerized", "Action: Open Bolt Gas Piston");
+        addCyl("Quick-Change Heavy Barrel & Handle", "barrel", 0.065, 0.065, 2.3, 16, 'x', m.barrel, V3(0, 0.18, 1.6), V3(0, 0.4, 1.1), "Swaps in 6 seconds with heat shield.", "Cold Hammer-Forged Stellite-Lined", "Quick-Swap Time: <6 Seconds");
+        addCyl("Open-Bolt Carrier & Rotating Bolt", "action", 0.09, 0.09, 1.1, 16, 'x', m.internalSteel, V3(0, 0.18, -0.1), V3(0.5, 0.7, 0.1), "Open bolt operation prevents cook-offs.", "Hardened Ordnance Steel", "Cook-Off Prevention: 100%");
+        addBox("200-Round Polymer Ammo Box", "feed", 0.32, 0.85, 0.65, m.od_green, V3(0, -0.55, 0.25), V3(0, -1.2, 0.2), "Clips directly to the bottom of the receiver.", "High-Impact Polymer", "Capacity: 200 Linked Rounds");
+        addBox("Linked Disintegrating Metallic Belt", "feed", 0.18, 0.15, 0.55, m.brass, V3(-0.25, 0.18, 0.2), V3(-0.7, 0.4, 0.2), "M27 disintegrating links feeding into tray.", "Steel Links with Brass Cartridges", "Link Type: M27 Disintegrating");
+        addBox("Tubular Skeleton Stock & Bipod", "fcg", 0.22, 0.48, 1.1, m.receiver, V3(0, 0.02, -1.2), V3(0, 0, -1.5), "Equipped with hydraulic recoil buffer.", "Tubular Steel", "Buffer: Hydraulic Piston");
+        addCartridges(3, 1.0, 1.0, "feed", V3(-0.2, 0.18, 0.2), V3(-0.6, 0.3, 0.4), "5.56x45mm Linked Round", "Delivers 1,750 Joules.", "Energy: 1,750 J");
+      }
+      else if (id === 'pkp') {
+        addBox("Stamped Steel Machine Gun Receiver", "fcg", 0.35, 0.48, 1.6, m.receiver, V3(0, 0.08, 0.0), V3(0, -0.25, 0), "Equipped with hinged top feed cover.", "Heavy Stamped Steel", "Action: Long-Stroke Gas Piston");
+        addCyl("Forced-Air Cooling Shroud Barrel", "barrel", 0.075, 0.075, 2.7, 18, 'x', m.barrel, V3(0, 0.18, 1.8), V3(0, 0.4, 1.2), "Forced air draft cooling enables 600 continuous rounds.", "Chrome-Lined Heavy Barrel", "Continuous Fire: 600 Rounds");
+        addBox("Heavy Steel Carry Handle", "barrel", 0.12, 0.28, 1.1, m.internalSteel, V3(0, 0.38, 1.4), V3(0, 0.9, 1.1), "Spans over barrel shroud.", "Forged Steel", "Handle: Rigid Integral");
+        addCyl("Heavy Gas Piston & Rotating Bolt", "action", 0.09, 0.09, 1.2, 16, 'x', m.internalSteel, V3(0, 0.18, -0.1), V3(0.5, 0.7, 0.1), "Long-stroke piston operating under the barrel.", "Hardened Carbon Steel", "Operating Pressure: 52,000 PSI");
+        addBox("100-Round Underslung Ammo Can", "feed", 0.28, 0.8, 0.6, m.od_green, V3(0, -0.55, 0.25), V3(0, -1.2, 0.2), "Locks underneath the receiver.", "Stamped Sheet Metal", "Capacity: 100 Rounds (7.62x54R)");
+        addBox("Skeletonized Buttstock & Rest", "fcg", 0.2, 0.5, 1.1, m.wood, V3(0, 0.02, -1.25), V3(0, 0, -1.5), "Skeleton stock with shoulder rest.", "Laminate Wood & Steel", "Shoulder Rest: Folding Steel");
+        addCartridges(3, 1.25, 1.2, "feed", V3(-0.2, 0.18, 0.25), V3(-0.6, 0.3, 0.4), "7.62x54mmR Machine Gun Belt", "Delivers 3,300 Joules.", "Energy: 3,300 J");
+      }
+      else if (id === 'colt_python') {
+        addBox("Mirror-Polished Carbon Steel Frame", "fcg", 0.24, 0.55, 0.9, m.chrome, V3(0, -0.15, -0.1), V3(0, -0.35, 0), "Hand-fitted lockwork with smooth double-action pull.", "Polished Royal Blue / Stainless", "Hand-Fitted Lockwork");
+        addCyl("6-Chamber Fluted Revolving Cylinder", "feed", 0.18, 0.18, 0.65, 18, 'x', m.chrome, V3(0, 0.06, 0.05), V3(0.45, 0.2, 0.05), "Swings out to the left on crane pivot with star ejector.", "Forged Ordnance Steel", "Chamber Pressure: 35,000 PSI");
+        addBox("6-inch  Barrel with Top Ventilated Rib", "barrel", 0.22, 0.3, 1.35, m.chrome, V3(0, 0.12, 0.95), V3(0, 0.4, 0.8), "Iconic ventilated top rib and full under-barrel shroud.", "Match-Grade Carbon Steel", "Muzzle Velocity: 440 m/s");
+        addBox("Target Walnut Checkered Grip Panels", "fcg", 0.26, 0.52, 0.35, m.wood, V3(0, -0.35, -0.3), V3(0, -0.75, -0.3), "Checkered walnut grip with gold Colt medallion.", "American Walnut", "Medallion: Inlaid Gold");
+        addBox("Serrated Target Hammer & Trigger", "fcg", 0.08, 0.26, 0.18, m.chrome, V3(0, 0.12, -0.45), V3(0.3, 0.25, -0.45), "Exposed hammer with target spur.", "Tool Steel Polished", "DA Pull: 8.5 lbs / SA: 2.8 lbs");
+        addCartridges(3, 1.1, 1.05, "feed", V3(0, 0.06, 0.05), V3(-0.4, -0.2, 0.3), ".357 Magnum Semi-Wadcutter", "158-grain bullet delivering 800 Joules.", "Energy: 800 J");
+      }
+      else if (id === 'asval') {
+        addBox("Stamped Steel Suppressed Receiver", "fcg", 0.28, 0.38, 1.25, m.receiver, V3(0, 0.05, 0.0), V3(0, -0.25, 0), "AK-pattern lockup with Warsaw Pact side rail.", "Stamped Steel Sheet", "Operating Principle: Suppressed Gas");
+        addCyl("Integral Full-Length Suppressor Can", "barrel", 0.1, 0.1, 2.3, 18, 'x', m.barrel, V3(0, 0.14, 1.4), V3(0, 0.4, 0.9), "54 gas bleed ports venting into expansion baffles.", "Aviation Aluminum Baffles", "Acoustic Signature: <130 dB");
+        addBox("Tubular Steel Side-Folding Stock", "fcg", 0.18, 0.45, 1.05, m.internalSteel, V3(0, 0.02, -1.05), V3(0, 0, -1.4), "Folds flat against the left side of receiver.", "Steel Tubing", "Folded Length: 615 mm");
+        addCyl("Rotating 6-Lug Bolt & Carrier", "action", 0.075, 0.075, 0.85, 16, 'x', m.internalSteel, V3(0, 0.14, -0.05), V3(0.5, 0.7, 0.1), "Multi-lug lockup containing 40,000 PSI.", "Hardened Alloy Steel", "Chamber Pressure: 40,000 PSI");
+        addBox("20-Round Dark Polymer Magazine", "feed", 0.18, 0.8, 0.45, m.polymer, V3(0, -0.45, 0.25), V3(0, -1.05, 0.15), "Feeds 9x39mm heavy subsonic cartridges.", "Impact Polyamide", "Capacity: 20 Rounds");
+        addCartridges(3, 1.3, 1.1, "feed", V3(0, -0.12, 0.25), V3(-0.4, -0.3, 0.4), "9x39mm SP-6 Armor-Piercing Subsonic", "250-grain tungsten penetrator delivering 700 Joules silently.", "Energy: 700 J (Subsonic)");
+      }
+      else {
+        // High-Fidelity Universal Fallback
+        addBox("Monolithic Frame Assembly", "fcg", 0.35, 0.45, 1.6, m.receiver, V3(0, 0, 0), V3(0, 0.25, 0), "Primary structural chassis.", "Ordnance Steel/Polymer", "Yield: 65,000 PSI");
+        addCyl("Precision Rifled Barrel", "barrel", 0.06, 0.06, 2.6, 16, 'x', m.barrel, V3(0, 0.1, 1.5), V3(0, 0.35, 1.0), "Engineered for high velocity and barrel dwell time.", "Cold Hammer-Forged Match Steel", "Dwell Time: 0.19 ms");
+        addCyl("Bolt Carrier & Extractor", "action", 0.075, 0.075, 0.8, 16, 'x', m.internalSteel, V3(0, 0.1, 0.1), V3(0.5, 0.7, 0), "Locks into chamber and cycles cartridges.", "Tool Steel Parkerized", "Chamber Peak: 50,000 PSI");
+        addBox("Detachable High-Capacity Mag", "feed", 0.2, 0.85, 0.5, m.polymer, V3(0, -0.6, 0.2), V3(0, -1.1, 0.1), "Feeds cartridges into receiver ramps.", "Reinforced Composite", "Feed Reliability: 99.98%");
+        addCartridges(3, 1.1, 1.0, "feed", V3(0, -0.3, 0.25), V3(-0.5, -0.5, 0.4), "Chambered Brass Ammunition", "Full-power ballistic cartridge.", "Kinetic Force: Nominal");
+      }
+
+      return { group, parts };
+    }
+
+
+    // ==========================================
+    // COMPARATOR 3D ENGINE
+    // ==========================================
+    function initCompare3D() {
+      if (compareRenderer1 && compareRenderer2) return;
+
+      const c1 = document.getElementById('compare-canvas-1');
+      const c2 = document.getElementById('compare-canvas-2');
+      if (!c1 || !c2) return;
+
+      const w1 = c1.clientWidth || 500;
+      const h1 = c1.clientHeight || 460;
+      const w2 = c2.clientWidth || 500;
+      const h2 = c2.clientHeight || 460;
+
+      // Scene 1 (Alpha - Amber theme)
+      compareScene1 = new THREE.Scene();
+      compareScene1.fog = new THREE.FogExp2(0x04060a, 0.03);
+      compareCamera1 = new THREE.PerspectiveCamera(45, w1 / h1, 0.1, 100);
+      compareCamera1.position.set(0, 1.2, 5.8);
+
+      compareRenderer1 = new THREE.WebGLRenderer({ canvas: c1, antialias: true, alpha: true });
+      compareRenderer1.setSize(w1, h1);
+      compareRenderer1.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      compareRenderer1.shadowMap.enabled = true;
+      compareRenderer1.toneMapping = THREE.ACESFilmicToneMapping;
+      compareRenderer1.toneMappingExposure = 1.35;
+
+      compareControls1 = new THREE.OrbitControls(compareCamera1, compareRenderer1.domElement);
+      compareControls1.enableDamping = true;
+      compareControls1.dampingFactor = 0.05;
+      compareControls1.maxDistance = 14;
+      compareControls1.minDistance = 1.0;
+      compareControls1.target.set(0, 0, 0);
+
+      compareScene1.add(new THREE.AmbientLight(0xffffff, 0.7));
+      const k1 = new THREE.DirectionalLight(0xfff8ee, 2.5);
+      k1.position.set(5, 7, 4);
+      compareScene1.add(k1);
+      const amberRim1 = new THREE.DirectionalLight(0xf59e0b, 4.0);
+      amberRim1.position.set(-6, -2, -5);
+      compareScene1.add(amberRim1);
+      const cyanRim1 = new THREE.DirectionalLight(0x06b6d4, 2.0);
+      cyanRim1.position.set(6, -3, -4);
+      compareScene1.add(cyanRim1);
+
+      const grid1 = new THREE.GridHelper(16, 32, 0xf59e0b, 0x1e293b);
+      grid1.position.y = -1.6;
+      compareScene1.add(grid1);
+
+      // Scene 2 (Bravo - Cyan theme)
+      compareScene2 = new THREE.Scene();
+      compareScene2.fog = new THREE.FogExp2(0x04060a, 0.03);
+      compareCamera2 = new THREE.PerspectiveCamera(45, w2 / h2, 0.1, 100);
+      compareCamera2.position.set(0, 1.2, 5.8);
+
+      compareRenderer2 = new THREE.WebGLRenderer({ canvas: c2, antialias: true, alpha: true });
+      compareRenderer2.setSize(w2, h2);
+      compareRenderer2.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      compareRenderer2.shadowMap.enabled = true;
+      compareRenderer2.toneMapping = THREE.ACESFilmicToneMapping;
+      compareRenderer2.toneMappingExposure = 1.35;
+
+      compareControls2 = new THREE.OrbitControls(compareCamera2, compareRenderer2.domElement);
+      compareControls2.enableDamping = true;
+      compareControls2.dampingFactor = 0.05;
+      compareControls2.maxDistance = 14;
+      compareControls2.minDistance = 1.0;
+      compareControls2.target.set(0, 0, 0);
+
+      compareScene2.add(new THREE.AmbientLight(0xffffff, 0.7));
+      const k2 = new THREE.DirectionalLight(0xfff8ee, 2.5);
+      k2.position.set(5, 7, 4);
+      compareScene2.add(k2);
+      const cyanRim2 = new THREE.DirectionalLight(0x06b6d4, 4.0);
+      cyanRim2.position.set(-6, -2, -5);
+      compareScene2.add(cyanRim2);
+      const amberRim2 = new THREE.DirectionalLight(0xf59e0b, 2.0);
+      amberRim2.position.set(6, -3, -4);
+      compareScene2.add(amberRim2);
+
+      const grid2 = new THREE.GridHelper(16, 32, 0x06b6d4, 0x1e293b);
+      grid2.position.y = -1.6;
+      compareScene2.add(grid2);
+
+      // Linked Orbit Synchronization
+      let isSyncing1 = false, isSyncing2 = false;
+      compareControls1.addEventListener('change', () => {
+        if (!isCompareRotationLinked || isSyncing2) return;
+        isSyncing1 = true;
+        compareCamera2.position.copy(compareCamera1.position);
+        compareCamera2.rotation.copy(compareCamera1.rotation);
+        compareControls2.target.copy(compareControls1.target);
+        isSyncing1 = false;
+      });
+
+      compareControls2.addEventListener('change', () => {
+        if (!isCompareRotationLinked || isSyncing1) return;
+        isSyncing2 = true;
+        compareCamera1.position.copy(compareCamera2.position);
+        compareCamera1.rotation.copy(compareCamera2.rotation);
+        compareControls1.target.copy(compareControls2.target);
+        isSyncing2 = false;
+      });
+
+      // Mousemove for Raycast tooltips
+      c1.addEventListener('mousemove', (e) => {
+        const rect = c1.getBoundingClientRect();
+        compareMouse1.x = ((e.clientX - rect.left) / c1.clientWidth) * 2 - 1;
+        compareMouse1.y = -((e.clientY - rect.top) / c1.clientHeight) * 2 + 1;
+      });
+      c1.addEventListener('mouseleave', () => {
+        compareMouse1.x = -999; compareMouse1.y = -999;
+        document.getElementById('compare-part-alpha').classList.add('hidden');
+      });
+
+      c2.addEventListener('mousemove', (e) => {
+        const rect = c2.getBoundingClientRect();
+        compareMouse2.x = ((e.clientX - rect.left) / c2.clientWidth) * 2 - 1;
+        compareMouse2.y = -((e.clientY - rect.top) / c2.clientHeight) * 2 + 1;
+      });
+      c2.addEventListener('mouseleave', () => {
+        compareMouse2.x = -999; compareMouse2.y = -999;
+        document.getElementById('compare-part-bravo').classList.add('hidden');
+      });
+    }
+
+    function onCompareResize() {
+      if (!compareRenderer1 || !compareRenderer2) return;
+      const c1 = document.getElementById('compare-canvas-1');
+      const c2 = document.getElementById('compare-canvas-2');
+      if (!c1 || !c2) return;
+
+      const w1 = c1.clientWidth;
+      const h1 = c1.clientHeight;
+      compareCamera1.aspect = w1 / h1;
+      compareCamera1.updateProjectionMatrix();
+      compareRenderer1.setSize(w1, h1);
+
+      const w2 = c2.clientWidth;
+      const h2 = c2.clientHeight;
+      compareCamera2.aspect = w2 / h2;
+      compareCamera2.updateProjectionMatrix();
+      compareRenderer2.setSize(w2, h2);
+    }
+
+    function populateComparators() {
+      const s1 = document.getElementById('compare-select-1');
+      const s2 = document.getElementById('compare-select-2');
+      const opts = FIREARMS.map(f => `<option value="${f.id}">${f.name} (${f.className} - ${f.caliber})</option>`).join('');
+      s1.innerHTML = opts;
+      s2.innerHTML = opts;
+      s1.value = "m4a1";
+      s2.value = "scar17h";
+    }
+
+    function swapComparisonWeapons() {
+      const s1 = document.getElementById('compare-select-1');
+      const s2 = document.getElementById('compare-select-2');
+      const temp = s1.value;
+      s1.value = s2.value;
+      s2.value = temp;
+      renderComparison();
+    }
+
+    function toggleCompareLinkedRotation() {
+      isCompareRotationLinked = !isCompareRotationLinked;
+      const btn = document.getElementById('btn-compare-sync');
+      const txt = document.getElementById('txt-compare-sync');
+      if (isCompareRotationLinked) {
+        btn.className = "px-2.5 py-1.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold flex items-center gap-1.5 transition";
+        txt.innerText = "SYNC ROTATION: ON";
+        compareCamera2.position.copy(compareCamera1.position);
+        compareCamera2.rotation.copy(compareCamera1.rotation);
+        compareControls2.target.copy(compareControls1.target);
+      } else {
+        btn.className = "px-2.5 py-1.5 rounded bg-slate-900 text-slate-400 border border-slate-700 hover:border-slate-500 font-bold flex items-center gap-1.5 transition";
+        txt.innerText = "SYNC ROTATION: OFF";
+      }
+    }
+
+    function toggleCompareTrueScale() {
+      isCompareTrueScale = !isCompareTrueScale;
+      const btn = document.getElementById('btn-compare-scale');
+      const txt = document.getElementById('txt-compare-scale');
+      const ruler = document.getElementById('true-scale-ruler');
+      if (isCompareTrueScale) {
+        btn.className = "px-2.5 py-1.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-bold flex items-center gap-1.5 transition";
+        txt.innerText = "SCALE: TRUE 1:1 PHYSICAL";
+        ruler.classList.remove('hidden');
+      } else {
+        btn.className = "px-2.5 py-1.5 rounded bg-slate-900 text-slate-300 border border-slate-700 hover:border-amber-500/40 font-bold flex items-center gap-1.5 transition";
+        txt.innerText = "SCALE: NORMALIZED";
+        ruler.classList.add('hidden');
+      }
+      renderComparison(true);
+    }
+
+    function setCompareExplodedAmount(val) {
+      compareExplodeProgress = val / 100;
+      document.getElementById('compare-explode-val').innerText = `${val}%`;
+
+      [compareParts1, compareParts2].forEach(parts => {
+        parts.forEach(part => {
+          part.position.lerpVectors(part.userData.basePos, part.userData.explodedPos, compareExplodeProgress);
+        });
+      });
+      updateCompareLeaderLines();
+    }
+
+    function updateCompareLeaderLines() {
+      [
+        { parts: compareParts1, scene: compareScene1, linesVar: 'compareLines1' },
+        { parts: compareParts2, scene: compareScene2, linesVar: 'compareLines2' }
+      ].forEach(pack => {
+        if (pack.linesVar === 'compareLines1' && compareLines1) {
+          compareScene1.remove(compareLines1);
+          compareLines1.geometry.dispose();
+          compareLines1 = null;
+        }
+        if (pack.linesVar === 'compareLines2' && compareLines2) {
+          compareScene2.remove(compareLines2);
+          compareLines2.geometry.dispose();
+          compareLines2 = null;
+        }
+
+        if (compareExplodeProgress < 0.05 || !pack.parts.length) return;
+
+        const positions = [];
+        const colors = [];
+        const cCyan = new THREE.Color(0x06b6d4);
+        const cAmber = new THREE.Color(0xf59e0b);
+
+        pack.parts.forEach(part => {
+          positions.push(part.userData.basePos.x, part.userData.basePos.y, part.userData.basePos.z);
+          positions.push(part.position.x, part.position.y, part.position.z);
+          const col = part.userData.subgroup === 'action' ? cAmber : cCyan;
+          colors.push(col.r, col.g, col.b);
+          colors.push(col.r, col.g, col.b);
+        });
+
+        const geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+        geo.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+        const mat = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.65 });
+        const line = new THREE.LineSegments(geo, mat);
+
+        if (pack.linesVar === 'compareLines1') {
+          compareLines1 = line;
+          compareScene1.add(line);
+        } else {
+          compareLines2 = line;
+          compareScene2.add(line);
+        }
+      });
+    }
+
+    function setCompareRenderMode(mode) {
+      compareRenderMode = mode;
+      ['pbr', 'wire', 'thermal'].forEach(m => {
+        const btn = document.getElementById(`btn-comp-${m}`);
+        if (m === (mode === 'wireframe' ? 'wire' : mode)) {
+          btn.className = "px-2 py-1 rounded bg-amber-500 text-black font-bold";
+        } else {
+          btn.className = "px-2 py-1 rounded text-slate-400 hover:text-cyan-400";
+        }
+      });
+
+      [compareParts1, compareParts2].forEach(parts => {
+        parts.forEach(part => {
+          if (mode === 'wireframe') {
+            const sub = part.userData.subgroup;
+            if (sub === 'action') part.material = CYBER_MATS.actionWire;
+            else if (sub === 'feed') part.material = CYBER_MATS.feedWire;
+            else part.material = CYBER_MATS.structWire;
+          } else if (mode === 'thermal') {
+            part.material = MATS.thermal;
+          } else {
+            part.material = part.userData.origMaterial || MATS.black.receiver;
+          }
+        });
+      });
+    }
+
+    function setCompareCameraAngle(angle) {
+      if (!compareCamera1 || !compareCamera2) return;
+      let targetPos;
+      if (angle === 'side') targetPos = { x: 0, y: 0.2, z: 5.6 };
+      else if (angle === 'top') targetPos = { x: 0, y: 5.8, z: 0.05 };
+      else if (angle === 'iso') targetPos = { x: 3.5, y: 2.2, z: 4.5 };
+
+      [
+        { cam: compareCamera1, ctrl: compareControls1 },
+        { cam: compareCamera2, ctrl: compareControls2 }
+      ].forEach(pair => {
+        new TWEEN.Tween(pair.cam.position)
+          .to(targetPos, 500)
+          .easing(TWEEN.Easing.Cubic.Out)
+          .start();
+        pair.ctrl.target.set(0, 0, 0);
+      });
+    }
+
+    function resetCompareCameras() {
+      setCompareCameraAngle('side');
+    }
+
+    function renderComparison(scaleOnly = false) {
+      initCompare3D();
+
+      const id1 = document.getElementById('compare-select-1').value;
+      const id2 = document.getElementById('compare-select-2').value;
+      const w1 = FIREARMS.find(f => f.id === id1) || FIREARMS[0];
+      const w2 = FIREARMS.find(f => f.id === id2) || FIREARMS[1];
+
+      // Update HUDs
+      document.getElementById('compare-alpha-class').innerText = w1.className.toUpperCase();
+      document.getElementById('compare-bravo-class').innerText = w2.className.toUpperCase();
+
+      document.getElementById('hud-alpha-name').innerText = w1.name;
+      document.getElementById('hud-alpha-caliber').innerText = w1.caliber;
+      document.getElementById('hud-alpha-len').innerText = w1.length;
+      document.getElementById('hud-alpha-wt').innerText = w1.weight;
+      document.getElementById('hud-alpha-vel').innerText = `${w1.velocity} m/s`;
+
+      document.getElementById('hud-bravo-name').innerText = w2.name;
+      document.getElementById('hud-bravo-caliber').innerText = w2.caliber;
+      document.getElementById('hud-bravo-len').innerText = w2.length;
+      document.getElementById('hud-bravo-wt').innerText = w2.weight;
+      document.getElementById('hud-bravo-vel').innerText = `${w2.velocity} m/s`;
+
+      // 3D Model Reloading
+      if (compareGroup1) compareScene1.remove(compareGroup1);
+      if (compareGroup2) compareScene2.remove(compareGroup2);
+
+      const m1 = createWeaponMeshUltra(id1, currentFinish);
+      const m2 = createWeaponMeshUltra(id2, currentFinish);
+
+      compareGroup1 = m1.group;
+      compareParts1 = m1.parts;
+      compareGroup2 = m2.group;
+      compareParts2 = m2.parts;
+
+      // True 1:1 Scale calibration vs Normalized
+      // Base reference length: 840mm (M4A1) ~ 1.0 scale
+      const scale1 = isCompareTrueScale ? (w1.lengthMm / 840) : 1.0;
+      const scale2 = isCompareTrueScale ? (w2.lengthMm / 840) : 1.0;
+
+      compareGroup1.scale.set(scale1, scale1, scale1);
+      compareGroup2.scale.set(scale2, scale2, scale2);
+
+      compareScene1.add(compareGroup1);
+      compareScene2.add(compareGroup2);
+
+      // Reapply explode & render mode
+      setCompareExplodedAmount(document.getElementById('compare-explode-slider').value);
+      setCompareRenderMode(compareRenderMode);
+
+      // Telemetry Cards & Graphic Bars
+      const maxEnergy = Math.max(w1.energy, w2.energy, 4000);
+      const maxRange = Math.max(w1.range, w2.range, 1200);
+      const maxVel = Math.max(w1.velocity, w2.velocity, 1000);
+      const maxPressure = Math.max(w1.pressureNum || 50000, w2.pressureNum || 50000, 65000);
+      const maxWeight = Math.max(w1.weightG || 3500, w2.weightG || 3500, 14000);
+      const maxLen = Math.max(w1.lengthMm || 800, w2.lengthMm || 800, 1450);
+
+      const res = document.getElementById('comparison-result');
+      res.innerHTML = `
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="bg-slate-950 p-5 rounded-xl border border-amber-500/40 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <h3 class="text-base font-bold text-amber-400 mono">${w1.name}</h3>
+              <span class="text-[10px] px-2 py-0.5 bg-amber-500/10 text-amber-400 rounded border border-amber-500/20 mono">${w1.className}</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-xs text-slate-300 mono">
+              <div><strong class="text-slate-400">Caliber:</strong> ${w1.caliber}</div>
+              <div><strong class="text-slate-400">Capacity:</strong> ${w1.capacity}</div>
+              <div><strong class="text-slate-400">Weight:</strong> ${w1.weight}</div>
+              <div><strong class="text-slate-400">Length:</strong> ${w1.length}</div>
+              <div class="col-span-2"><strong class="text-slate-400">Action:</strong> ${w1.action}</div>
+              <div class="col-span-2"><strong class="text-slate-400">Chamber Pressure:</strong> ${w1.pressurePsi}</div>
+            </div>
+            <div class="p-3 bg-slate-900 rounded border border-slate-800 text-xs text-slate-300">
+              <span class="text-[10px] text-amber-400 mono font-bold block mb-1">👁️ SIGHT IDENTIFICATION TELL:</span>
+              ${w1.laypersonTell}
+            </div>
+            <div class="p-3 bg-slate-900/60 rounded border border-slate-800 text-xs text-slate-300">
+              <span class="text-[10px] text-amber-400 mono font-bold block mb-1">⚙️ ARMORER ANALYSIS:</span>
+              ${w1.armorerAnalysis}
+            </div>
+          </div>
+
+          <div class="bg-slate-950 p-5 rounded-xl border border-cyan-500/40 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <h3 class="text-base font-bold text-cyan-400 mono">${w2.name}</h3>
+              <span class="text-[10px] px-2 py-0.5 bg-cyan-500/10 text-cyan-400 rounded border border-cyan-500/20 mono">${w2.className}</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 text-xs text-slate-300 mono">
+              <div><strong class="text-slate-400">Caliber:</strong> ${w2.caliber}</div>
+              <div><strong class="text-slate-400">Capacity:</strong> ${w2.capacity}</div>
+              <div><strong class="text-slate-400">Weight:</strong> ${w2.weight}</div>
+              <div><strong class="text-slate-400">Length:</strong> ${w2.length}</div>
+              <div class="col-span-2"><strong class="text-slate-400">Action:</strong> ${w2.action}</div>
+              <div class="col-span-2"><strong class="text-slate-400">Chamber Pressure:</strong> ${w2.pressurePsi}</div>
+            </div>
+            <div class="p-3 bg-slate-900 rounded border border-slate-800 text-xs text-slate-300">
+              <span class="text-[10px] text-cyan-400 mono font-bold block mb-1">👁️ SIGHT IDENTIFICATION TELL:</span>
+              ${w2.laypersonTell}
+            </div>
+            <div class="p-3 bg-slate-900/60 rounded border border-slate-800 text-xs text-slate-300">
+              <span class="text-[10px] text-cyan-400 mono font-bold block mb-1">⚙️ ARMORER ANALYSIS:</span>
+              ${w2.armorerAnalysis}
+            </div>
+          </div>
+        </div>
+
+        <!-- Comparative Telemetry Graphic Bars -->
+        <div class="bg-slate-900/90 p-5 rounded-xl border border-slate-800 space-y-5">
+          <h4 class="text-xs font-bold text-slate-400 mono tracking-wider uppercase">BALLISTIC & DIMENSIONAL TELEMETRY COMPARATOR</h4>
+
+          <!-- Kinetic Energy -->
+          <div>
+            <div class="flex justify-between text-xs mono mb-1">
+              <span class="text-amber-400 font-bold">${w1.name}: ${w1.energy.toLocaleString()} J</span>
+              <span class="text-slate-400">MUZZLE KINETIC ENERGY</span>
+              <span class="text-cyan-400 font-bold">${w2.name}: ${w2.energy.toLocaleString()} J</span>
+            </div>
+            <div class="h-3 bg-slate-950 rounded-full flex overflow-hidden p-0.5 gap-1 border border-slate-800">
+              <div class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: ${(w1.energy / maxEnergy) * 50}%"></div>
+              <div class="bg-cyan-500 h-full rounded-full transition-all duration-500 ml-auto" style="width: ${(w2.energy / maxEnergy) * 50}%"></div>
+            </div>
+          </div>
+
+          <!-- Muzzle Velocity -->
+          <div>
+            <div class="flex justify-between text-xs mono mb-1">
+              <span class="text-amber-400 font-bold">${w1.name}: ${w1.velocity} m/s (${w1.velocityFps} fps)</span>
+              <span class="text-slate-400">MUZZLE VELOCITY</span>
+              <span class="text-cyan-400 font-bold">${w2.name}: ${w2.velocity} m/s (${w2.velocityFps} fps)</span>
+            </div>
+            <div class="h-3 bg-slate-950 rounded-full flex overflow-hidden p-0.5 gap-1 border border-slate-800">
+              <div class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: ${(w1.velocity / maxVel) * 50}%"></div>
+              <div class="bg-cyan-500 h-full rounded-full transition-all duration-500 ml-auto" style="width: ${(w2.velocity / maxVel) * 50}%"></div>
+            </div>
+          </div>
+
+          <!-- Effective Combat Range -->
+          <div>
+            <div class="flex justify-between text-xs mono mb-1">
+              <span class="text-amber-400 font-bold">${w1.name}: ${w1.range} m</span>
+              <span class="text-slate-400">EFFECTIVE COMBAT RANGE</span>
+              <span class="text-cyan-400 font-bold">${w2.name}: ${w2.range} m</span>
+            </div>
+            <div class="h-3 bg-slate-950 rounded-full flex overflow-hidden p-0.5 gap-1 border border-slate-800">
+              <div class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: ${(w1.range / maxRange) * 50}%"></div>
+              <div class="bg-cyan-500 h-full rounded-full transition-all duration-500 ml-auto" style="width: ${(w2.range / maxRange) * 50}%"></div>
+            </div>
+          </div>
+
+          <!-- Chamber Pressure -->
+          <div>
+            <div class="flex justify-between text-xs mono mb-1">
+              <span class="text-amber-400 font-bold">${w1.name}: ${w1.pressurePsi}</span>
+              <span class="text-slate-400">CHAMBER OPERATING PRESSURE</span>
+              <span class="text-cyan-400 font-bold">${w2.name}: ${w2.pressurePsi}</span>
+            </div>
+            <div class="h-3 bg-slate-950 rounded-full flex overflow-hidden p-0.5 gap-1 border border-slate-800">
+              <div class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: ${((w1.pressureNum || 40000) / maxPressure) * 50}%"></div>
+              <div class="bg-cyan-500 h-full rounded-full transition-all duration-500 ml-auto" style="width: ${((w2.pressureNum || 40000) / maxPressure) * 50}%"></div>
+            </div>
+          </div>
+
+          <!-- Total Mass / Weight -->
+          <div>
+            <div class="flex justify-between text-xs mono mb-1">
+              <span class="text-amber-400 font-bold">${w1.name}: ${w1.weight}</span>
+              <span class="text-slate-400">OVERALL WEAPON WEIGHT</span>
+              <span class="text-cyan-400 font-bold">${w2.name}: ${w2.weight}</span>
+            </div>
+            <div class="h-3 bg-slate-950 rounded-full flex overflow-hidden p-0.5 gap-1 border border-slate-800">
+              <div class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: ${((w1.weightG || 3000) / maxWeight) * 50}%"></div>
+              <div class="bg-cyan-500 h-full rounded-full transition-all duration-500 ml-auto" style="width: ${((w2.weightG || 3000) / maxWeight) * 50}%"></div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      lucide.createIcons();
+    }
+
+    function checkCompareRaycast1() {
+      if (!compareParts1.length || !compareRenderer1) return;
+      raycaster.setFromCamera(compareMouse1, compareCamera1);
+      const hits = raycaster.intersectObjects(compareParts1);
+      const badge = document.getElementById('compare-part-alpha');
+      if (hits.length > 0) {
+        const hit = hits[0].object;
+        if (compareHovered1 !== hit) {
+          if (compareHovered1 && compareHovered1.material && compareHovered1.material.emissive) {
+            compareHovered1.material.emissive.setHex(0x000000);
+          }
+          compareHovered1 = hit;
+          if (compareHovered1.material && compareHovered1.material.emissive) {
+            compareHovered1.material.emissive.setHex(0xf59e0b);
+            compareHovered1.material.emissiveIntensity = 0.6;
+          }
+          const u = hit.userData;
+          document.getElementById('compare-part-alpha-name').innerText = u.name.toUpperCase();
+          document.getElementById('compare-part-alpha-desc').innerText = `${u.materialInfo} // ${u.desc}`;
+          badge.classList.remove('hidden');
+        }
+      } else {
+        if (compareHovered1 && compareHovered1.material && compareHovered1.material.emissive) {
+          compareHovered1.material.emissive.setHex(0x000000);
+          compareHovered1 = null;
+          badge.classList.add('hidden');
+        }
+      }
+    }
+
+    function checkCompareRaycast2() {
+      if (!compareParts2.length || !compareRenderer2) return;
+      raycaster.setFromCamera(compareMouse2, compareCamera2);
+      const hits = raycaster.intersectObjects(compareParts2);
+      const badge = document.getElementById('compare-part-bravo');
+      if (hits.length > 0) {
+        const hit = hits[0].object;
+        if (compareHovered2 !== hit) {
+          if (compareHovered2 && compareHovered2.material && compareHovered2.material.emissive) {
+            compareHovered2.material.emissive.setHex(0x000000);
+          }
+          compareHovered2 = hit;
+          if (compareHovered2.material && compareHovered2.material.emissive) {
+            compareHovered2.material.emissive.setHex(0x06b6d4);
+            compareHovered2.material.emissiveIntensity = 0.6;
+          }
+          const u = hit.userData;
+          document.getElementById('compare-part-bravo-name').innerText = u.name.toUpperCase();
+          document.getElementById('compare-part-bravo-desc').innerText = `${u.materialInfo} // ${u.desc}`;
+          badge.classList.remove('hidden');
+        }
+      } else {
+        if (compareHovered2 && compareHovered2.material && compareHovered2.material.emissive) {
+          compareHovered2.material.emissive.setHex(0x000000);
+          compareHovered2 = null;
+          badge.classList.add('hidden');
+        }
+      }
+    }
+
+
+    // ==========================================
+    // PRIMARY 3D VIEWER LOGIC
+    // ==========================================
     function init3D() {
       const container = document.getElementById('canvas-container');
       const canvas = document.getElementById('three-canvas');
@@ -728,8 +2235,7 @@
 
       // Model Switcher Buttons
       const btnContainer = document.getElementById('model-buttons');
-      const models3D = FIREARMS.filter(f => f.has3D);
-      btnContainer.innerHTML = models3D.map(m => `
+      btnContainer.innerHTML = FIREARMS.map(m => `
         <button onclick="load3DWeapon('${m.id}')" id="btn-3d-${m.id}" 
                 class="px-2.5 py-1 rounded text-xs font-semibold mono whitespace-nowrap transition-all border ${m.id === activeModelId ? 'bg-cyan-500 text-black border-cyan-400 font-bold shadow-[0_0_10px_rgba(6,182,212,0.3)]' : 'bg-slate-950 text-slate-300 border-slate-800 hover:border-cyan-500/50'}">
           ${m.name}
@@ -753,191 +2259,90 @@
 
     function onWindowResize() {
       const container = document.getElementById('canvas-container');
-      if (!container || !renderer) return;
-      const width = container.clientWidth;
-      const height = container.clientHeight;
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
+      if (container && renderer && camera) {
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+        renderer.setSize(width, height);
+      }
+      onCompareResize();
     }
 
-    function createHelicalSpring(radius, length, turns, tubeRadius, mat) {
-      const points = [];
-      const steps = turns * 24;
-      for (let i = 0; i <= steps; i++) {
-        const t = i / steps;
-        const angle = t * turns * Math.PI * 2;
-        const x = Math.cos(angle) * radius;
-        const y = Math.sin(angle) * radius;
-        const z = (t - 0.5) * length;
-        points.push(new THREE.Vector3(x, y, z));
+    function load3DWeapon(id) {
+      activeModelId = id;
+      const weapon = FIREARMS.find(f => f.id === id);
+      if (!weapon) return;
+
+      document.querySelectorAll('#model-buttons button').forEach(b => {
+        b.className = "px-2.5 py-1 rounded text-xs font-semibold mono whitespace-nowrap transition-all border bg-slate-950 text-slate-300 border-slate-800 hover:border-cyan-500/50";
+      });
+      const activeBtn = document.getElementById(`btn-3d-${id}`);
+      if (activeBtn) {
+        activeBtn.className = "px-2.5 py-1 rounded text-xs font-semibold mono whitespace-nowrap transition-all border bg-cyan-500 text-black border-cyan-400 font-bold shadow-[0_0_10px_rgba(6,182,212,0.3)]";
       }
-      const curve = new THREE.CatmullRomCurve3(points);
-      const geo = new THREE.TubeGeometry(curve, steps, tubeRadius, 8, false);
-      return new THREE.Mesh(geo, mat);
+
+      // Update HUD & Telemetry
+      document.getElementById('hud-badge').innerText = `CLASS: ${weapon.className.toUpperCase()}`;
+      document.getElementById('hud-caliber').innerText = weapon.caliber;
+      document.getElementById('hud-title').innerText = weapon.name;
+      document.getElementById('hud-action').innerText = `${weapon.action.toUpperCase()}`;
+      document.getElementById('tele-pressure').innerText = `${weapon.pressurePsi}`;
+      document.getElementById('tele-energy').innerText = `${weapon.energy.toLocaleString()} Joules`;
+      document.getElementById('detail-tell').innerText = weapon.laypersonTell;
+      document.getElementById('detail-armorer').innerText = weapon.armorerAnalysis;
+
+      if (currentWeaponGroup) {
+        scene.remove(currentWeaponGroup);
+        currentWeaponGroup.traverse(child => {
+          if (child.geometry) child.geometry.dispose();
+        });
+      }
+
+      const built = createWeaponMeshUltra(id, currentFinish);
+      currentWeaponGroup = built.group;
+      currentParts = built.parts;
+      scene.add(currentWeaponGroup);
+
+      // Reapply state
+      setExplodedAmount(document.getElementById('explode-slider').value);
+      setRenderMode(renderMode);
+      updateBoreLaser();
     }
 
-    function createCartridge(m, caliberScale = 1.0, lengthScale = 1.0) {
-      const cart = new THREE.Group();
-      const caseGeo = new THREE.CylinderGeometry(0.045 * caliberScale, 0.048 * caliberScale, 0.28 * lengthScale, 16);
-      caseGeo.rotateX(Math.PI / 2);
-      cart.add(new THREE.Mesh(caseGeo, m.brass));
+    function setExplodedAmount(val) {
+      explodedProgress = val / 100;
+      isExploded = val > 0;
+      document.getElementById('tele-status').innerText = isExploded ? `EXPLODED [${val}%]` : `IN BATTERY [0%]`;
+      document.getElementById('tele-status').className = isExploded ? "text-amber-400 font-bold glow-amber" : "text-cyan-400 font-bold";
 
-      const rimGeo = new THREE.CylinderGeometry(0.052 * caliberScale, 0.052 * caliberScale, 0.03 * lengthScale, 16);
-      rimGeo.rotateX(Math.PI / 2);
-      const rMesh = new THREE.Mesh(rimGeo, m.brass);
-      rMesh.position.set(0, 0, -0.14 * lengthScale);
-      cart.add(rMesh);
+      const btn = document.getElementById('explode-btn');
+      btn.innerText = isExploded ? "COLLAPSE" : "EXPLODE";
+      btn.className = isExploded 
+        ? "px-2 py-0.5 bg-amber-500 text-black font-bold rounded text-[11px] mono transition shadow-[0_0_10px_rgba(245,158,11,0.4)]"
+        : "px-2 py-0.5 bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500 hover:text-black border border-cyan-500/40 rounded text-[11px] mono font-bold transition";
 
-      const bulGeo = new THREE.ConeGeometry(0.042 * caliberScale, 0.16 * lengthScale, 16);
-      bulGeo.rotateX(Math.PI / 2);
-      const bMesh = new THREE.Mesh(bulGeo, m.copper);
-      bMesh.position.set(0, 0, 0.2 * lengthScale);
-      cart.add(bMesh);
-      return cart;
+      currentParts.forEach(part => {
+        part.position.lerpVectors(part.userData.basePos, part.userData.explodedPos, explodedProgress);
+      });
+
+      updateLeaderLines();
     }
 
-    // ==========================================
-    // PROCEDURAL MODEL BUILDER WITH DUAL-LAYER SUPPORT
-    // ==========================================
-    function createWeaponMeshUltra(id) {
-      const group = new THREE.Group();
-      const parts = [];
-      const m = MATS[currentFinish];
-
-      function registerPart(mesh, normalPos, explodeDelta, name, subgroup, materialInfo, desc, telemetry) {
-        mesh.position.copy(normalPos);
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
-        mesh.userData = {
-          basePos: normalPos.clone(),
-          explodedPos: normalPos.clone().add(explodeDelta),
-          name: name,
-          subgroup: subgroup,
-          materialInfo: materialInfo,
-          desc: desc,
-          telemetry: telemetry || "Nominal Tolerance",
-          origMaterial: mesh.material
-        };
-        group.add(mesh);
-        parts.push(mesh);
-      }
-
-      if (id === 'm4a1') {
-        const low = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.38, 1.25), m.receiver);
-        registerPart(low, new THREE.Vector3(0, -0.15, -0.1), new THREE.Vector3(0, -0.35, 0), "Forged Lower Receiver", "fcg", "7075-T6 Hardcoat Anodized Aluminum", "Houses trigger group, magwell, and buffer tube threading.", "Tensile Yield: 73,000 PSI");
-
-        const up = new THREE.Mesh(new THREE.BoxGeometry(0.33, 0.35, 1.25), m.receiver);
-        registerPart(up, new THREE.Vector3(0, 0.22, 0.0), new THREE.Vector3(0, 0.45, 0), "Flattop Upper Receiver", "barrel", "Forged 7075-T6 with M4 Feed Ramps", "Mil-STD-1913 continuous top rail and brass deflector.", "Picatinny True Spec 1913");
-
-        const bNut = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.15, 18), m.internalSteel);
-        bNut.rotation.x = Math.PI / 2;
-        registerPart(bNut, new THREE.Vector3(0, 0.22, 0.65), new THREE.Vector3(0, 0.45, 0.4), "Barrel Nut & Delta Wave Spring", "barrel", "4140 Phos Steel", "Torqued to 45 ft-lbs, locking barrel flange to upper receiver.", "Torque: 45 ft-lbs");
-
-        const barGeo = new THREE.CylinderGeometry(0.048, 0.048, 2.1, 16);
-        barGeo.rotateX(Math.PI / 2);
-        const bar = new THREE.Mesh(barGeo, m.barrel);
-        registerPart(bar, new THREE.Vector3(0, 0.22, 1.7), new THREE.Vector3(0, 0.45, 1.1), "14.5\" Chrome-Moly M4 Barrel", "barrel", "Cold Hammer-Forged 1:7 RH Twist", "5.56 NATO chamber with button rifling.", "Muzzle Velocity: 905 m/s");
-
-        const gasBlock = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.32, 0.22), m.internalSteel);
-        const gasTube = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 1.4, 12), m.internalSteel);
-        gasTube.rotation.x = Math.PI / 2;
-        gasTube.position.set(0, 0.14, -0.6);
-        gasBlock.add(gasTube);
-        registerPart(gasBlock, new THREE.Vector3(0, 0.28, 1.8), new THREE.Vector3(0, 1.0, 1.3), "Pinned Gas Block & Gas Tube", "barrel", "Seamless Stainless Steel Tube", "Routes high-pressure combustion gas directly to bolt carrier key.", "Gas Port Pressure: 15,000 PSI");
-
-        const fHider = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.065, 0.32, 16), m.barrel);
-        fHider.rotation.x = Math.PI / 2;
-        registerPart(fHider, new THREE.Vector3(0, 0.22, 2.8), new THREE.Vector3(0, 0.45, 2.0), "A2 Birdcage Flash Suppressor", "barrel", "Phosphated High-Carbon Steel", "Five directional top vents prevent dust kickup and suppress flash.", "Flash Reduction: 92%");
-
-        const quadRail = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.32, 1.1), m.polymer);
-        registerPart(quadRail, new THREE.Vector3(0, 0.22, 1.15), new THREE.Vector3(0, -0.6, 0.6), "KAC RIS Quad-Rail Handguard", "barrel", "Aerospace Aluminum with Rail Heat Shields", "Four Picatinny rails for mounting tactical lasers and foregrips.", "Operating Temp: <120°C");
-
-        // Bolt Carrier Group (Action)
-        const bcg = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.95, 16), m.internalSteel);
-        bcg.rotation.x = Math.PI / 2;
-        registerPart(bcg, new THREE.Vector3(0, 0.22, -0.15), new THREE.Vector3(0.6, 0.8, -0.3), "M16 Full-Auto Bolt Carrier", "action", "8620 Steel, Chrome-Lined Gas Expansion Channel", "Houses cam pin track and firing pin channel.", "Cycle Time: 68ms");
-
-        const gasKey = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.12, 0.4), m.internalSteel);
-        registerPart(gasKey, new THREE.Vector3(0, 0.35, -0.15), new THREE.Vector3(0.6, 1.25, -0.3), "Staked Gas Key & Grade 8 Screws", "action", "4140 Billet Steel, Permatex Staked", "Mates directly to gas tube during battery lockup.", "Torque Spec: 55 in-lbs Staked");
-
-        const camPin = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, 0.24, 12), m.internalSteel);
-        registerPart(camPin, new THREE.Vector3(0, 0.35, 0.1), new THREE.Vector3(0.6, 1.5, 0.1), "Hardened Bolt Cam Pin", "action", "Case-Hardened Tool Steel", "Forces 22.5° rotation of the bolt head as carrier travels rearward.", "Rotation Angle: 22.5°");
-
-        const fPin = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.02, 0.75, 12), m.internalSteel);
-        fPin.rotation.x = Math.PI / 2;
-        registerPart(fPin, new THREE.Vector3(0, 0.22, -0.3), new THREE.Vector3(0.6, 0.8, -1.1), "Chrome-Plated Firing Pin", "action", "Hard Chrome 8740 Steel", "Free-floating firing pin struck by hammer to detonate primer.", "Strike Energy: 0.048 Joules");
-
-        const boltHead = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.075, 0.38, 16), m.internalSteel);
-        boltHead.rotation.x = Math.PI / 2;
-        registerPart(boltHead, new THREE.Vector3(0, 0.22, 0.25), new THREE.Vector3(0.6, 0.8, 0.6), "7-Lug Rotating Bolt Head", "action", "Carpenter 158 Steel (MPI & HPT)", "Locks into barrel extension lugs, containing 55,000 PSI deflagration.", "Chamber Peak: 55,000 PSI");
-
-        // FCG & Buffer
-        const ham = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.25, 0.12), m.internalSteel);
-        registerPart(ham, new THREE.Vector3(0, 0.05, -0.05), new THREE.Vector3(0.35, 0.35, 0), "Hammer & J-Spring", "fcg", "Case-Hardened 8620 Alloy", "Driven by high-power hammer spring to impact firing pin.", "Lock Time: 5.6 ms");
-
-        const trig = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.22, 0.18), m.internalSteel);
-        registerPart(trig, new THREE.Vector3(0, -0.2, -0.05), new THREE.Vector3(0.35, -0.2, 0), "Combat Trigger & Disconnector", "fcg", "Tool Steel Parkerized", "Single-stage combat trigger engaging hammer sear.", "Pull Weight: 5.5 lbs");
-
-        const bufTube = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.065, 1.1, 16), m.receiver);
-        bufTube.rotation.x = Math.PI / 2;
-        registerPart(bufTube, new THREE.Vector3(0, 0.08, -1.0), new THREE.Vector3(0, 0, -0.9), "6-Position Mil-Spec Buffer Tube", "fcg", "7075-T6 Impact Extruded", "Receiver extension housing recoil buffer and spring.", "Internal Dia: 1.148\"");
-
-        const bufSpr = createHelicalSpring(0.05, 0.9, 14, 0.008, m.springSteel);
-        registerPart(bufSpr, new THREE.Vector3(0, 0.08, -1.0), new THREE.Vector3(0, 0.35, -1.4), "Helical Buffer Recoil Spring", "fcg", "17-7 PH Stainless Steel", "Returns carrier group into battery after absorbing recoil pulse.", "Spring Rate: 1.8 lbs/in");
-
-        const stock = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.48, 0.75), m.polymer);
-        registerPart(stock, new THREE.Vector3(0, 0.04, -1.25), new THREE.Vector3(0, 0, -1.7), "SOPMOD Crane Stock", "fcg", "Reinforced Composite with Rubber Pad", "Provides cheek rest and multiple shoulder positioning stops.", "Length of Pull: 10.5\" - 14.5\"");
-
-        // Magazine & Ammo
-        const magBody = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.85, 0.45), m.polymer);
-        magBody.rotation.x = -Math.PI / 16;
-        registerPart(magBody, new THREE.Vector3(0, -0.55, 0.25), new THREE.Vector3(0, -1.1, 0.1), "30-Round PMAG Magazine Body", "feed", "Heat-Treated Polymer with Anti-Glare", "Feeds 5.56x45mm NATO rounds reliably.", "Capacity: 30 Rounds");
-
-        const magSpr = createHelicalSpring(0.06, 0.75, 12, 0.007, m.springSteel);
-        registerPart(magSpr, new THREE.Vector3(0, -0.55, 0.25), new THREE.Vector3(0, -1.7, 0.1), "High-Tensile Magazine Spring", "feed", "Chrome-Silicon Spring Wire", "Pushes follower and cartridge column into feed lips.", "Lifter Force: 4.2 lbs");
-
-        const follower = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.12, 0.42), new THREE.MeshStandardMaterial({ color: 0x10b981, roughness: 0.5 }));
-        registerPart(follower, new THREE.Vector3(0, -0.25, 0.25), new THREE.Vector3(0, -0.75, 0.1), "Anti-Tilt Green Polymer Follower", "feed", "Self-Lubricating Acetal", "Prevents forward/rearward tilt jamming during feeding.", "Tilt Angle Limit: <2°");
-
-        for (let c = 0; c < 3; c++) {
-          const cart = createCartridge(m, 1.0);
-          registerPart(cart, new THREE.Vector3(0, -0.15 + c * 0.05, 0.25 + c * 0.08), new THREE.Vector3(-0.4 - c * 0.25, -0.3 - c * 0.2, 0.4 + c * 0.3), `Unchambered 5.56 NATO Round #${c + 1}`, "feed", "Brass Casing, Copper Jacketed M855A1", "62-grain steel penetrator bullet delivering 1,750 Joules.", "Energy: 1,750 J");
-        }
-
-        const optic = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.28, 0.52), m.polymer);
-        const lens = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.22, 0.02), m.glass);
-        lens.position.set(0, 0, 0.26);
-        optic.add(lens);
-        registerPart(optic, new THREE.Vector3(0, 0.45, 0.05), new THREE.Vector3(0, 1.0, 0), "EOTech EXPS3 Holographic Sight", "barrel", "Aircraft Aluminum Roll-Bar Hood", "True holographic transmission with 68 MOA aiming ring.", "Reticle: 68 MOA Ring / 1 MOA Dot");
-      }
-
-      else {
-        // High-Fidelity Fallback with 20+ parts
-        const rec = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.45, 1.6), m.receiver);
-        registerPart(rec, new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0.25, 0), "Monolithic Frame Assembly", "fcg", "Ordnance Steel/Polymer", "Primary structural chassis.", "Yield: 65,000 PSI");
-
-        const barrel = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 2.6, 16), m.barrel);
-        barrel.rotation.x = Math.PI / 2;
-        registerPart(barrel, new THREE.Vector3(0, 0.1, 1.5), new THREE.Vector3(0, 0.35, 1.0), "Precision Rifled Barrel", "barrel", "Cold Hammer-Forged Match Steel", "Engineered for high velocity and barrel dwell time.", "Dwell Time: 0.19 ms");
-
-        const bolt = new THREE.Mesh(new THREE.CylinderGeometry(0.075, 0.075, 0.8, 16), m.internalSteel);
-        bolt.rotation.x = Math.PI / 2;
-        registerPart(bolt, new THREE.Vector3(0, 0.1, 0.1), new THREE.Vector3(0.5, 0.7, 0), "Bolt Carrier & Extractor", "action", "Tool Steel Parkerized", "Locks into chamber and cycles cartridges.", "Chamber Peak: 50,000 PSI");
-
-        const mag = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.85, 0.5), m.polymer);
-        registerPart(mag, new THREE.Vector3(0, -0.6, 0.2), new THREE.Vector3(0, -1.1, 0.1), "Detachable High-Capacity Mag", "feed", "Reinforced Composite", "Feeds cartridges into receiver ramps.", "Feed Reliability: 99.98%");
-
-        const cart = createCartridge(m, 1.2);
-        registerPart(cart, new THREE.Vector3(0, -0.3, 0.25), new THREE.Vector3(-0.5, -0.5, 0.4), "Chambered Brass Ammunition", "feed", "Brass & Copper Projectile", "Full-power ballistic cartridge.", "Kinetic Force: Nominal");
-      }
-
-      return { group, parts };
+    function toggleExplode() {
+      const targetVal = isExploded ? 0 : 100;
+      const slider = document.getElementById('explode-slider');
+      slider.value = targetVal;
+      new TWEEN.Tween({ val: explodedProgress * 100 })
+        .to({ val: targetVal }, 600)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .onUpdate(obj => {
+          slider.value = obj.val;
+          setExplodedAmount(obj.val);
+        })
+        .start();
     }
 
-    // ==========================================
-    // BORE LASER VECTOR LINE
-    // ==========================================
     function updateBoreLaser() {
       if (boreLaserLine) {
         scene.remove(boreLaserLine);
@@ -949,7 +2354,7 @@
 
       const laserPoints = [];
       laserPoints.push(new THREE.Vector3(0, 0.22, 2.8));
-      laserPoints.push(new THREE.Vector3(0, 0.22, 12.0)); // Extends 12 meters along bore axis
+      laserPoints.push(new THREE.Vector3(0, 0.22, 12.0));
 
       const geo = new THREE.BufferGeometry().setFromPoints(laserPoints);
       const mat = new THREE.LineDashedMaterial({
@@ -973,7 +2378,7 @@
         ? "px-2 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 rounded text-[11px] mono font-bold transition flex items-center gap-1"
         : "px-2 py-0.5 bg-slate-900 text-slate-400 border border-slate-700 rounded text-[11px] mono font-bold transition flex items-center gap-1";
       btn.innerHTML = `<i data-lucide="zap" class="w-3.5 h-3.5"></i> BORE LASER: ${showBoreLaser ? 'ON' : 'OFF'}`;
-      document.getElementById('tele-vector').innerText = showBoreLaser ? "ALIGNED (1:7 TWIST)" : "OFFLINE";
+      document.getElementById('tele-vector').innerText = showBoreLaser ? "ALIGNED" : "OFFLINE";
       document.getElementById('tele-vector').className = showBoreLaser ? "text-emerald-400 font-bold" : "text-slate-500 font-bold";
       lucide.createIcons();
       updateBoreLaser();
@@ -994,9 +2399,6 @@
       }
     }
 
-    // ==========================================
-    // LEADER LINES MANAGER
-    // ==========================================
     function updateLeaderLines() {
       if (lineSegments) {
         scene.remove(lineSegments);
@@ -1047,9 +2449,6 @@
       updateLeaderLines();
     }
 
-    // ==========================================
-    // SHADER & RENDER MODE SWITCHER
-    // ==========================================
     function setRenderMode(mode) {
       renderMode = mode;
       ['pbr', 'wire', 'thermal'].forEach(m => {
@@ -1067,20 +2466,15 @@
         document.getElementById('tele-diag-mode').className = "text-cyan-400 font-bold glow-cyan";
         nodesPanel.classList.remove('hidden');
 
-        // Apply high-utility dual layer & pressure color coding
         currentParts.forEach(part => {
           const sub = part.userData.subgroup;
-          if (sub === 'action') {
-            part.material = CYBER_MATS.actionWire;
-          } else if (sub === 'feed') {
-            part.material = CYBER_MATS.feedWire;
-          } else {
-            part.material = CYBER_MATS.structWire;
-          }
+          if (sub === 'action') part.material = CYBER_MATS.actionWire;
+          else if (sub === 'feed') part.material = CYBER_MATS.feedWire;
+          else part.material = CYBER_MATS.structWire;
         });
       } else if (mode === 'thermal') {
-        document.getElementById('tele-diag-mode').innerText = "THERMAL IR SENSOR";
-        document.getElementById('tele-diag-mode').className = "text-rose-400 font-bold";
+        document.getElementById('tele-diag-mode').innerText = "THERMAL IR HEATMAP";
+        document.getElementById('tele-diag-mode').className = "text-red-400 font-bold";
         nodesPanel.classList.add('hidden');
         currentParts.forEach(part => { part.material = MATS.thermal; });
       } else {
@@ -1096,126 +2490,28 @@
       load3DWeapon(activeModelId);
     }
 
-    // ==========================================
-    // WEAPON LOADER & EXPLODER
-    // ==========================================
-    function load3DWeapon(id) {
-      activeModelId = id;
-      const weapon = FIREARMS.find(f => f.id === id);
-      if (!weapon) return;
-
-      document.querySelectorAll('#model-buttons button').forEach(b => {
-        b.className = "px-2.5 py-1 rounded text-xs font-semibold mono whitespace-nowrap transition-all border bg-slate-950 text-slate-300 border-slate-800 hover:border-cyan-500/50";
-      });
-      const activeBtn = document.getElementById(`btn-3d-${id}`);
-      if (activeBtn) {
-        activeBtn.className = "px-2.5 py-1 rounded text-xs font-semibold mono whitespace-nowrap transition-all border bg-cyan-500 text-black border-cyan-400 font-bold shadow-[0_0_10px_rgba(6,182,212,0.3)]";
-      }
-
-      document.getElementById('hud-title').innerText = weapon.name;
-      document.getElementById('hud-badge').innerText = `CLASS: ${weapon.className.toUpperCase()}`;
-      document.getElementById('hud-caliber').innerText = weapon.caliber;
-      document.getElementById('hud-action').innerText = weapon.action.toUpperCase();
-
-      document.getElementById('tele-energy').innerText = `${weapon.energy.toLocaleString()} Joules`;
-      document.getElementById('tele-velocity').innerText = `${weapon.velocity} m/s (${weapon.velocityFps} fps)`;
-      document.getElementById('tele-pressure').innerText = weapon.pressurePsi || "55,000 PSI";
-      document.getElementById('tele-vector').innerText = `ALIGNED (${weapon.barrelTwist || '1:7 TWIST'})`;
-      document.getElementById('tele-part-count').innerText = `${weapon.partCount || 36} COMPONENTS`;
-
-      document.getElementById('detail-layperson').innerText = weapon.laypersonTell;
-      document.getElementById('detail-armorer').innerText = weapon.armorerAnalysis;
-
-      if (currentModelGroup) scene.remove(currentModelGroup);
-      if (lineSegments) {
-        scene.remove(lineSegments);
-        lineSegments = null;
-      }
-
-      const built = createWeaponMeshUltra(id);
-      currentModelGroup = built.group;
-      currentParts = built.parts;
-      scene.add(currentModelGroup);
-
-      setExplodedAmount(0);
-      document.getElementById('explode-slider').value = 0;
-      document.getElementById('explode-btn').innerText = "EXPLODE";
-      isExploded = false;
-
-      filterSubassembly('all');
-      setRenderMode(renderMode);
-      updateBoreLaser();
-
-      if (id === 'm82a1') {
-        camera.position.set(0, 1.4, 7.8);
-      } else if (id === 'glock19') {
-        camera.position.set(0, 0.9, 3.8);
-      } else {
-        camera.position.set(0, 1.4, 6.2);
-      }
-      controls.target.set(0, 0, 0);
-    }
-
-    function setExplodedAmount(val) {
-      explodedProgress = val / 100;
-      currentParts.forEach(part => {
-        part.position.lerpVectors(part.userData.basePos, part.userData.explodedPos, explodedProgress);
-      });
-
-      document.getElementById('tele-status').innerText = explodedProgress > 0.05 
-        ? `EXPLODED [${Math.round(explodedProgress * 100)}%]` 
-        : `IN BATTERY [0%]`;
-      document.getElementById('tele-status').className = explodedProgress > 0.05 
-        ? "text-cyan-400 font-bold glow-cyan" 
-        : "text-emerald-400 font-bold";
-
-      updateLeaderLines();
-    }
-
-    function toggleExplode() {
-      const btn = document.getElementById('explode-btn');
-      const target = isExploded ? 0 : 100;
-      const start = parseFloat(document.getElementById('explode-slider').value);
-
-      new TWEEN.Tween({ val: start })
-        .to({ val: target }, 700)
-        .easing(TWEEN.Easing.Cubic.Out)
-        .onUpdate(obj => {
-          document.getElementById('explode-slider').value = obj.val;
-          setExplodedAmount(obj.val);
-        })
-        .onComplete(() => {
-          isExploded = !isExploded;
-          btn.innerText = isExploded ? "ASSEMBLE" : "EXPLODE";
-        })
-        .start();
-    }
-
     function filterSubassembly(sub) {
-      activeSubFilter = sub;
       ['all', 'action', 'fcg', 'barrel', 'feed'].forEach(s => {
         const btn = document.getElementById(`sub-${s}`);
         if (s === sub) {
-          btn.className = "px-2 py-0.5 rounded bg-cyan-500 text-black font-bold";
+          btn.className = "px-2 py-0.5 rounded bg-amber-500 text-black font-bold";
         } else {
-          btn.className = "px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800 hover:border-cyan-500/40";
+          btn.className = "px-2 py-0.5 rounded bg-slate-950 text-slate-300 border border-slate-800 hover:border-amber-500/40";
         }
       });
 
       currentParts.forEach(part => {
-        if (sub === 'all') {
+        if (sub === 'all' || part.userData.subgroup === sub) {
           part.visible = true;
         } else {
-          part.visible = (part.userData.subgroup === sub);
+          part.visible = false;
         }
       });
-
       updateLeaderLines();
     }
 
     function toggleAutoRotate() {
       controls.autoRotate = !controls.autoRotate;
-      controls.autoRotateSpeed = 1.8;
       const btn = document.getElementById('rotate-btn');
       btn.className = controls.autoRotate 
         ? "p-1.5 bg-cyan-500 text-black font-bold border border-cyan-400 rounded transition shadow-[0_0_10px_rgba(6,182,212,0.4)]"
@@ -1266,9 +2562,25 @@
     function animate(time) {
       requestAnimationFrame(animate);
       TWEEN.update();
-      controls.update();
-      checkRaycast();
-      renderer.render(scene, camera);
+
+      if (activeTab === '3d' && renderer && scene && camera) {
+        controls.update();
+        checkRaycast();
+        renderer.render(scene, camera);
+      }
+
+      if (activeTab === 'compare') {
+        if (compareRenderer1 && compareScene1 && compareCamera1) {
+          compareControls1.update();
+          checkCompareRaycast1();
+          compareRenderer1.render(compareScene1, compareCamera1);
+        }
+        if (compareRenderer2 && compareScene2 && compareCamera2) {
+          compareControls2.update();
+          checkCompareRaycast2();
+          compareRenderer2.render(compareScene2, compareCamera2);
+        }
+      }
     }
 
     // ==========================================
@@ -1278,6 +2590,7 @@
     let searchQuery = '';
 
     function switchTab(tabId) {
+      activeTab = tabId;
       ['3d', 'database', 'posters', 'compare', 'trainer'].forEach(t => {
         const view = document.getElementById(`view-${t}`);
         const btn = document.getElementById(`tab-${t}`);
@@ -1285,6 +2598,11 @@
           view.classList.remove('hidden');
           btn.className = "px-3.5 py-1.5 text-xs font-semibold rounded bg-cyan-500/15 border border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/25 transition-all flex items-center gap-1.5 mono shadow-[0_0_10px_rgba(6,182,212,0.15)]";
           if (t === '3d') onWindowResize();
+          if (t === 'compare') {
+            initCompare3D();
+            setTimeout(onCompareResize, 50);
+            renderComparison();
+          }
         } else {
           view.classList.add('hidden');
           btn.className = "px-3.5 py-1.5 text-xs font-semibold rounded bg-slate-900 border border-slate-700 text-slate-300 hover:bg-slate-800 transition-all flex items-center gap-1.5 mono";
@@ -1331,7 +2649,7 @@
                 <i data-lucide="${f.icon}" class="w-3.5 h-3.5"></i> ${f.className}
               </span>
               <div class="flex items-center gap-1">
-                ${f.has3D ? `<button onclick="viewIn3D('${f.id}')" class="px-2 py-0.5 rounded text-[10px] mono bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 font-bold hover:bg-cyan-500 hover:text-black transition">VIEW 3D</button>` : ''}
+                <button onclick="viewIn3D('${f.id}')" class="px-2 py-0.5 rounded text-[10px] mono bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 font-bold hover:bg-cyan-500 hover:text-black transition">VIEW 3D</button>
                 <span class="text-[10px] mono bg-slate-950 px-2 py-0.5 rounded text-slate-400 border border-slate-800">${f.caliber}</span>
               </div>
             </div>
@@ -1382,75 +2700,16 @@
       load3DWeapon(id);
     }
 
-    function populateComparators() {
-      const s1 = document.getElementById('compare-select-1');
-      const s2 = document.getElementById('compare-select-2');
-      const opts = FIREARMS.map(f => `<option value="${f.id}">${f.name} (${f.className} - ${f.caliber})</option>`).join('');
-      s1.innerHTML = opts;
-      s2.innerHTML = opts;
-      s1.value = "m4a1";
-      s2.value = "scar17h";
+    // LIGHTBOX
+    function openLightbox(src) {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      img.src = src;
+      lb.classList.remove('hidden');
     }
 
-    function renderComparison() {
-      const id1 = document.getElementById('compare-select-1').value;
-      const id2 = document.getElementById('compare-select-2').value;
-      const w1 = FIREARMS.find(f => f.id === id1);
-      const w2 = FIREARMS.find(f => f.id === id2);
-
-      const maxEnergy = Math.max(w1.energy, w2.energy, 4000);
-      const maxRange = Math.max(w1.range, w2.range, 1000);
-      const maxVel = Math.max(w1.velocity, w2.velocity, 1000);
-
-      const res = document.getElementById('comparison-result');
-      res.innerHTML = `
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-slate-950 p-6 rounded-xl border border-amber-500/30 space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 class="text-lg font-bold text-amber-400 mono">${w1.name}</h3>
-              <span class="text-xs px-2 py-0.5 bg-amber-500/10 text-amber-400 rounded border border-amber-500/20 mono">${w1.className}</span>
-            </div>
-            <p class="text-xs text-slate-300"><strong class="text-amber-400 mono">Caliber:</strong> ${w1.caliber}</p>
-            <p class="text-xs text-slate-300"><strong class="text-amber-400 mono">Action:</strong> ${w1.action}</p>
-            <p class="text-xs text-slate-300"><strong class="text-amber-400 mono">Weight / Length:</strong> ${w1.weight} / ${w1.length}</p>
-            <p class="text-xs text-slate-300"><strong class="text-amber-400 mono">Capacity:</strong> ${w1.capacity}</p>
-            <div class="p-3 bg-slate-900 rounded border border-slate-800 text-xs text-slate-300">
-              <span class="text-[10px] text-amber-400 mono font-bold block mb-1">IDENTIFICATION SIGNATURE:</span>
-              ${w1.laypersonTell}
-            </div>
-          </div>
-
-          <div class="bg-slate-950 p-6 rounded-xl border border-cyan-500/30 space-y-4">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 class="text-lg font-bold text-cyan-400 mono">${w2.name}</h3>
-              <span class="text-xs px-2 py-0.5 bg-cyan-500/10 text-cyan-400 rounded border border-cyan-500/20 mono">${w2.className}</span>
-            </div>
-            <p class="text-xs text-slate-300"><strong class="text-cyan-400 mono">Caliber:</strong> ${w2.caliber}</p>
-            <p class="text-xs text-slate-300"><strong class="text-cyan-400 mono">Action:</strong> ${w2.action}</p>
-            <p class="text-xs text-slate-300"><strong class="text-cyan-400 mono">Weight / Length:</strong> ${w2.weight} / ${w2.length}</p>
-            <p class="text-xs text-slate-300"><strong class="text-cyan-400 mono">Capacity:</strong> ${w2.capacity}</p>
-            <div class="p-3 bg-slate-900 rounded border border-slate-800 text-xs text-slate-300">
-              <span class="text-[10px] text-cyan-400 mono font-bold block mb-1">IDENTIFICATION SIGNATURE:</span>
-              ${w2.laypersonTell}
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-6">
-          <h4 class="text-xs font-bold text-slate-400 mono tracking-wider uppercase">BALLISTIC & OPERATIONAL TELEMETRY COMPARISON</h4>
-          <div>
-            <div class="flex justify-between text-xs mono mb-1">
-              <span class="text-amber-400 font-bold">${w1.name}: ${w1.energy.toLocaleString()} J</span>
-              <span class="text-slate-400">MUZZLE KINETIC ENERGY</span>
-              <span class="text-cyan-400 font-bold">${w2.name}: ${w2.energy.toLocaleString()} J</span>
-            </div>
-            <div class="h-3 bg-slate-950 rounded-full flex overflow-hidden p-0.5 gap-1 border border-slate-800">
-              <div class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: ${(w1.energy / maxEnergy) * 50}%"></div>
-              <div class="bg-cyan-500 h-full rounded-full transition-all duration-500 ml-auto" style="width: ${(w2.energy / maxEnergy) * 50}%"></div>
-            </div>
-          </div>
-        </div>
-      `;
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.add('hidden');
     }
 
     // TRAINER
@@ -1459,78 +2718,117 @@
         scenario: "You observe a weapon with a 30-round magazine inserted BEHIND the pistol grip and trigger group, inside the hollow buttstock. What classification is this?",
         options: ["Assault Rifle (Standard)", "Bullpup Assault Rifle", "Submachine Gun", "Battle Rifle"],
         answer: 1,
-        explanation: "Any firearm where the action, chamber, and magazine feed are located behind the trigger assembly is a Bullpup (such as the Steyr AUG or IWI Tavor)."
+        explanation: "Bullpup firearms relocate the action and magazine to the buttstock behind the trigger, achieving full rifle barrel velocity inside a compact carbine length."
       },
       {
-        scenario: "From across a room, you notice a rifle with a rectangular, straight 20-round magazine that looks significantly wider than a standard AR-15 mag. What caliber category are you looking at?",
-        options: ["Pistol Caliber (9mm)", "Intermediate Cartridge (5.56 NATO)", "Full-Power Battle Rifle Cartridge (7.62x51mm)", ".50 BMG Anti-Materiel"],
-        answer: 2,
-        explanation: "Thick, straight 20-round box magazines indicate a full-power 7.62x51mm NATO Battle Rifle or DMR (such as the FN SCAR 17H or HK417)."
+        scenario: "You spot a heavy weapon with an enormous arrowhead tank muzzle brake large enough to cover a human fist and a gargantuan rectangular steel magazine.",
+        options: ["Precision Sniper (.338)", "Anti-Materiel Heavy Rifle (.50 BMG)", "Battle Rifle (7.62)", "Pump-Action Shotgun"],
+        answer: 1,
+        explanation: "The Barrett M82A1 / M107 .50 BMG Anti-Materiel rifle features a massive arrowhead muzzle brake designed to divert combustion gas and soak up 15,500 Joules of kinetic recoil."
+      },
+      {
+        scenario: "A long shoulder-fired weapon has a full-length metal tube running parallel directly beneath the barrel, with a knurled screw cap at the muzzle.",
+        options: ["Direct Impingement AR", "Combat Shotgun (Tubular Magazine)", "Bolt-Action Sniper", "Open-Bolt Machine Gun"],
+        answer: 1,
+        explanation: "Tubular magazines running directly underneath the barrel are the hallmark visual signature of combat shotguns like the Benelli M4 and Remington 870."
+      },
+      {
+        scenario: "A compact weapon features a completely flat translucent magazine lying horizontally on top of the weapon with miniature rifle rounds clearly visible.",
+        options: ["FN P90 PDW", "KRISS Vector", "HK MP5", "Glock 19"],
+        answer: 0,
+        explanation: "The FN P90 uses a patented top-mounted horizontal 50-round magazine where rounds lie perpendicular to the bore and rotate 90° through a spiral feed ramp."
       }
     ];
 
-    let currentQ = 0;
+    let currentQuestion = 0;
+    let quizScore = 0;
 
-    function loadTrainerQuestion() {
-      const q = QUIZ[currentQ];
+    function renderTrainer() {
       const card = document.getElementById('trainer-card');
-      card.innerHTML = `
-        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-          <span class="text-xs text-amber-400 mono font-bold">RECOGNITION TEST // EXERCISE ${currentQ + 1} OF ${QUIZ.length}</span>
-          <span class="text-xs text-slate-500 mono">SIGHT ID DOCTRINE</span>
-        </div>
-        <p class="text-sm text-slate-200 font-medium leading-relaxed">${q.scenario}</p>
-        <div class="space-y-3 pt-2">
-          ${q.options.map((opt, i) => `
-            <button onclick="checkAnswer(${i})" class="w-full text-left p-3.5 rounded-lg bg-slate-950 border border-slate-800 hover:border-amber-500/50 hover:bg-slate-900 transition text-xs text-slate-300 mono flex items-center justify-between group">
-              <span><span class="text-amber-400 font-bold mr-2">[${String.fromCharCode(65 + i)}]</span> ${opt}</span>
-              <i data-lucide="chevron-right" class="w-4 h-4 text-slate-600 group-hover:text-amber-400 transition"></i>
+      if (currentQuestion >= QUIZ.length) {
+        card.innerHTML = `
+          <div class="text-center space-y-4">
+            <div class="w-16 h-16 bg-cyan-500/20 text-cyan-400 rounded-full flex items-center justify-center mx-auto border border-cyan-500/40">
+              <i data-lucide="award" class="w-8 h-8"></i>
+            </div>
+            <h3 class="text-xl font-bold text-slate-100 mono">TRAINING SESSION COMPLETED</h3>
+            <p class="text-sm text-slate-300">Your Combat Visual Identification Score: <strong class="text-amber-400 font-bold">${quizScore} / ${QUIZ.length}</strong></p>
+            <button onclick="resetTrainer()" class="px-6 py-2.5 bg-amber-500 text-black font-bold rounded-lg text-xs mono hover:bg-amber-400 transition">
+              RESTART ID TRAINER
             </button>
-          `).join('')}
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      const q = QUIZ[currentQuestion];
+      card.innerHTML = `
+        <div class="space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <span class="text-xs font-bold text-cyan-400 mono">SIGHT ID SCENARIO ${currentQuestion + 1} OF ${QUIZ.length}</span>
+            <span class="text-xs text-slate-400 mono">SCORE: ${quizScore}</span>
+          </div>
+          <p class="text-sm font-medium text-slate-200 leading-relaxed">${q.scenario}</p>
+          <div class="space-y-2 pt-2">
+            ${q.options.map((opt, i) => `
+              <button onclick="handleQuizAnswer(${i})" class="w-full text-left p-3 rounded-lg border border-slate-800 bg-slate-950 hover:border-cyan-500/50 hover:bg-slate-800/80 text-xs text-slate-300 mono transition flex items-center justify-between group">
+                <span>${opt}</span>
+                <i data-lucide="chevron-right" class="w-4 h-4 text-slate-600 group-hover:text-cyan-400 transition"></i>
+              </button>
+            `).join('')}
+          </div>
+          <div id="trainer-feedback" class="hidden p-4 rounded-lg text-xs mono"></div>
         </div>
-        <div id="trainer-feedback" class="hidden"></div>
       `;
       lucide.createIcons();
     }
 
-    function checkAnswer(chosen) {
-      const q = QUIZ[currentQ];
+    function handleQuizAnswer(selectedIdx) {
+      const q = QUIZ[currentQuestion];
       const fb = document.getElementById('trainer-feedback');
-      const isCorrect = chosen === q.answer;
-
-      fb.className = `p-4 rounded-lg border text-xs mono ${isCorrect ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-300' : 'bg-rose-950/30 border-rose-500/40 text-rose-300'}`;
-      fb.innerHTML = `
-        <div class="font-bold mb-1">${isCorrect ? '✓ SIGHT RECOGNITION CONFIRMED' : '✗ INCORRECT IDENTIFICATION'}</div>
-        <div class="text-slate-300">${q.explanation}</div>
-        <button onclick="nextQuestion()" class="mt-3 px-4 py-1.5 bg-amber-500 text-black font-bold rounded text-xs hover:bg-amber-400 transition">
-          ${currentQ < QUIZ.length - 1 ? 'NEXT EXERCISE ➔' : 'RESTART TRAINER ↺'}
-        </button>
-      `;
       fb.classList.remove('hidden');
+
+      if (selectedIdx === q.answer) {
+        quizScore++;
+        fb.className = "p-4 rounded-lg text-xs mono bg-emerald-950/40 border border-emerald-500/50 text-emerald-300 space-y-2";
+        fb.innerHTML = `
+          <div class="font-bold text-emerald-400 flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4"></i> IDENTIFICATION CONFIRMED</div>
+          <div>${q.explanation}</div>
+          <button onclick="nextQuestion()" class="mt-2 px-3 py-1 bg-emerald-500 text-black font-bold rounded text-[11px]">NEXT SCENARIO →</button>
+        `;
+      } else {
+        fb.className = "p-4 rounded-lg text-xs mono bg-red-950/40 border border-red-500/50 text-red-300 space-y-2";
+        fb.innerHTML = `
+          <div class="font-bold text-red-400 flex items-center gap-1.5"><i data-lucide="alert-triangle" class="w-4 h-4"></i> MISIDENTIFICATION</div>
+          <div><strong>Correct:</strong> ${q.options[q.answer]}. ${q.explanation}</div>
+          <button onclick="nextQuestion()" class="mt-2 px-3 py-1 bg-red-500 text-black font-bold rounded text-[11px]">CONTINUE →</button>
+        `;
+      }
+      lucide.createIcons();
     }
 
     function nextQuestion() {
-      currentQ = (currentQ + 1) % QUIZ.length;
-      loadTrainerQuestion();
+      currentQuestion++;
+      renderTrainer();
     }
 
-    function openLightbox(src) {
-      document.getElementById('lightbox-img').src = src;
-      document.getElementById('lightbox').classList.remove('hidden');
+    function resetTrainer() {
+      currentQuestion = 0;
+      quizScore = 0;
+      renderTrainer();
     }
 
-    function closeLightbox() {
-      document.getElementById('lightbox').classList.add('hidden');
-    }
-
-    window.onload = () => {
-      lucide.createIcons();
+    // ==========================================
+    // INITIALIZATION LIFECYCLE
+    // ==========================================
+    window.addEventListener('DOMContentLoaded', () => {
       init3D();
       renderWeapons();
       populateComparators();
-      renderComparison();
-      loadTrainerQuestion();
-    };
+      renderTrainer();
+      lucide.createIcons();
+    });
   </script>
 </body>
 </html>
