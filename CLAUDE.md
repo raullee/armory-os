@@ -4,34 +4,33 @@ Live URL: https://armory.raul.my
 Mirror: https://armory-os.vercel.app
 Repository: https://github.com/raullee/armory-os
 
-## Current State: Phase Two Complete
-Phase Two has been built, tested with Playwright (zero errors), and deployed live to production.
+## Current State: Phase Two Optimization Complete
 
-### Core Features
-1. **3D Kinetic Motion Graphic Entrance Portal**:
-   - Holographic Breach Core with gyroscopic CAD wireframe rings, rotating 7-lug bolt head, fluted chamber, glowing bore laser, and drifting ambient star-dust particle swarm.
-   - Cinematic hyperspace camera zoom on user engagement through the core with sub-bass audio swell.
-   - Quick-toggle `PORTAL` button in HUD header (Hotkey: `P`).
+The latest update resolves audio realism and field strip UI layout feedback:
+1. **Audio Realism Overhaul (`ArmoryAudio 2.0`)**:
+   - Upgraded from simple oscillator sweeps to physical modal acoustic synthesis.
+   - True ordnance steel physics: multi-band modal filter bank modeling receiver body mass (125Hz), trunnion/receiver rails (780Hz), bolt carrier group (1580Hz), and hardened tool steel locking lugs (5200Hz) with high-Q resonators.
+   - Waveshaper non-linear saturation for analog mechanical thickness.
+   - Real mechanical rail friction (dual-formant pink noise), buffer spring twang, and drawn 70/30 brass multi-bounce floor acoustics (3820Hz, 4920Hz, 6380Hz).
+   - Micro-transient contact clicks and secondary mechanical chatter.
 
-2. **Procedural Web Audio Engine (`ArmoryAudio`)**:
-   - 100% procedural synthesis via Web Audio API (zero external sample files, zero network latency).
-   - Accurate mechanical sound signatures for all firearm classes:
-     - AR / Carbines: Charging handle pull, 7-lug bolt rotation into battery, and buffer spring chime.
-     - Roller-delayed (MP5): Charging handle pull and iconic "HK slap" roller lockup.
-     - Shotguns (Remington 870): Dual-direction slide-back extract and heavy forward chamber slam.
-     - Precision Snipers (AIAX .338, CheyTac M200): 4-phase turn-bolt operation.
-     - Handguns (Glock 19, 1911): Reciprocating slide rack, 6,200Hz trigger reset tick, and firing pin snap.
-     - Revolvers (Colt Python): Cylinder ratchet indexing and hammer cock detent.
-   - 3 Audio Profiles: Mechanical, Cyber HUD, and Subdued/Soft.
+2. **Un-Overlaid & Elevated Hero Field Strip Console**:
+   - Secondary tools (Cyber Wire, PBR Metal, Thermal IR, Laser, Scanline, CAD Lines, Auto-spin, Reset) moved to a clean top-right tactical dock.
+   - Viewport bottom is dedicated exclusively to the unified **Hero Field Strip & Tactile Console**:
+     - **Tier 1 (Tactile Action Lab)**: Cycle Action (`C`), Dry Fire (`Space`), Reload Mag (`R`), Eject 3D Brass (`E`), and Chamber Status.
+     - **Tier 2 (Hero Field Strip Console)**:
+       - Master Field Strip button (`[ ⚡ FIELD STRIP WEAPON (F) ]`).
+       - Step-by-Step Disassembly controls (`[ ◀ PREV ]` and `[ NEXT ▶ ]` or keys `[` and `]`).
+       - Autonomous sequence walkthrough (`[ ▷ AUTO STRIP ]`).
+       - Dynamic live detachment counter (e.g. `24 / 24 PARTS DETACHED`).
+       - Stage badges:
+         - Stage 0: `IN BATTERY` (0%)
+         - Stage 1: `MAG CLEARED` (20%)
+         - Stage 2: `RECEIVERS SPLIT` (40%)
+         - Stage 3: `BCG EXTRACTED` (60%)
+         - Stage 4: `BOLT DETAIL STRIPPED` (80%)
+         - Stage 5: `FULL CAD MATRIX` (100%)
+       - Smooth Hermite interpolation per subassembly during sliding.
 
-3. **Tactile Neurodivergent Sensory Ergonomics**:
-   - Multisensory audio-haptic coupling (`navigator.vibrate` synchronized with procedural clicks).
-   - Stepped detent feedback on Exploded View slider (rotary encoder notch clicks every 4%).
-   - Interactive Tactile Action Lab:
-     - `[ CYCLE ACTION ]` (Key `C`): Animates bolt/slide/hammer in 3D with synchronized sound.
-     - `[ DRY FIRE ]` (Key `Space`): Striker snap, empty chamber indicator, and trigger reset.
-     - `[ RELOAD MAG ]` (Key `R`): Drops magazine out of 3D magwell and seats it back in with firm palm slap.
-     - `[ EJECT BRASS ]` (Key `E`): Spawns physical 3D brass casings that tumble, hit floor grid, and bounce with procedural ringing acoustics.
-
-4. **Dual 3D Comparator Engine**:
-   - Compares any 2 of the 24 firearms side-by-side with synchronized linked rotation and true 1:1 physical millimeter scaling.
+3. **Automated Verification**:
+   - Verified via Playwright headless browser test (`test_field_strip.py`): 100% pass across all stages, controls, audio synthesis methods, and bounds checks.
