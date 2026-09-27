@@ -68,9 +68,94 @@
       pointer-events: none;
       display: none;
     }
+
+    /* 3D Motion Graphic Entrance Portal styling */
+    #landing-portal {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: radial-gradient(circle at center, #090e17 0%, #030407 100%);
+      transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1), transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .portal-canvas {
+      width: 100% !important;
+      height: 480px !important;
+      display: block;
+      cursor: pointer;
+    }
+    .glow-emerald {
+      text-shadow: 0 0 12px rgba(16, 185, 129, 0.7);
+    }
+    .glow-rose {
+      text-shadow: 0 0 12px rgba(244, 63, 94, 0.7);
+    }
   </style>
 </head>
 <body class="grid-bg min-h-screen flex flex-col">
+
+  <!-- ENTRANCE PORTAL: 3D KINETIC MOTION GRAPHIC & SENSORY GATEWAY -->
+  <div id="landing-portal" class="fixed inset-0 z-[100] bg-[#03050a] flex flex-col justify-between items-center p-6 md:p-10 select-none overflow-hidden transition-all duration-700">
+    <!-- Subtle Top Telemetry Strip -->
+    <div class="w-full max-w-6xl flex items-center justify-between text-xs mono text-slate-500 border-b border-slate-800/60 pb-3">
+      <div class="flex items-center gap-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_#06b6d4]"></span>
+        <span class="text-slate-200 font-bold tracking-widest uppercase">ARMORY OS // SYSTEM BOOT</span>
+        <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 px-1.5 py-0.5 rounded text-[10px]">VER 2.4.0</span>
+      </div>
+      <div class="hidden sm:flex items-center gap-4 text-[11px]">
+        <span>CAD KINETICS: ACTIVE</span>
+        <span class="text-cyan-400 font-bold">PROCEDURAL SENSORY SYNTHESIS</span>
+        <span class="text-emerald-400">24 BALLISTIC PROFILES</span>
+      </div>
+    </div>
+
+    <!-- Central 3D Kinetic Motion Graphic Canvas -->
+    <div class="relative w-full max-w-3xl flex-1 flex items-center justify-center my-2 cursor-pointer group" onclick="enterArmoryFromPortal()">
+      <canvas id="portal-canvas" class="portal-canvas outline-none"></canvas>
+      
+      <!-- Floating HUD Elements around the 3D core -->
+      <div class="absolute inset-0 pointer-events-none flex flex-col items-center justify-center">
+        <!-- Reticle Rings -->
+        <div class="w-72 h-72 md:w-96 md:h-96 rounded-full border border-cyan-500/20 animate-[spin_40s_linear_infinite] pointer-events-none flex items-center justify-center">
+          <div class="w-56 h-56 md:w-72 md:h-72 rounded-full border border-dashed border-amber-500/25 animate-[spin_25s_linear_infinite_reverse]"></div>
+        </div>
+        <!-- Center Callout Badge -->
+        <div class="absolute text-center space-y-1 group-hover:scale-105 transition-transform duration-300">
+          <div class="text-[10px] mono text-cyan-400 tracking-widest uppercase font-bold bg-slate-950/80 px-3 py-1 rounded-full border border-cyan-500/40 backdrop-blur-md mx-auto w-fit shadow-[0_0_15px_rgba(6,182,212,0.3)]">
+            HOLOGRAPHIC BALLISTIC CAD CORE
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom CTA & Sensory Status -->
+    <div class="w-full max-w-xl text-center space-y-4">
+      <div class="space-y-1">
+        <h2 class="text-3xl md:text-5xl font-black text-slate-100 tracking-wider mono uppercase bg-gradient-to-r from-cyan-400 via-slate-100 to-amber-400 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(6,182,212,0.4)]">
+          ARMORY OS
+        </h2>
+        <p class="text-xs md:text-sm text-slate-400 mono">
+          Ultra-Fidelity 3D Mechanical Schematics • Procedural Audio Engine • Sensory Haptics
+        </p>
+      </div>
+
+      <!-- Enter Button -->
+      <div class="flex flex-col items-center gap-3">
+        <button onclick="enterArmoryFromPortal()" class="group relative px-8 py-3.5 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-400/60 hover:border-cyan-300 text-cyan-300 hover:text-white mono font-bold text-sm tracking-widest uppercase transition-all shadow-[0_0_30px_rgba(6,182,212,0.3)] hover:shadow-[0_0_50px_rgba(6,182,212,0.7)] flex items-center gap-3 active:scale-95">
+          <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 group-hover:scale-125 transition-transform animate-ping"></span>
+          <span>ENGAGE ARMORY // ENTER SYSTEM</span>
+          <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1.5 transition-transform"></i>
+        </button>
+        <div class="flex flex-wrap items-center justify-center gap-3 text-[11px] mono text-slate-500">
+          <span class="flex items-center gap-1"><i data-lucide="volume-2" class="w-3 h-3 text-cyan-400"></i> SYNTHESIZED SOUNDSCAPES</span>
+          <span>•</span>
+          <span class="flex items-center gap-1"><i data-lucide="layers" class="w-3 h-3 text-amber-400"></i> FULL 24-WEAPON CAD</span>
+          <span>•</span>
+          <span class="flex items-center gap-1"><i data-lucide="mouse-pointer" class="w-3 h-3 text-emerald-400"></i> INTERACTIVE CYCLE & DRY FIRE</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- TOP HUD HEADER -->
   <header class="border-b border-slate-800 bg-slate-950/90 backdrop-blur-md sticky top-0 z-50 px-6 py-2.5">
@@ -100,6 +185,31 @@
         </button>
         <button onclick="switchTab('trainer')" id="tab-trainer" class="px-3.5 py-1.5 text-xs font-semibold rounded bg-slate-900 border border-slate-700 text-slate-300 hover:bg-slate-800 transition-all flex items-center gap-1.5 mono">
           <i data-lucide="target" class="w-4 h-4"></i> SIGHT ID TRAINER
+        </button>
+
+        <div class="h-5 w-px bg-slate-800 hidden xl:block"></div>
+
+        <!-- Sensory Audio Controls -->
+        <div class="flex items-center gap-1.5 bg-slate-900/90 border border-slate-700/80 px-2.5 py-1 rounded-lg">
+          <button onclick="ArmoryAudio.toggleMute()" id="audio-toggle-btn" class="flex items-center gap-1.5 text-xs mono text-cyan-400 font-bold hover:text-cyan-300 transition" title="Toggle Tactile Audio [M]">
+            <i data-lucide="volume-2" class="w-3.5 h-3.5" id="audio-icon"></i>
+            <span id="audio-label">SFX: ON</span>
+          </button>
+          <input type="range" id="audio-vol-slider" min="0" max="100" value="80" oninput="ArmoryAudio.setVolume(this.value / 100)" class="w-12 h-1 accent-cyan-400 cursor-pointer ml-1" title="Tactile SFX Volume">
+        </div>
+
+        <select onchange="ArmoryAudio.setProfile(this.value)" id="audio-profile-select" class="bg-slate-900 border border-slate-700 text-slate-300 rounded px-2 py-1.5 text-xs mono cursor-pointer focus:outline-none focus:border-cyan-400">
+          <option value="mechanical">TACTILE MECHANICAL</option>
+          <option value="cyber">CYBER HUD</option>
+          <option value="soft">SUBDUED / SOFT</option>
+        </select>
+
+        <button onclick="ArmoryAudio.toggleHaptics()" id="haptic-toggle-btn" class="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-emerald-400 rounded text-xs mono font-bold transition flex items-center gap-1" title="Haptic Vibration for Touch Devices">
+          <i data-lucide="smartphone" class="w-3.5 h-3.5"></i> <span id="haptic-label">HAPTIC: ON</span>
+        </button>
+
+        <button onclick="openPortal()" class="px-3 py-1.5 text-xs font-semibold rounded bg-cyan-500/10 border border-cyan-400/40 text-cyan-300 hover:bg-cyan-500/20 transition-all flex items-center gap-1.5 mono shadow-[0_0_10px_rgba(6,182,212,0.15)]" title="Return to 3D Minimal Portal [P]">
+          <i data-lucide="aperture" class="w-3.5 h-3.5"></i> PORTAL
         </button>
       </div>
     </div>
@@ -183,6 +293,48 @@
           <div class="flex items-center gap-1.5 text-emerald-400">
             <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
             <span>BUFFER: RECOIL DAMPING</span>
+          </div>
+        </div>
+
+        <!-- Tactile Action Lab Floating Deck (Above Bottom Control Bar) -->
+        <div id="tactile-action-deck" class="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 bg-slate-950/95 backdrop-blur-md px-4 py-2 rounded-xl border border-cyan-500/40 flex flex-wrap items-center gap-2.5 shadow-2xl max-w-[96%] overflow-x-auto mono text-xs">
+          <div class="flex items-center gap-1.5 text-cyan-400 font-bold border-r border-slate-800 pr-2.5">
+            <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+            <span class="text-[10px] tracking-wider uppercase">TACTILE ACTION LAB:</span>
+          </div>
+
+          <!-- Action Cycle Button (Slide Rack / Bolt Throw / Pump / Cock) -->
+          <button onclick="triggerActionCycle()" id="btn-action-cycle" class="px-2.5 py-1 bg-amber-500/20 hover:bg-amber-500 hover:text-black text-amber-300 border border-amber-500/50 rounded text-[11px] font-bold transition-all flex items-center gap-1.5 shadow-[0_0_10px_rgba(245,158,11,0.25)] active:scale-95" title="Cycle firearm action [C]">
+            <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+            <span id="label-action-cycle">RACK SLIDE</span>
+            <kbd class="text-[9px] bg-black/50 px-1 py-0.5 rounded text-amber-200 border border-amber-500/30">C</kbd>
+          </button>
+
+          <!-- Dry Fire Button -->
+          <button onclick="triggerDryFire()" id="btn-dry-fire" class="px-2.5 py-1 bg-rose-500/20 hover:bg-rose-500 hover:text-black text-rose-300 border border-rose-500/50 rounded text-[11px] font-bold transition-all flex items-center gap-1.5 shadow-[0_0_10px_rgba(244,63,94,0.25)] active:scale-95" title="Pull trigger & dry fire striker [SPACE]">
+            <i data-lucide="target" class="w-3.5 h-3.5"></i>
+            <span>DRY FIRE</span>
+            <kbd class="text-[9px] bg-black/50 px-1 py-0.5 rounded text-rose-200 border border-rose-500/30">SPACE</kbd>
+          </button>
+
+          <!-- Reload / Drop Mag Button -->
+          <button onclick="triggerReload()" id="btn-reload" class="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-cyan-300 border border-slate-700 rounded text-[11px] font-bold transition-all flex items-center gap-1.5 active:scale-95" title="Drop & re-seat magazine [R]">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+            <span>RELOAD MAG</span>
+            <kbd class="text-[9px] bg-black/50 px-1 py-0.5 rounded text-slate-400 border border-slate-700">R</kbd>
+          </button>
+
+          <!-- Eject Brass Button -->
+          <button onclick="triggerEjectBrass()" id="btn-eject-brass" class="px-2.5 py-1 bg-yellow-500/15 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-500/40 rounded text-[11px] font-bold transition-all flex items-center gap-1.5 active:scale-95" title="Eject 3D Brass Casing with Audio Physics [E]">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+            <span>EJECT BRASS</span>
+            <kbd class="text-[9px] bg-black/50 px-1 py-0.5 rounded text-yellow-200 border border-yellow-500/30">E</kbd>
+          </button>
+
+          <!-- Chamber Status Feedback Display -->
+          <div class="border-l border-slate-800 pl-2.5 flex items-center gap-1.5 text-[10px]">
+            <span class="text-slate-500">STATE:</span>
+            <span id="tactile-chamber-status" class="text-emerald-400 font-bold glow-emerald">BATTERY LOCKED // COCKED</span>
           </div>
         </div>
 
@@ -1170,6 +1322,18 @@
     let isScanlineActive = false;
     let activeTab = '3d';
 
+    let isTriggerCocked = true;
+    let isChamberLoaded = true;
+    let isCyclingAction = false;
+    let lastDetentStep = -1;
+    let activeCasings = [];
+
+    // ENTRANCE PORTAL 3D ENGINE VARIABLES
+    let portalRenderer = null, portalScene = null, portalCamera = null;
+    let portalRings = [], portalParticles = null, portalCore = null;
+    let isPortalActive = true;
+    let portalMouse = { x: 0, y: 0 };
+
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
     let hoveredPart = null;
@@ -1629,6 +1793,896 @@
       }
 
       return { group, parts };
+    }
+
+
+    // ==========================================
+    // PROCEDURAL WEB AUDIO SYNTHESIZER (ARMORY AUDIO)
+    // ==========================================
+    const ArmoryAudio = {
+      ctx: null,
+      masterGain: null,
+      compressor: null,
+      enabled: true,
+      volume: 0.8,
+      profile: 'mechanical', // 'mechanical', 'cyber', 'soft'
+      hapticsEnabled: true,
+      noiseBuffer: null,
+
+      init() {
+        if (this.ctx) {
+          if (this.ctx.state === 'suspended') this.ctx.resume();
+          return;
+        }
+        try {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtx) return;
+          this.ctx = new AudioCtx();
+
+          // Dynamics compressor to guarantee zero digital clipping
+          this.compressor = this.ctx.createDynamicsCompressor();
+          this.compressor.threshold.value = -10;
+          this.compressor.knee.value = 6;
+          this.compressor.ratio.value = 4;
+          this.compressor.attack.value = 0.002;
+          this.compressor.release.value = 0.12;
+
+          this.masterGain = this.ctx.createGain();
+          this.masterGain.gain.value = this.enabled ? this.volume : 0;
+
+          this.compressor.connect(this.masterGain);
+          this.masterGain.connect(this.ctx.destination);
+
+          // Pre-generate white noise buffer for mechanical friction & scraping
+          const bufferSize = this.ctx.sampleRate;
+          this.noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+          const data = this.noiseBuffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+          }
+        } catch (e) {
+          console.warn("AudioContext init error:", e);
+        }
+      },
+
+      toggleMute() {
+        this.init();
+        this.enabled = !this.enabled;
+        if (this.masterGain && this.ctx) {
+          this.masterGain.gain.setValueAtTime(this.enabled ? this.volume : 0, this.ctx.currentTime);
+        }
+        const icon = document.getElementById('audio-icon');
+        const label = document.getElementById('audio-label');
+        const btn = document.getElementById('audio-toggle-btn');
+        if (this.enabled) {
+          if (icon) icon.setAttribute('data-lucide', 'volume-2');
+          if (label) label.innerText = 'SFX: ON';
+          if (btn) btn.className = 'flex items-center gap-1.5 text-xs mono text-cyan-400 font-bold hover:text-cyan-300 transition';
+          this.playButtonClick();
+        } else {
+          if (icon) icon.setAttribute('data-lucide', 'volume-x');
+          if (label) label.innerText = 'SFX: OFF';
+          if (btn) btn.className = 'flex items-center gap-1.5 text-xs mono text-slate-500 font-bold hover:text-slate-400 transition';
+        }
+        lucide.createIcons();
+      },
+
+      setVolume(val) {
+        this.init();
+        this.volume = Math.max(0, Math.min(1, val));
+        if (this.masterGain && this.ctx && this.enabled) {
+          this.masterGain.gain.setValueAtTime(this.volume, this.ctx.currentTime);
+        }
+      },
+
+      setProfile(p) {
+        this.profile = p;
+        this.init();
+        this.playButtonClick();
+      },
+
+      toggleHaptics() {
+        this.hapticsEnabled = !this.hapticsEnabled;
+        const btn = document.getElementById('haptic-toggle-btn');
+        const label = document.getElementById('haptic-label');
+        if (this.hapticsEnabled) {
+          if (btn) btn.className = 'px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-emerald-400 rounded text-xs mono font-bold transition flex items-center gap-1';
+          if (label) label.innerText = 'HAPTIC: ON';
+          this.vibrate([15]);
+        } else {
+          if (btn) btn.className = 'px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-500 rounded text-xs mono font-bold transition flex items-center gap-1';
+          if (label) label.innerText = 'HAPTIC: OFF';
+        }
+      },
+
+      vibrate(pattern = [10]) {
+        if (!this.hapticsEnabled || !navigator.vibrate) return;
+        try { navigator.vibrate(pattern); } catch (e) {}
+      },
+
+      // Helper: play noise burst with custom envelope and filter
+      noiseBurst(startTime, duration, filterFreq, filterQ, peakGain, filterType = 'bandpass') {
+        if (!this.ctx || !this.enabled || !this.noiseBuffer) return;
+        const src = this.ctx.createBufferSource();
+        src.buffer = this.noiseBuffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = filterType;
+        filter.frequency.setValueAtTime(filterFreq, startTime);
+        filter.Q.setValueAtTime(filterQ, startTime);
+
+        const gain = this.ctx.createGain();
+        gain.gain.setValueAtTime(0.0001, startTime);
+        gain.gain.linearRampToValueAtTime(peakGain * (this.profile === 'soft' ? 0.5 : 1.0), startTime + duration * 0.2);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+        src.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.compressor);
+
+        src.start(startTime);
+        src.stop(startTime + duration);
+      },
+
+      // Helper: play tone burst with envelope
+      toneBurst(startTime, duration, startFreq, endFreq, peakGain, type = 'sine') {
+        if (!this.ctx || !this.enabled) return;
+        const osc = this.ctx.createOscillator();
+        osc.type = this.profile === 'cyber' ? 'square' : type;
+        osc.frequency.setValueAtTime(startFreq, startTime);
+        if (endFreq !== startFreq) {
+          osc.frequency.exponentialRampToValueAtTime(Math.max(20, endFreq), startTime + duration);
+        }
+
+        const gain = this.ctx.createGain();
+        const adjustedPeak = peakGain * (this.profile === 'soft' ? 0.5 : 1.0);
+        gain.gain.setValueAtTime(0.0001, startTime);
+        gain.gain.linearRampToValueAtTime(adjustedPeak, startTime + 0.002);
+        gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+        osc.connect(gain);
+        gain.connect(this.compressor);
+
+        osc.start(startTime);
+        osc.stop(startTime + duration);
+      },
+
+      // 1. Tactile Slider Detent click
+      playSliderDetent(normalizedVal = 0.5) {
+        this.init();
+        if (!this.ctx || !this.enabled) return;
+        const t = this.ctx.currentTime;
+        const baseFreq = this.profile === 'cyber' ? 1400 : 850;
+        const freq = baseFreq + normalizedVal * 420;
+        const dur = 0.007;
+
+        const osc = this.ctx.createOscillator();
+        osc.type = this.profile === 'cyber' ? 'square' : 'triangle';
+        osc.frequency.setValueAtTime(freq, t);
+
+        const gain = this.ctx.createGain();
+        const peak = (this.profile === 'soft' ? 0.08 : 0.16);
+        gain.gain.setValueAtTime(peak, t);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+
+        osc.connect(gain);
+        gain.connect(this.compressor);
+        osc.start(t);
+        osc.stop(t + dur);
+      },
+
+      // 2. Micro hover tick (subtle, high-tech)
+      playHoverTick() {
+        this.init();
+        if (!this.ctx || !this.enabled) return;
+        const t = this.ctx.currentTime;
+        const freq = this.profile === 'cyber' ? 3200 : 2100;
+        const dur = 0.005;
+
+        const osc = this.ctx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, t);
+
+        const gain = this.ctx.createGain();
+        const peak = this.profile === 'soft' ? 0.03 : 0.07;
+        gain.gain.setValueAtTime(peak, t);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+
+        osc.connect(gain);
+        gain.connect(this.compressor);
+        osc.start(t);
+        osc.stop(t + dur);
+      },
+
+      // 3. UI Button Click
+      playButtonClick() {
+        this.init();
+        if (!this.ctx || !this.enabled) return;
+        const t = this.ctx.currentTime;
+        this.toneBurst(t, 0.012, 1800, 600, 0.2, 'triangle');
+        this.noiseBurst(t, 0.008, 2800, 2.5, 0.15);
+      },
+
+      // 4. Tab Switch chime
+      playTabSwitch() {
+        this.init();
+        if (!this.ctx || !this.enabled) return;
+        const t = this.ctx.currentTime;
+        this.toneBurst(t, 0.04, 750, 1100, 0.15, 'sine');
+        this.toneBurst(t + 0.03, 0.06, 1100, 1600, 0.18, 'sine');
+      },
+
+      // 5. Weapon Switch chime
+      playWeaponSwitch() {
+        this.init();
+        if (!this.ctx || !this.enabled) return;
+        const t = this.ctx.currentTime;
+        this.toneBurst(t, 0.03, 500, 900, 0.18, 'triangle');
+        this.noiseBurst(t + 0.02, 0.05, 2200, 3, 0.2);
+      },
+
+      // 6. Slide Rack & Action Cycling (authentic procedural mechanics per class)
+      playSlideRack(weaponClass = 'assault', weaponId = '') {
+        this.init();
+        if (!this.ctx || !this.enabled) return;
+        const t = this.ctx.currentTime;
+
+        // Special: MP5 HK SLAP
+        if (weaponId === 'hkmp5') {
+          // Phase 1: Pull cocking handle into notch
+          this.noiseBurst(t, 0.07, 2400, 4, 0.25);
+          this.toneBurst(t, 0.015, 2100, 800, 0.3, 'triangle');
+          // Phase 2: Iconic "HK Slap" palm strike at t + 0.18s
+          const tSlap = t + 0.18;
+          this.toneBurst(tSlap, 0.015, 4200, 900, 0.45, 'sine');
+          this.noiseBurst(tSlap, 0.03, 3800, 3, 0.35);
+          // Roller lockup into trunnion at t + 0.21s
+          this.toneBurst(tSlap + 0.03, 0.08, 2800, 600, 0.38, 'sine');
+          this.toneBurst(tSlap + 0.03, 0.05, 210, 60, 0.4, 'triangle');
+          return;
+        }
+
+        // Special: Shotgun Pump
+        if (weaponClass === 'shotgun' || weaponId === 'remington870') {
+          // Backward stroke (extract shell)
+          this.noiseBurst(t, 0.09, 1400, 2.5, 0.3);
+          this.toneBurst(t, 0.02, 280, 80, 0.35, 'triangle');
+          // Forward stroke (chamber new shell) at t + 0.16s
+          const tFwd = t + 0.16;
+          this.noiseBurst(tFwd, 0.08, 1800, 2.5, 0.35);
+          this.toneBurst(tFwd + 0.03, 0.04, 3200, 700, 0.4, 'sine');
+          this.toneBurst(tFwd + 0.03, 0.06, 120, 50, 0.45, 'triangle');
+          return;
+        }
+
+        // Special: Revolver Hammer Cock & Cylinder Ratchet
+        if (weaponId === 'colt_python') {
+          // Ratchet clicks
+          this.toneBurst(t, 0.008, 3600, 1200, 0.25, 'triangle');
+          this.toneBurst(t + 0.025, 0.008, 3900, 1300, 0.28, 'triangle');
+          this.toneBurst(t + 0.05, 0.008, 4200, 1400, 0.3, 'triangle');
+          // Hammer cock lock detent
+          this.toneBurst(t + 0.12, 0.02, 850, 200, 0.4, 'triangle');
+          this.toneBurst(t + 0.12, 0.015, 2800, 900, 0.35, 'sine');
+          return;
+        }
+
+        // Special: Bolt Action Sniper (AWM, CheyTac)
+        if (weaponClass === 'sniper' || weaponId === 'aiax338' || weaponId === 'cheytac_m200') {
+          // 1. Bolt handle lift
+          this.toneBurst(t, 0.02, 1100, 400, 0.35, 'triangle');
+          this.noiseBurst(t, 0.05, 1200, 3, 0.25);
+          // 2. Rearward drag at t + 0.10s
+          this.noiseBurst(t + 0.10, 0.10, 950, 2, 0.3);
+          // 3. Forward feed at t + 0.22s
+          this.noiseBurst(t + 0.22, 0.08, 1500, 2.5, 0.3);
+          // 4. Downward handle lock into battery at t + 0.32s
+          const tLock = t + 0.32;
+          this.toneBurst(tLock, 0.05, 130, 45, 0.45, 'triangle');
+          this.toneBurst(tLock, 0.02, 3100, 800, 0.4, 'sine');
+          return;
+        }
+
+        // Handguns (Glock, 1911, Desert Eagle)
+        if (weaponClass === 'handgun') {
+          // Phase 1: Slide pull rearward
+          this.noiseBurst(t, 0.07, 2400, 3, 0.3);
+          this.toneBurst(t, 0.012, 2200, 600, 0.25, 'triangle');
+          // Phase 2: Slide release snaps forward into battery at t + 0.15s
+          const tSnap = t + 0.15;
+          this.toneBurst(tSnap, 0.018, 3800, 700, 0.42, 'sine');
+          this.toneBurst(tSnap, 0.035, 190, 60, 0.38, 'triangle');
+          this.noiseBurst(tSnap, 0.04, 2800, 2.5, 0.25);
+          return;
+        }
+
+        // Rifles / Carbines (M4A1, AK47, SCAR, G3, Bullpups)
+        // Phase 1: Charging handle pull & carrier slide
+        this.noiseBurst(t, 0.09, 1600, 3, 0.3);
+        this.toneBurst(t, 0.02, 1400, 500, 0.28, 'triangle');
+        this.toneBurst(t + 0.03, 0.07, 480, 480, 0.2, 'sine');
+        // Phase 2: Forward lockup into battery at t + 0.18s
+        const tBat = t + 0.18;
+        this.toneBurst(tBat, 0.02, 3400, 600, 0.45, 'sine');
+        this.toneBurst(tBat, 0.045, 150, 50, 0.42, 'triangle');
+        this.toneBurst(tBat + 0.02, 0.08, 520, 520, 0.22, 'sine');
+        this.noiseBurst(tBat, 0.04, 2200, 2.5, 0.3);
+      },
+
+      // 7. Trigger pull break & reset click
+      playTriggerClick(isReset = false) {
+        this.init();
+        if (!this.ctx || !this.enabled) return;
+        const t = this.ctx.currentTime;
+        if (isReset) {
+          this.toneBurst(t, 0.006, 6200, 1800, 0.25, 'triangle');
+        } else {
+          this.toneBurst(t, 0.01, 4800, 800, 0.35, 'triangle');
+          this.noiseBurst(t, 0.007, 3600, 3, 0.2);
+          this.toneBurst(t, 0.015, 340, 100, 0.25, 'sine');
+        }
+      },
+
+      // 8. Dry Fire (Striker / Hammer fall on empty breech)
+      playDryFire() {
+        this.init();
+        if (!this.ctx || !this.enabled) return;
+        const t = this.ctx.currentTime;
+        this.toneBurst(t, 0.012, 3800, 700, 0.45, 'triangle');
+        this.noiseBurst(t, 0.015, 3200, 3.5, 0.3);
+        this.toneBurst(t + 0.005, 0.06, 280, 70, 0.38, 'sine');
+      },
+
+      // 9. Magazine Eject
+      playMagEject() {
+        this.init();
+        if (!this.ctx || !this.enabled) return;
+        const t = this.ctx.currentTime;
+        this.toneBurst(t, 0.012, 2900, 900, 0.3, 'triangle');
+        this.noiseBurst(t + 0.01, 0.10, 850, 2.5, 0.25);
+      },
+
+      // 10. Magazine Insert & Lock
+      playMagInsert() {
+        this.init();
+        if (!this.ctx || !this.enabled) return;
+        const t = this.ctx.currentTime;
+        this.noiseBurst(t, 0.07, 1500, 2.5, 0.22);
+        const tSlap = t + 0.08;
+        this.toneBurst(tSlap, 0.04, 160, 50, 0.42, 'triangle');
+        this.noiseBurst(tSlap, 0.03, 1900, 2, 0.3);
+        this.toneBurst(tSlap + 0.02, 0.015, 3400, 800, 0.38, 'sine');
+      },
+
+      // 11. Brass Casing Floor Clink & Bounces
+      playShellClink() {
+        this.init();
+        if (!this.ctx || !this.enabled) return;
+        const t = this.ctx.currentTime;
+        this.toneBurst(t, 0.10, 4400, 4100, 0.28, 'sine');
+        this.noiseBurst(t, 0.01, 4200, 4, 0.18);
+        this.toneBurst(t + 0.07, 0.06, 4750, 4500, 0.18, 'sine');
+        this.toneBurst(t + 0.13, 0.03, 5100, 4900, 0.1, 'sine');
+      },
+
+      // 12. Exploded View Disassembly Soundscape
+      playExplodeDisassembly() {
+        this.init();
+        if (!this.ctx || !this.enabled) return;
+        const t = this.ctx.currentTime;
+        this.toneBurst(t, 0.08, 300, 750, 0.2, 'sine');
+        this.noiseBurst(t + 0.04, 0.12, 1800, 3, 0.25);
+        this.toneBurst(t + 0.12, 0.09, 850, 1600, 0.22, 'sine');
+      },
+
+      // 13. Exploded View Re-assembly Soundscape
+      playExplodeAssembly() {
+        this.init();
+        if (!this.ctx || !this.enabled) return;
+        const t = this.ctx.currentTime;
+        this.toneBurst(t, 0.09, 1500, 600, 0.22, 'sine');
+        this.noiseBurst(t + 0.06, 0.10, 2200, 3, 0.25);
+        this.toneBurst(t + 0.14, 0.05, 180, 50, 0.38, 'triangle');
+      },
+
+      // 14. 3D Part Selection ping
+      playPartSelect() {
+        this.init();
+        if (!this.ctx || !this.enabled) return;
+        const t = this.ctx.currentTime;
+        this.toneBurst(t, 0.03, 1600, 2400, 0.2, 'sine');
+      },
+
+      // 15. Entrance Portal Warp soundscape
+      playPortalWarp() {
+        this.init();
+        if (!this.ctx || !this.enabled) return;
+        const t = this.ctx.currentTime;
+        this.toneBurst(t, 0.45, 75, 30, 0.45, 'triangle');
+        this.noiseBurst(t, 0.4, 400, 6, 0.25);
+        this.toneBurst(t + 0.1, 0.35, 300, 2600, 0.3, 'sine');
+        const tLock = t + 0.38;
+        this.toneBurst(tLock, 0.06, 140, 45, 0.5, 'triangle');
+        this.toneBurst(tLock, 0.02, 3400, 800, 0.45, 'sine');
+      }
+    };
+
+
+    // ==========================================
+    // ENTRANCE PORTAL 3D KINETIC ENGINE
+    // ==========================================
+    function initPortal3D() {
+      const canvas = document.getElementById('portal-canvas');
+      if (!canvas) return;
+      const width = canvas.clientWidth || 600;
+      const height = canvas.clientHeight || 450;
+
+      portalScene = new THREE.Scene();
+      portalScene.fog = new THREE.FogExp2(0x03050a, 0.035);
+
+      portalCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+      portalCamera.position.set(0, 0, 5.5);
+
+      portalRenderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+      portalRenderer.setSize(width, height);
+      portalRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Lights
+      const ambLight = new THREE.AmbientLight(0xffffff, 0.6);
+      portalScene.add(ambLight);
+
+      const cyanLight = new THREE.PointLight(0x06b6d4, 3.5, 20);
+      cyanLight.position.set(-3, 2, 4);
+      portalScene.add(cyanLight);
+
+      const amberLight = new THREE.PointLight(0xf59e0b, 3.0, 20);
+      amberLight.position.set(3, -2, 4);
+      portalScene.add(amberLight);
+
+      // Group for kinetic breach core
+      portalCore = new THREE.Group();
+      portalScene.add(portalCore);
+
+      // Ring 1: Outer Cyan Gyroscope
+      const r1Geo = new THREE.TorusGeometry(2.1, 0.015, 16, 120);
+      const r1Mat = new THREE.MeshBasicMaterial({ color: 0x06b6d4, wireframe: true, transparent: true, opacity: 0.85 });
+      const ring1 = new THREE.Mesh(r1Geo, r1Mat);
+      portalCore.add(ring1);
+      portalRings.push(ring1);
+
+      // Ring 2: Intermediate Amber Gyroscope
+      const r2Geo = new THREE.TorusGeometry(1.65, 0.012, 16, 100);
+      const r2Mat = new THREE.MeshBasicMaterial({ color: 0xf59e0b, wireframe: true, transparent: true, opacity: 0.8 });
+      const ring2 = new THREE.Mesh(r2Geo, r2Mat);
+      ring2.rotation.x = Math.PI / 4;
+      portalCore.add(ring2);
+      portalRings.push(ring2);
+
+      // Ring 3: Inner Emerald Diagnostic Gyroscope
+      const r3Geo = new THREE.TorusGeometry(1.2, 0.01, 16, 80);
+      const r3Mat = new THREE.MeshBasicMaterial({ color: 0x10b981, wireframe: true, transparent: true, opacity: 0.75 });
+      const ring3 = new THREE.Mesh(r3Geo, r3Mat);
+      ring3.rotation.y = Math.PI / 3;
+      portalCore.add(ring3);
+      portalRings.push(ring3);
+
+      // Central Chamber Cylinder
+      const chamberGeo = new THREE.CylinderGeometry(0.32, 0.32, 1.3, 24);
+      chamberGeo.rotateX(Math.PI / 2);
+      const chamberMat = new THREE.MeshStandardMaterial({
+        color: 0x1e293b,
+        metalness: 0.9,
+        roughness: 0.25,
+        wireframe: false
+      });
+      const chamber = new THREE.Mesh(chamberGeo, chamberMat);
+      portalCore.add(chamber);
+
+      // Chamber wireframe overlay
+      const chamWire = new THREE.Mesh(chamberGeo, new THREE.MeshBasicMaterial({ color: 0x06b6d4, wireframe: true, transparent: true, opacity: 0.6 }));
+      portalCore.add(chamWire);
+
+      // Glowing laser bore core
+      const boreGeo = new THREE.CylinderGeometry(0.08, 0.08, 1.8, 16);
+      boreGeo.rotateX(Math.PI / 2);
+      const boreMat = new THREE.MeshBasicMaterial({ color: 0x06b6d4 });
+      const bore = new THREE.Mesh(boreGeo, boreMat);
+      portalCore.add(bore);
+
+      // 7 Radial Bolt Locking Lugs
+      for (let l = 0; l < 7; l++) {
+        const angle = (l / 7) * Math.PI * 2;
+        const lugGeo = new THREE.BoxGeometry(0.07, 0.12, 0.22);
+        const lugMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.85, roughness: 0.3 });
+        const lug = new THREE.Mesh(lugGeo, lugMat);
+        lug.position.set(Math.cos(angle) * 0.42, Math.sin(angle) * 0.42, 0.4);
+        lug.rotation.z = angle;
+        portalCore.add(lug);
+      }
+
+      // Floating Star-Dust Particles
+      const partCount = 750;
+      const partGeo = new THREE.BufferGeometry();
+      const partPos = new Float32Array(partCount * 3);
+      for (let i = 0; i < partCount * 3; i += 3) {
+        partPos[i] = (Math.random() - 0.5) * 12;
+        partPos[i + 1] = (Math.random() - 0.5) * 12;
+        partPos[i + 2] = (Math.random() - 0.5) * 12;
+      }
+      partGeo.setAttribute('position', new THREE.BufferAttribute(partPos, 3));
+      const partMat = new THREE.PointsMaterial({
+        color: 0x06b6d4,
+        size: 0.035,
+        transparent: true,
+        opacity: 0.65,
+        blending: THREE.AdditiveBlending
+      });
+      portalParticles = new THREE.Points(partGeo, partMat);
+      portalScene.add(portalParticles);
+
+      // Parallax mouse tracker
+      canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        portalMouse.x = ((e.clientX - rect.left) / canvas.clientWidth) * 2 - 1;
+        portalMouse.y = -((e.clientY - rect.top) / canvas.clientHeight) * 2 + 1;
+      });
+
+      window.addEventListener('resize', onPortalResize);
+      portalAnimate();
+    }
+
+    function onPortalResize() {
+      const canvas = document.getElementById('portal-canvas');
+      if (!canvas || !portalRenderer || !portalCamera) return;
+      const width = canvas.clientWidth;
+      const height = canvas.clientHeight;
+      portalCamera.aspect = width / height;
+      portalCamera.updateProjectionMatrix();
+      portalRenderer.setSize(width, height);
+    }
+
+    function portalAnimate() {
+      if (!isPortalActive) return;
+      requestAnimationFrame(portalAnimate);
+
+      if (portalRings.length === 3) {
+        portalRings[0].rotation.x += 0.007;
+        portalRings[0].rotation.y += 0.005;
+        portalRings[1].rotation.y -= 0.006;
+        portalRings[1].rotation.z += 0.008;
+        portalRings[2].rotation.z += 0.01;
+        portalRings[2].rotation.x -= 0.004;
+      }
+
+      if (portalCore) {
+        portalCore.rotation.z += 0.008;
+      }
+
+      if (portalParticles) {
+        portalParticles.rotation.y += 0.001;
+        portalParticles.rotation.x += 0.0005;
+      }
+
+      if (portalCamera) {
+        portalCamera.position.x += (portalMouse.x * 0.7 - portalCamera.position.x) * 0.05;
+        portalCamera.position.y += (portalMouse.y * 0.7 - portalCamera.position.y) * 0.05;
+        portalCamera.lookAt(0, 0, 0);
+      }
+
+      portalRenderer.render(portalScene, portalCamera);
+    }
+
+    function enterArmoryFromPortal() {
+      ArmoryAudio.init();
+      ArmoryAudio.playPortalWarp();
+      ArmoryAudio.vibrate([30, 60, 40]);
+
+      // Hyperspace warp camera tween
+      new TWEEN.Tween(portalCamera.position)
+        .to({ z: -2.5 }, 700)
+        .easing(TWEEN.Easing.Cubic.In)
+        .start();
+
+      new TWEEN.Tween(portalCore.scale)
+        .to({ x: 3.5, y: 3.5, z: 3.5 }, 700)
+        .easing(TWEEN.Easing.Cubic.In)
+        .start();
+
+      const portalEl = document.getElementById('landing-portal');
+      portalEl.style.opacity = '0';
+      portalEl.style.transform = 'scale(1.1)';
+      portalEl.style.pointerEvents = 'none';
+
+      setTimeout(() => {
+        portalEl.style.display = 'none';
+        isPortalActive = false;
+        onWindowResize();
+        lucide.createIcons();
+      }, 720);
+    }
+
+    function openPortal() {
+      ArmoryAudio.init();
+      ArmoryAudio.playHoverTick();
+      const portalEl = document.getElementById('landing-portal');
+      portalEl.style.display = 'flex';
+      portalEl.offsetHeight; // force reflow
+      portalEl.style.opacity = '1';
+      portalEl.style.transform = 'scale(1)';
+      portalEl.style.pointerEvents = 'auto';
+
+      if (portalCamera) portalCamera.position.set(0, 0, 5.5);
+      if (portalCore) portalCore.scale.set(1, 1, 1);
+      isPortalActive = true;
+      onPortalResize();
+      portalAnimate();
+    }
+
+
+    // ==========================================
+    // SPENT CASING SIMULATION & 3D PHYSICS
+    // ==========================================
+    function spawnEjectedBrass() {
+      if (!scene) return;
+      const brassGeo = new THREE.CylinderGeometry(0.024, 0.024, 0.085, 12);
+      const brassMat = new THREE.MeshStandardMaterial({
+        color: 0xdfb15b,
+        metalness: 0.95,
+        roughness: 0.18
+      });
+      const casing = new THREE.Mesh(brassGeo, brassMat);
+      
+      casing.position.set(0.18, 0.22, 0.05);
+      casing.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, Math.random() * Math.PI);
+      
+      const vel = {
+        x: 0.05 + Math.random() * 0.03,
+        y: 0.08 + Math.random() * 0.04,
+        z: -0.02 - Math.random() * 0.03
+      };
+      const rotVel = {
+        x: (Math.random() - 0.5) * 0.4,
+        y: (Math.random() - 0.5) * 0.4,
+        z: (Math.random() - 0.5) * 0.4
+      };
+      
+      scene.add(casing);
+      activeCasings.push({
+        mesh: casing,
+        vel: vel,
+        rotVel: rotVel,
+        bounces: 0,
+        created: Date.now()
+      });
+    }
+
+    function updateCasingsPhysics() {
+      const floorY = -1.6;
+      const gravity = 0.0045;
+      const now = Date.now();
+      
+      for (let i = activeCasings.length - 1; i >= 0; i--) {
+        const c = activeCasings[i];
+        if (now - c.created > 4500) {
+          scene.remove(c.mesh);
+          c.mesh.geometry.dispose();
+          c.mesh.material.dispose();
+          activeCasings.splice(i, 1);
+          continue;
+        }
+        
+        c.vel.y -= gravity;
+        c.mesh.position.x += c.vel.x;
+        c.mesh.position.y += c.vel.y;
+        c.mesh.position.z += c.vel.z;
+        
+        c.mesh.rotation.x += c.rotVel.x;
+        c.mesh.rotation.y += c.rotVel.y;
+        c.mesh.rotation.z += c.rotVel.z;
+        
+        if (c.mesh.position.y <= floorY + 0.02) {
+          c.mesh.position.y = floorY + 0.02;
+          if (Math.abs(c.vel.y) > 0.015) {
+            c.vel.y = -c.vel.y * 0.5;
+            c.vel.x *= 0.65;
+            c.vel.z *= 0.65;
+            c.rotVel.x *= 0.5;
+            c.rotVel.z *= 0.5;
+            c.bounces++;
+            if (c.bounces <= 3) {
+              ArmoryAudio.playShellClink();
+              ArmoryAudio.vibrate([4]);
+            }
+          } else {
+            c.vel.y = 0;
+            c.vel.x = 0;
+            c.vel.z = 0;
+            c.rotVel.x = 0;
+            c.rotVel.y = 0;
+            c.rotVel.z = 0;
+          }
+        }
+      }
+    }
+
+
+    // ==========================================
+    // TACTILE ACTION LAB CONTROLS
+    // ==========================================
+    function triggerActionCycle() {
+      ArmoryAudio.init();
+      const weapon = FIREARMS.find(f => f.id === activeModelId);
+      if (!weapon || isCyclingAction) return;
+      isCyclingAction = true;
+
+      ArmoryAudio.playSlideRack(weapon.class, weapon.id);
+      ArmoryAudio.vibrate([15, 30, 25]);
+
+      const actionParts = currentParts.filter(p => p.userData && p.userData.subgroup === 'action');
+      const startPositions = actionParts.map(p => ({ p, z: p.position.z }));
+      const cycleDistance = -0.45;
+
+      new TWEEN.Tween({ offset: 0 })
+        .to({ offset: cycleDistance }, 140)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .onUpdate(obj => {
+          startPositions.forEach(item => {
+            item.p.position.z = item.z + obj.offset;
+          });
+        })
+        .onComplete(() => {
+          spawnEjectedBrass();
+
+          new TWEEN.Tween({ offset: cycleDistance })
+            .to({ offset: 0 }, 100)
+            .easing(TWEEN.Easing.Quadratic.In)
+            .onUpdate(obj => {
+              startPositions.forEach(item => {
+                item.p.position.z = item.z + obj.offset;
+              });
+            })
+            .onComplete(() => {
+              isCyclingAction = false;
+              isTriggerCocked = true;
+              isChamberLoaded = true;
+              updateActionStatus();
+            })
+            .start();
+        })
+        .start();
+    }
+
+    function triggerDryFire() {
+      ArmoryAudio.init();
+      if (isTriggerCocked) {
+        ArmoryAudio.playDryFire();
+        ArmoryAudio.vibrate([25]);
+        isTriggerCocked = false;
+        isChamberLoaded = false;
+        flashChamberFeedback("STRIKER DROP // EMPTY CHAMBER", "text-rose-400");
+      } else {
+        ArmoryAudio.playTriggerClick(false);
+        ArmoryAudio.vibrate([8]);
+        flashChamberFeedback("UNCOCKED — RACK ACTION [C]", "text-amber-400");
+      }
+      updateActionStatus();
+    }
+
+    function triggerReload() {
+      ArmoryAudio.init();
+      ArmoryAudio.playMagEject();
+      ArmoryAudio.vibrate([12]);
+
+      const feedParts = currentParts.filter(p => p.userData && p.userData.subgroup === 'feed');
+      const startPositions = feedParts.map(p => ({ p, y: p.position.y }));
+
+      new TWEEN.Tween({ drop: 0 })
+        .to({ drop: -0.65 }, 180)
+        .easing(TWEEN.Easing.Quadratic.Out)
+        .onUpdate(obj => {
+          startPositions.forEach(item => {
+            item.p.position.y = item.y + obj.drop;
+          });
+        })
+        .onComplete(() => {
+          setTimeout(() => {
+            ArmoryAudio.playMagInsert();
+            ArmoryAudio.vibrate([20, 40, 30]);
+            new TWEEN.Tween({ drop: -0.65 })
+              .to({ drop: 0 }, 140)
+              .easing(TWEEN.Easing.Back.Out)
+              .onUpdate(obj => {
+                startPositions.forEach(item => {
+                  item.p.position.y = item.y + obj.drop;
+                });
+              })
+              .onComplete(() => {
+                flashChamberFeedback("MAGAZINE SEATED & LOCKED // READY TO CYCLE", "text-emerald-400");
+              })
+              .start();
+          }, 120);
+        })
+        .start();
+    }
+
+    function triggerEjectBrass() {
+      ArmoryAudio.init();
+      spawnEjectedBrass();
+      ArmoryAudio.playShellClink();
+      ArmoryAudio.vibrate([6]);
+    }
+
+    function updateActionStatus() {
+      const weapon = FIREARMS.find(f => f.id === activeModelId);
+      if (!weapon) return;
+
+      const labelBtn = document.getElementById('label-action-cycle');
+      if (labelBtn) {
+        if (weapon.class === 'handgun') {
+          labelBtn.innerText = "RACK SLIDE";
+        } else if (weapon.id === 'hkmp5') {
+          labelBtn.innerText = "HK SLAP";
+        } else if (weapon.id === 'remington870') {
+          labelBtn.innerText = "PUMP ACTION";
+        } else if (weapon.id === 'colt_python') {
+          labelBtn.innerText = "COCK HAMMER";
+        } else if (weapon.class === 'sniper' || weapon.id === 'cheytac_m200' || weapon.id === 'aiax338') {
+          labelBtn.innerText = "CYCLE BOLT";
+        } else {
+          labelBtn.innerText = "CHARGE BOLT";
+        }
+      }
+
+      const chamberStatus = document.getElementById('tactile-chamber-status');
+      if (chamberStatus) {
+        if (isTriggerCocked && isChamberLoaded) {
+          chamberStatus.className = "text-emerald-400 font-bold glow-emerald";
+          chamberStatus.innerText = "BATTERY LOCKED // COCKED";
+        } else if (!isTriggerCocked) {
+          chamberStatus.className = "text-rose-400 font-bold glow-rose";
+          chamberStatus.innerText = "STRIKER DROPPED // UNCOCKED";
+        } else {
+          chamberStatus.className = "text-amber-400 font-bold glow-amber";
+          chamberStatus.innerText = "CHAMBER EMPTY";
+        }
+      }
+    }
+
+    function flashChamberFeedback(text, colorClass) {
+      const el = document.getElementById('tactile-chamber-status');
+      if (!el) return;
+      el.className = `${colorClass} font-bold animate-pulse`;
+      el.innerText = text;
+      setTimeout(updateActionStatus, 1500);
+    }
+
+    function setupTactileKeybindings() {
+      window.addEventListener('keydown', (e) => {
+        if (['INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) return;
+        const key = e.key.toLowerCase();
+        if (key === 'c') {
+          e.preventDefault();
+          triggerActionCycle();
+        } else if (key === ' ' || e.code === 'Space') {
+          e.preventDefault();
+          triggerDryFire();
+        } else if (key === 'r') {
+          e.preventDefault();
+          triggerReload();
+        } else if (key === 'e') {
+          e.preventDefault();
+          triggerEjectBrass();
+        } else if (key === 'x') {
+          e.preventDefault();
+          toggleExplode();
+        } else if (key === 'm') {
+          e.preventDefault();
+          ArmoryAudio.toggleMute();
+        } else if (key === 'p') {
+          e.preventDefault();
+          openPortal();
+        }
+      });
     }
 
 
@@ -2274,6 +3328,15 @@
       const weapon = FIREARMS.find(f => f.id === id);
       if (!weapon) return;
 
+      ArmoryAudio.init();
+      ArmoryAudio.playWeaponSwitch();
+      ArmoryAudio.vibrate([10]);
+
+      isTriggerCocked = true;
+      isChamberLoaded = true;
+      isCyclingAction = false;
+      updateActionStatus();
+
       document.querySelectorAll('#model-buttons button').forEach(b => {
         b.className = "px-2.5 py-1 rounded text-xs font-semibold mono whitespace-nowrap transition-all border bg-slate-950 text-slate-300 border-slate-800 hover:border-cyan-500/50";
       });
@@ -2313,6 +3376,15 @@
     function setExplodedAmount(val) {
       explodedProgress = val / 100;
       isExploded = val > 0;
+
+      // Tactile Detent Audio & Haptic Feedback every 4%
+      const step = Math.floor(val / 4);
+      if (step !== lastDetentStep) {
+        lastDetentStep = step;
+        ArmoryAudio.playSliderDetent(val / 100);
+        ArmoryAudio.vibrate([4]);
+      }
+
       document.getElementById('tele-status').innerText = isExploded ? `EXPLODED [${val}%]` : `IN BATTERY [0%]`;
       document.getElementById('tele-status').className = isExploded ? "text-amber-400 font-bold glow-amber" : "text-cyan-400 font-bold";
 
@@ -2330,9 +3402,19 @@
     }
 
     function toggleExplode() {
+      ArmoryAudio.init();
       const targetVal = isExploded ? 0 : 100;
       const slider = document.getElementById('explode-slider');
       slider.value = targetVal;
+
+      if (targetVal === 100) {
+        ArmoryAudio.playExplodeDisassembly();
+        ArmoryAudio.vibrate([15, 30, 45]);
+      } else {
+        ArmoryAudio.playExplodeAssembly();
+        ArmoryAudio.vibrate([20, 20, 40]);
+      }
+
       new TWEEN.Tween({ val: explodedProgress * 100 })
         .to({ val: targetVal }, 600)
         .easing(TWEEN.Easing.Cubic.Out)
@@ -2543,6 +3625,9 @@
             hoveredPart.material.emissiveIntensity = 0.6;
           }
 
+          ArmoryAudio.playHoverTick();
+          ArmoryAudio.vibrate([3]);
+
           const u = hit.userData;
           document.getElementById('part-name').innerHTML = `<i data-lucide="cpu" class="w-3.5 h-3.5"></i> ${u.name.toUpperCase()}`;
           document.getElementById('part-subgroup').innerText = `${u.subgroup.toUpperCase()} SUBASSEMBLY`;
@@ -2566,6 +3651,7 @@
       if (activeTab === '3d' && renderer && scene && camera) {
         controls.update();
         checkRaycast();
+        updateCasingsPhysics();
         renderer.render(scene, camera);
       }
 
@@ -2590,6 +3676,9 @@
     let searchQuery = '';
 
     function switchTab(tabId) {
+      ArmoryAudio.init();
+      ArmoryAudio.playTabSwitch();
+      ArmoryAudio.vibrate([8]);
       activeTab = tabId;
       ['3d', 'database', 'posters', 'compare', 'trainer'].forEach(t => {
         const view = document.getElementById(`view-${t}`);
@@ -2612,6 +3701,9 @@
     }
 
     function filterCategory(cat) {
+      ArmoryAudio.init();
+      ArmoryAudio.playButtonClick();
+      ArmoryAudio.vibrate([5]);
       currentCategory = cat;
       document.querySelectorAll('.cat-btn').forEach(b => {
         b.className = "cat-btn px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-800 text-slate-300 hover:bg-slate-700 mono";
@@ -2789,8 +3881,15 @@
       const fb = document.getElementById('trainer-feedback');
       fb.classList.remove('hidden');
 
+      ArmoryAudio.init();
       if (selectedIdx === q.answer) {
         quizScore++;
+        ArmoryAudio.playTriggerClick(true);
+        if (ArmoryAudio.ctx) {
+          ArmoryAudio.toneBurst(ArmoryAudio.ctx.currentTime, 0.08, 1200, 2400, 0.25, 'sine');
+        }
+        ArmoryAudio.vibrate([10, 20]);
+
         fb.className = "p-4 rounded-lg text-xs mono bg-emerald-950/40 border border-emerald-500/50 text-emerald-300 space-y-2";
         fb.innerHTML = `
           <div class="font-bold text-emerald-400 flex items-center gap-1.5"><i data-lucide="check-circle" class="w-4 h-4"></i> IDENTIFICATION CONFIRMED</div>
@@ -2798,6 +3897,11 @@
           <button onclick="nextQuestion()" class="mt-2 px-3 py-1 bg-emerald-500 text-black font-bold rounded text-[11px]">NEXT SCENARIO →</button>
         `;
       } else {
+        if (ArmoryAudio.ctx) {
+          ArmoryAudio.toneBurst(ArmoryAudio.ctx.currentTime, 0.12, 220, 110, 0.35, 'triangle');
+        }
+        ArmoryAudio.vibrate([40, 20, 40]);
+
         fb.className = "p-4 rounded-lg text-xs mono bg-red-950/40 border border-red-500/50 text-red-300 space-y-2";
         fb.innerHTML = `
           <div class="font-bold text-red-400 flex items-center gap-1.5"><i data-lucide="alert-triangle" class="w-4 h-4"></i> MISIDENTIFICATION</div>
@@ -2809,11 +3913,13 @@
     }
 
     function nextQuestion() {
+      ArmoryAudio.playButtonClick();
       currentQuestion++;
       renderTrainer();
     }
 
     function resetTrainer() {
+      ArmoryAudio.playButtonClick();
       currentQuestion = 0;
       quizScore = 0;
       renderTrainer();
@@ -2823,10 +3929,13 @@
     // INITIALIZATION LIFECYCLE
     // ==========================================
     window.addEventListener('DOMContentLoaded', () => {
+      initPortal3D();
       init3D();
       renderWeapons();
       populateComparators();
       renderTrainer();
+      updateActionStatus();
+      setupTactileKeybindings();
       lucide.createIcons();
     });
   </script>
