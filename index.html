@@ -297,35 +297,35 @@
         </div>
 
         <!-- Tactile Action Lab Floating Deck (Above Bottom Control Bar) -->
-        <div id="tactile-action-deck" class="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 bg-slate-950/95 backdrop-blur-md px-4 py-2 rounded-xl border border-cyan-500/40 flex flex-wrap items-center gap-2.5 shadow-2xl max-w-[96%] overflow-x-auto mono text-xs">
+        <div id="tactile-action-deck" class="absolute bottom-20 left-1/2 -translate-x-1/2 z-30 bg-slate-950/95 backdrop-blur-md px-4 py-2 rounded-xl border border-cyan-500/40 flex flex-wrap items-center gap-2.5 shadow-2xl max-w-[96%] overflow-x-auto mono text-xs">
           <div class="flex items-center gap-1.5 text-cyan-400 font-bold border-r border-slate-800 pr-2.5">
             <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
             <span class="text-[10px] tracking-wider uppercase">TACTILE ACTION LAB:</span>
           </div>
 
           <!-- Action Cycle Button (Slide Rack / Bolt Throw / Pump / Cock) -->
-          <button onclick="triggerActionCycle()" id="btn-action-cycle" class="px-2.5 py-1 bg-amber-500/20 hover:bg-amber-500 hover:text-black text-amber-300 border border-amber-500/50 rounded text-[11px] font-bold transition-all flex items-center gap-1.5 shadow-[0_0_10px_rgba(245,158,11,0.25)] active:scale-95" title="Cycle firearm action [C]">
+          <button onclick="triggerActionCycle()" id="btn-action-cycle" class="px-2.5 py-1 bg-amber-500/20 hover:bg-amber-500 hover:text-black text-amber-300 border border-amber-500/50 rounded text-[11px] font-bold transition-all flex items-center gap-1.5 shadow-[0_0_10px_rgba(245,158,11,0.25)] active:scale-95 cursor-pointer" title="Cycle firearm action [C]">
             <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
             <span id="label-action-cycle">RACK SLIDE</span>
             <kbd class="text-[9px] bg-black/50 px-1 py-0.5 rounded text-amber-200 border border-amber-500/30">C</kbd>
           </button>
 
           <!-- Dry Fire Button -->
-          <button onclick="triggerDryFire()" id="btn-dry-fire" class="px-2.5 py-1 bg-rose-500/20 hover:bg-rose-500 hover:text-black text-rose-300 border border-rose-500/50 rounded text-[11px] font-bold transition-all flex items-center gap-1.5 shadow-[0_0_10px_rgba(244,63,94,0.25)] active:scale-95" title="Pull trigger & dry fire striker [SPACE]">
+          <button onclick="triggerDryFire()" id="btn-dry-fire" class="px-2.5 py-1 bg-rose-500/20 hover:bg-rose-500 hover:text-black text-rose-300 border border-rose-500/50 rounded text-[11px] font-bold transition-all flex items-center gap-1.5 shadow-[0_0_10px_rgba(244,63,94,0.25)] active:scale-95 cursor-pointer" title="Pull trigger & dry fire striker [SPACE]">
             <i data-lucide="target" class="w-3.5 h-3.5"></i>
             <span>DRY FIRE</span>
             <kbd class="text-[9px] bg-black/50 px-1 py-0.5 rounded text-rose-200 border border-rose-500/30">SPACE</kbd>
           </button>
 
           <!-- Reload / Drop Mag Button -->
-          <button onclick="triggerReload()" id="btn-reload" class="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-cyan-300 border border-slate-700 rounded text-[11px] font-bold transition-all flex items-center gap-1.5 active:scale-95" title="Drop & re-seat magazine [R]">
+          <button onclick="triggerReload()" id="btn-reload" class="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-cyan-300 border border-slate-700 rounded text-[11px] font-bold transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer" title="Drop & re-seat magazine [R]">
             <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
             <span>RELOAD MAG</span>
             <kbd class="text-[9px] bg-black/50 px-1 py-0.5 rounded text-slate-400 border border-slate-700">R</kbd>
           </button>
 
           <!-- Eject Brass Button -->
-          <button onclick="triggerEjectBrass()" id="btn-eject-brass" class="px-2.5 py-1 bg-yellow-500/15 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-500/40 rounded text-[11px] font-bold transition-all flex items-center gap-1.5 active:scale-95" title="Eject 3D Brass Casing with Audio Physics [E]">
+          <button onclick="triggerEjectBrass()" id="btn-eject-brass" class="px-2.5 py-1 bg-yellow-500/15 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-500/40 rounded text-[11px] font-bold transition-all flex items-center gap-1.5 active:scale-95 cursor-pointer" title="Eject 3D Brass Casing with Audio Physics [E]">
             <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
             <span>EJECT BRASS</span>
             <kbd class="text-[9px] bg-black/50 px-1 py-0.5 rounded text-yellow-200 border border-yellow-500/30">E</kbd>
@@ -339,7 +339,7 @@
         </div>
 
         <!-- Interactive 3D Control Bar (Bottom Center) -->
-        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 bg-slate-950/90 backdrop-blur-md px-4 py-2.5 rounded-xl border border-slate-800 flex flex-wrap items-center gap-3 shadow-2xl max-w-[96%] overflow-x-auto">
+        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 bg-slate-950/90 backdrop-blur-md px-4 py-2.5 rounded-xl border border-slate-800 flex flex-wrap items-center gap-3 shadow-2xl max-w-[96%] overflow-x-auto">
           
           <!-- Exploded View Slider -->
           <div class="flex items-center gap-2">
