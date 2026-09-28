@@ -1,8 +1,10 @@
 import { defineConfig } from 'vite';
-import { fileURLToPath, URL } from 'node:url';
+
+// Path alias resolved without Node typings so the config typechecks in any environment.
+const srcDir = new URL('./src', import.meta.url).pathname;
 
 export default defineConfig({
-  resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
+  resolve: { alias: { '@': srcDir } },
   build: {
     target: 'es2022',
     sourcemap: false,
