@@ -1,36 +1,23 @@
 # CLAUDE.md - ARMORY OS
 
-Live URL: https://armory.raul.my
-Mirror: https://armory-os.vercel.app
-Repository: https://github.com/raullee/armory-os
+Live: https://armory.raul.my · Mirror: https://armory-os.vercel.app · Repo: https://github.com/raullee/armory-os
 
-## Current State: Phase Two Optimization Complete
+## State: v3 (September 2026)
 
-The latest update resolves audio realism and field strip UI layout feedback:
-1. **Audio Realism Overhaul (`ArmoryAudio 2.0`)**:
-   - Upgraded from simple oscillator sweeps to physical modal acoustic synthesis.
-   - True ordnance steel physics: multi-band modal filter bank modeling receiver body mass (125Hz), trunnion/receiver rails (780Hz), bolt carrier group (1580Hz), and hardened tool steel locking lugs (5200Hz) with high-Q resonators.
-   - Waveshaper non-linear saturation for analog mechanical thickness.
-   - Real mechanical rail friction (dual-formant pink noise), buffer spring twang, and drawn 70/30 brass multi-bounce floor acoustics (3820Hz, 4920Hz, 6380Hz).
-   - Micro-transient contact clicks and secondary mechanical chatter.
+Rebuilt from the single-file v2 into a Vite + TypeScript + three.js application. Each firearm is a data file against `src/firearm/schema.ts`; the engine is shared. See `README.md` for the architecture map and `docs/AUTHORING.md` for how to add or fix a firearm.
 
-2. **Un-Overlaid & Elevated Hero Field Strip Console**:
-   - Secondary tools (Cyber Wire, PBR Metal, Thermal IR, Laser, Scanline, CAD Lines, Auto-spin, Reset) moved to a clean top-right tactical dock.
-   - Viewport bottom is dedicated exclusively to the unified **Hero Field Strip & Tactile Console**:
-     - **Tier 1 (Tactile Action Lab)**: Cycle Action (`C`), Dry Fire (`Space`), Reload Mag (`R`), Eject 3D Brass (`E`), and Chamber Status.
-     - **Tier 2 (Hero Field Strip Console)**:
-       - Master Field Strip button (`[ ⚡ FIELD STRIP WEAPON (F) ]`).
-       - Step-by-Step Disassembly controls (`[ ◀ PREV ]` and `[ NEXT ▶ ]` or keys `[` and `]`).
-       - Autonomous sequence walkthrough (`[ ▷ AUTO STRIP ]`).
-       - Dynamic live detachment counter (e.g. `24 / 24 PARTS DETACHED`).
-       - Stage badges:
-         - Stage 0: `IN BATTERY` (0%)
-         - Stage 1: `MAG CLEARED` (20%)
-         - Stage 2: `RECEIVERS SPLIT` (40%)
-         - Stage 3: `BCG EXTRACTED` (60%)
-         - Stage 4: `BOLT DETAIL STRIPPED` (80%)
-         - Stage 5: `FULL CAD MATRIX` (100%)
-       - Smooth Hermite interpolation per subassembly during sliding.
+## Rules for this repo
 
-3. **Automated Verification**:
-   - Verified via Playwright headless browser test (`test_field_strip.py`): 100% pass across all stages, controls, audio synthesis methods, and bounds checks.
+- Never invent a specification. Every `SpecValue` carries a confidence grade; unknown means `null` with a note.
+- Frame: `+x` muzzle, `+y` up, `+z` right, origin at the breech face, millimetres.
+- A firearm change is a change to `src/data/firearms/<id>.ts` only. Run `npm run validate -- <id>`; zero errors required, modelled length within 5% of published.
+- Field-strip copy is visitor-facing description, never instruction.
+- Firing is not simulated. Do not add gunshot audio.
+- Design ethos: monochrome, hairline rules, small-caps labels, numbered lists, one object edge to edge, colour only as a status dot. No glow, no scanlines, no fake telemetry.
+- Before reporting done: `npm run build` clean, `npm test` green, and a browser check of the exhibition.
+
+## Verification
+
+- `npm run validate -- --all`
+- `npm test` (Playwright, builds and serves the production bundle on :4173)
+- Deploy with `vercel --prod`; the domain is managed in Vercel.

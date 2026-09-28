@@ -3,6 +3,8 @@ __pycache__/
 *.pyc
 .vercel/
 *_test.png
-
-
-
+node_modules/
+dist/
+test-results/
+playwright-report/
+tests/__screenshots__/**/*-actual.png
